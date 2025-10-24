@@ -8,15 +8,16 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { signOut } from '@/app/(login)/actions';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/db/schema';
+import { adminRedirectPath } from '@/config/app-config';
 import useSWR, { mutate } from 'swr';
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 function UserMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,10 +33,7 @@ function UserMenu() {
   if (!user) {
     return (
       <>
-        <Link
-          href="/pricing"
-          className="text-sm font-medium text-gray-700 hover:text-gray-900"
-        >
+        <Link href="/pricing" className="text-sm font-medium text-gray-700 hover:text-gray-900">
           Pricing
         </Link>
         <Button asChild className="rounded-full">
@@ -53,14 +51,14 @@ function UserMenu() {
           <AvatarFallback>
             {user.email
               .split(' ')
-              .map((n) => n[0])
+              .map(n => n[0])
               .join('')}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="flex flex-col gap-1">
         <DropdownMenuItem className="cursor-pointer">
-          <Link href="/dashboard" className="flex w-full items-center">
+          <Link href={adminRedirectPath} className="flex w-full items-center">
             <Home className="mr-2 h-4 w-4" />
             <span>Dashboard</span>
           </Link>

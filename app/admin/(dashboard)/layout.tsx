@@ -6,19 +6,15 @@ import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Users, Settings, Shield, Activity, Menu } from 'lucide-react';
 
-export default function DashboardLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navItems = [
-    { href: '/dashboard', icon: Users, label: 'Team' },
-    { href: '/dashboard/general', icon: Settings, label: 'General' },
-    { href: '/dashboard/activity', icon: Activity, label: 'Activity' },
-    { href: '/dashboard/security', icon: Shield, label: 'Security' }
+    { href: '/admin', icon: Users, label: 'Team' },
+    { href: '/admin/general', icon: Settings, label: 'General' },
+    { href: '/admin/activity', icon: Activity, label: 'Activity' },
+    { href: '/admin/security', icon: Shield, label: 'Security' },
   ];
 
   return (
@@ -28,11 +24,7 @@ export default function DashboardLayout({
         <div className="flex items-center">
           <span className="font-medium">Settings</span>
         </div>
-        <Button
-          className="-mr-3"
-          variant="ghost"
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        >
+        <Button className="-mr-3" variant="ghost" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
           <Menu className="h-6 w-6" />
           <span className="sr-only">Toggle sidebar</span>
         </Button>
@@ -48,7 +40,7 @@ export default function DashboardLayout({
           }`}
         >
           <nav className="h-full overflow-y-auto p-4">
-            {navItems.map((item) => (
+            {navItems.map(item => (
               <Link key={item.href} href={item.href} passHref>
                 <Button
                   variant={pathname === item.href ? 'secondary' : 'ghost'}
