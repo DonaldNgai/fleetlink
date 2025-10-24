@@ -74,6 +74,9 @@ importers:
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
+      simple-icons:
+        specifier: ^15.17.0
+        version: 15.17.0
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -98,6 +101,10 @@ importers:
       zod:
         specifier: ^3.24.4
         version: 3.24.4
+    devDependencies:
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
 
 packages:
 
@@ -1836,6 +1843,11 @@ packages:
     resolution: {integrity: sha512-cDWgoah1Gez9rN3H4165peY9qfpEo+SA61oQv65O3cRUE1pOEoJWwddwcqKE8XZYjbblOJlYDlLV4h67HrEVDg==}
     engines: {node: '>=12'}
 
+  prettier@3.6.2:
+    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+
   qs@6.14.0:
     resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
     engines: {node: '>=0.6'}
@@ -1935,6 +1947,10 @@ packages:
   side-channel@1.1.0:
     resolution: {integrity: sha512-ZX99e6tRweoUXqR+VBrslhda51Nh5MTQwou5tnUDgbtyM0dBgmhEDtWGP/xbKn6hqfPRHujUNwz5fy/wbbhnpw==}
     engines: {node: '>= 0.4'}
+
+  simple-icons@15.17.0:
+    resolution: {integrity: sha512-viOcugYj+JFYVWJvDh4Ph1xHk9iTGhzt+NoPrfAQYSCADvmZFSQUWyKEbSMuqVRUsaRgvADn+Cczysemsf1N3Q==}
+    engines: {node: '>=0.12.18'}
 
   simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
@@ -3563,6 +3579,8 @@ snapshots:
 
   postgres@3.4.5: {}
 
+  prettier@3.6.2: {}
+
   qs@6.14.0:
     dependencies:
       side-channel: 1.1.0
@@ -3735,6 +3753,8 @@ snapshots:
       side-channel-list: 1.0.0
       side-channel-map: 1.0.1
       side-channel-weakmap: 1.0.2
+
+  simple-icons@15.17.0: {}
 
   simple-swizzle@0.2.2:
     dependencies:

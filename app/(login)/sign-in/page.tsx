@@ -4,8 +4,8 @@ import { Globe } from "lucide-react";
 
 import { APP_CONFIG } from "@/config/app-config";
 
-import { LoginForm } from "../../_components/login-form";
-import { GoogleButton } from "../../_components/social-auth/google-button";
+import { AuthForm } from "../login-form";
+import { GoogleButton } from "@/components/ui/google-button";
 
 export default function LoginV2() {
   return (
@@ -20,7 +20,7 @@ export default function LoginV2() {
           <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
             <span className="bg-background text-muted-foreground relative z-10 px-2">Or continue with</span>
           </div>
-          <LoginForm />
+          <AuthForm mode="signin" />
         </div>
       </div>
 
