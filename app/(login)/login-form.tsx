@@ -1,23 +1,30 @@
-"use client";
+'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useTransition } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
 import { signIn, signUp } from './actions';
 import { ActionState } from '@/lib/auth/middleware';
 
 const getFormSchema = (mode: 'signin' | 'signup') => {
   const baseSchema = {
-    email: z.string().email({ message: "Please enter a valid email address." }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+    email: z.string().email({ message: 'Please enter a valid email address.' }),
+    password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
   };
 
   if (mode === 'signin') {
@@ -27,13 +34,17 @@ const getFormSchema = (mode: 'signin' | 'signup') => {
     });
   }
 
-  return z.object({
-    ...baseSchema,
-    confirmPassword: z.string().min(6, { message: "Confirm Password must be at least 6 characters." }),
-  }).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match.",
-    path: ["confirmPassword"],
-  });
+  return z
+    .object({
+      ...baseSchema,
+      confirmPassword: z
+        .string()
+        .min(6, { message: 'Confirm Password must be at least 6 characters.' }),
+    })
+    .refine(data => data.password === data.confirmPassword, {
+      message: 'Passwords do not match.',
+      path: ['confirmPassword'],
+    });
 };
 
 type SignInFormData = z.infer<ReturnType<typeof getFormSchema>> & { remember?: boolean };
@@ -44,7 +55,8 @@ export function AuthForm({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
   const redirect = searchParams.get('redirect');
   const priceId = searchParams.get('priceId');
   const inviteId = searchParams.get('inviteId');
-  const [state, formAction, pending] = useActionState<ActionState, FormData>(
+  const [isPending, startTransition] = useTransition();
+  const [state, formAction] = useActionState<ActionState, FormData>(
     mode === 'signin' ? signIn : signUp,
     { error: '' }
   );
@@ -52,24 +64,27 @@ export function AuthForm({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
   const formSchema = getFormSchema(mode);
   const form = useForm<SignInFormData | SignUpFormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: mode === 'signin' 
-      ? { email: "", password: "", remember: false }
-      : { email: "", password: "", confirmPassword: "" },
+    defaultValues:
+      mode === 'signin'
+        ? { email: '', password: '', remember: false }
+        : { email: '', password: '', confirmPassword: '' },
   });
 
   const onSubmit = async (data: SignInFormData | SignUpFormData) => {
-    const formData = new FormData();
-    formData.append('email', data.email);
-    formData.append('password', data.password);
-    formData.append('redirect', redirect || '');
-    formData.append('priceId', priceId || '');
-    formData.append('inviteId', inviteId || '');
-    
-    if (mode === 'signin' && 'remember' in data) {
-      formData.append('remember', String(data.remember || false));
-    }
-    
-    formAction(formData);
+    startTransition(() => {
+      const formData = new FormData();
+      formData.append('email', data.email);
+      formData.append('password', data.password);
+      formData.append('redirect', redirect || '');
+      formData.append('priceId', priceId || '');
+      formData.append('inviteId', inviteId || '');
+
+      if (mode === 'signin' && 'remember' in data) {
+        formData.append('remember', String(data.remember || false));
+      }
+
+      formAction(formData);
+    });
   };
 
   return (
@@ -82,13 +97,13 @@ export function AuthForm({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
             <FormItem>
               <FormLabel>Email Address</FormLabel>
               <FormControl>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  placeholder="you@example.com" 
-                  autoComplete="email" 
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  autoComplete="email"
                   defaultValue={state.email}
-                  {...field} 
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
@@ -115,7 +130,7 @@ export function AuthForm({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
             </FormItem>
           )}
         />
-        
+
         {mode === 'signup' && (
           <FormField
             control={form.control}
@@ -152,7 +167,10 @@ export function AuthForm({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
                     className="size-4"
                   />
                 </FormControl>
-                <FormLabel htmlFor="login-remember" className="text-muted-foreground ml-1 text-sm font-medium">
+                <FormLabel
+                  htmlFor="login-remember"
+                  className="text-muted-foreground ml-1 text-sm font-medium"
+                >
                   Remember me for 30 days
                 </FormLabel>
               </FormItem>
@@ -160,12 +178,10 @@ export function AuthForm({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
           />
         )}
 
-        {state?.error && (
-          <div className="text-red-500 text-sm">{state.error}</div>
-        )}
+        {state?.error && <div className="text-red-500 text-sm">{state.error}</div>}
 
-        <Button className="w-full" type="submit" disabled={pending}>
-          {pending ? (
+        <Button className="w-full" type="submit" disabled={isPending}>
+          {isPending ? (
             <>
               <Loader2 className="animate-spin mr-2 h-4 w-4" />
               Loading...
