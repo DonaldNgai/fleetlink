@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 import { Globe } from 'lucide-react';
 
@@ -22,7 +25,9 @@ export default function LoginV2() {
               Or continue with
             </span>
           </div>
-          <AuthForm mode="signin" />
+          <Suspense fallback={<div>Loading...</div>}>
+            <AuthForm mode="signin" />
+          </Suspense>
         </div>
       </div>
 

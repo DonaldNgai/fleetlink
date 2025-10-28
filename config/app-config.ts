@@ -3,13 +3,13 @@ import packageJson from '../package.json';
 const currentYear = new Date().getFullYear();
 
 export const APP_CONFIG = {
-  name: 'Studio Admin',
+  name: 'FleetLink',
   version: packageJson.version,
-  copyright: `© ${currentYear}, Studio Admin.`,
+  copyright: `© ${currentYear}, FleetLink.`,
   meta: {
-    title: 'Studio Admin - Modern Next.js Dashboard Starter Template',
+    title: 'FleetLink - Reliable Equipment Rental',
     description:
-      'Studio Admin is a modern, open-source dashboard starter template built with Next.js 15, Tailwind CSS v4, and shadcn/ui. Perfect for SaaS apps, admin panels, and internal tools—fully customizable and production-ready.',
+      'FleetLink is a modern fully automated construction equipment rental platform. It handles all the payment and management processes so you can focus on your projects.',
   },
 };
 
