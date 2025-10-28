@@ -14,7 +14,8 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { APP_CONFIG } from '@/config/app-config';
-import { rootUser } from '@/lib/placeholders/users';
+import { User } from '@/lib/db/schema';
+import useSWR from 'swr';
 import { sidebarItems } from '@/components/ui/sidebar/sidebar-items';
 
 import { NavMain } from './nav-main';
@@ -58,6 +59,9 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const fetcher = (url: string) => fetch(url).then(res => res.json());
+  const { data: user } = useSWR<User>('/api/user', fetcher);
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -78,7 +82,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={rootUser} />
+        <NavUser users={user ? [user] : []} />
       </SidebarFooter>
     </Sidebar>
   );

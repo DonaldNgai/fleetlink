@@ -14,3 +14,4 @@ export const APP_CONFIG = {
 };
 
 export const adminRedirectPath = '/admin/';
+export const loginRedirectPath = '/dashboard/';

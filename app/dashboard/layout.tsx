@@ -1,11 +1,9 @@
 import { ReactNode } from 'react';
-
 import { cookies } from 'next/headers';
 
 import { AppSidebar } from './_components/sidebar/app-sidebar';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { users } from '@/lib/placeholders/users';
 import { cn } from '@/lib/utils';
 import { getPreference } from '@/lib/server/server-actions';
 import { Toaster } from '@/components/ui/sonner';
@@ -31,13 +29,17 @@ import { AccountSwitcher } from './_components/sidebar/account-switcher';
 import { LayoutControls } from './_components/sidebar/layout-controls';
 import { SearchDialog } from './_components/sidebar/search-dialog';
 import { ThemeSwitcher } from './_components/sidebar/theme-switcher';
+import { getUser } from '@/lib/db/queries';
 
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
-  const themeMode = await getPreference<ThemeMode>('theme_mode', THEME_MODE_VALUES, 'light');
+  // Get user data server-side instead of using SWR
+  const user = await getUser();
+
+  const themeMode = await getPreference<ThemeMode>('theme_mode', THEME_MODE_VALUES, 'dark');
   const themePreset = await getPreference<ThemePreset>(
     'theme_preset',
     THEME_PRESET_VALUES,
-    'default'
+    'tangerine'
   );
 
   const cookieStore = await cookies();
@@ -86,12 +88,12 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
                   orientation="vertical"
                   className="mx-2 data-[orientation=vertical]:h-4"
                 />
-                <SearchDialog />
+                {/* <SearchDialog /> */}
               </div>
               <div className="flex items-center gap-2">
-                <LayoutControls {...layoutPreferences} />
-                <ThemeSwitcher />
-                <AccountSwitcher users={users} />
+                {/* <LayoutControls {...layoutPreferences} /> */}
+                {/* <ThemeSwitcher /> */}
+                <AccountSwitcher users={user ? [user] : []} />
               </div>
             </div>
           </header>

@@ -22,7 +22,7 @@ import { cookies } from 'next/headers';
 import { createCheckoutSession } from '@/lib/payments/stripe';
 import { getUser, getUserWithTeam } from '@/lib/db/queries';
 import { validatedAction, validatedActionWithUser } from '@/lib/auth/middleware';
-import { adminRedirectPath } from '@/config/app-config';
+import { loginRedirectPath } from '@/config/app-config';
 
 async function logActivity(
   teamId: number | null | undefined,
@@ -92,7 +92,7 @@ export const signIn = validatedAction(signInSchema, async (data, formData) => {
     return createCheckoutSession({ team: foundTeam, priceId });
   }
 
-  redirect(adminRedirectPath);
+  redirect(loginRedirectPath);
 });
 
 const signUpSchema = z.object({
@@ -205,7 +205,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
     return createCheckoutSession({ team: createdTeam, priceId });
   }
 
-  redirect(adminRedirectPath);
+  redirect(loginRedirectPath);
 });
 
 export async function signOut() {
