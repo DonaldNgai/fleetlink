@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { BadgeCheck, Bell, CreditCard, LogOut, EllipsisVertical } from 'lucide-react';
+import { User as UserIcon, Home, LogOut, EllipsisVertical } from 'lucide-react';
 import { User } from '@/lib/db/schema';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -18,6 +18,10 @@ import { cn, getInitials } from '@/lib/utils';
 import Link from 'next/link';
 import { adminRedirectPath } from '@/config/app-config';
 import { SidebarMenuButton } from '@/components/ui/sidebar';
+import { signOut } from '@/app/(login)/actions';
+import useSWR, { mutate } from 'swr';
+import { useRouter } from 'next/navigation';
+import { loginRedirectPath, logoutRedirectPath } from '@/config/app-config';
 
 export function AccountSwitcher({
   users,
@@ -27,6 +31,13 @@ export function AccountSwitcher({
   readonly fullSize?: boolean;
 }) {
   const [activeUser, setActiveUser] = useState(users[0]);
+  const router = useRouter();
+
+  async function handleSignOut() {
+    await signOut();
+    mutate('/api/user');
+    router.push(logoutRedirectPath);
+  }
 
   return (
     <DropdownMenu>
@@ -68,7 +79,7 @@ export function AccountSwitcher({
             key={user.email}
             className={cn(
               'p-0',
-              user.id === activeUser.id && 'bg-accent/50 border-l-primary border-l-2'
+              user.id === activeUser?.id && 'bg-accent/50 border-l-primary border-l-2'
             )}
             onClick={() => setActiveUser(user)}
           >
@@ -88,10 +99,16 @@ export function AccountSwitcher({
         ))}
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="w-full flex-1 cursor-pointer">
+            <Link href={loginRedirectPath} className="flex w-full items-center">
+              <Home className="mr-2 h-4 w-4" />
+              <span>Dashboard</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="w-full flex-1 cursor-pointer">
             <Link href={adminRedirectPath} className="flex w-full items-center">
-              <BadgeCheck />
-              Account
+              <UserIcon className="mr-2 h-4 w-4" />
+              <span>Account</span>
             </Link>
           </DropdownMenuItem>
           {/* <DropdownMenuItem>
@@ -108,9 +125,15 @@ export function AccountSwitcher({
           </DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOut />
-          Log out
+        <DropdownMenuItem className="p-0">
+          <form action={handleSignOut} className="w-full">
+            <button type="submit" className="flex w-full">
+              <DropdownMenuItem className="w-full flex-1 cursor-pointer">
+                <LogOut className="h-4 w-4" />
+                <span>Sign out</span>
+              </DropdownMenuItem>
+            </button>
+          </form>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

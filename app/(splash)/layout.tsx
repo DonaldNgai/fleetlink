@@ -3,10 +3,11 @@
 import Link from 'next/link';
 import { use, useState, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
-import { CircleIcon, Home, LogOut } from 'lucide-react';
+import { CircleIcon, Home, LogOut, User as UserIcon } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuSeparator,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
@@ -14,8 +15,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { signOut } from '@/app/(login)/actions';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/db/schema';
-import { adminRedirectPath } from '@/config/app-config';
+import { adminRedirectPath, loginRedirectPath } from '@/config/app-config';
 import useSWR, { mutate } from 'swr';
+import { logoutRedirectPath } from '@/config/app-config';
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
@@ -27,7 +29,7 @@ function UserMenu() {
   async function handleSignOut() {
     await signOut();
     mutate('/api/user');
-    router.push('/');
+    router.push(logoutRedirectPath);
   }
 
   if (!user) {
@@ -58,15 +60,22 @@ function UserMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="flex flex-col gap-1">
         <DropdownMenuItem className="cursor-pointer">
-          <Link href={adminRedirectPath} className="flex w-full items-center">
+          <Link href={loginRedirectPath} className="flex w-full items-center">
             <Home className="mr-2 h-4 w-4" />
             <span>Dashboard</span>
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href={adminRedirectPath} className="flex w-full items-center">
+            <UserIcon className="mr-2 h-4 w-4" />
+            <span>Account</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <form action={handleSignOut} className="w-full">
           <button type="submit" className="flex w-full">
             <DropdownMenuItem className="w-full flex-1 cursor-pointer">
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="h-4 w-4" />
               <span>Sign out</span>
             </DropdownMenuItem>
           </button>
