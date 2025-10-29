@@ -271,14 +271,14 @@ export default function HomePage() {
                   <div className="relative h-12 w-12 rounded-full overflow-hidden">
                     <Image
                       src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2070&auto=format&fit=crop"
-                      alt="Sarah Martinez"
+                      alt="Jose Martinez"
                       fill
                       className="object-cover"
                     />
                   </div>
                   <div>
-                    <p className="font-semibold">Sarah Martinez</p>
-                    <p className="text-sm text-muted-foreground">Martinez Construction Supply</p>
+                    <p className="font-semibold">Jose Martinez</p>
+                    <p className="text-sm text-muted-foreground">Total Construction Supply</p>
                   </div>
                 </div>
               </CardContent>
