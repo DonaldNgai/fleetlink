@@ -1,32 +1,59 @@
-'use client';
+import { JotForm } from '@/components/ui/jotform';
+import { getUser } from '@/lib/db/queries';
+import { getCustomerForCurrentUser } from '@/lib/db/queries/customer';
 
-import Script from 'next/script';
+export default async function Page() {
+  // Get the logged-in user
+  const user = await getUser();
+  const customer = await getCustomerForCurrentUser();
 
-export default function Page() {
+  // Build URL parameters from user data if logged in
+  const urlParams: Record<string, string> = {};
+
+  if (user) {
+    if (user.name) {
+      urlParams['name'] = user.name;
+    }
+    if (user.email) {
+      urlParams['email11'] = user.email;
+    }
+    // Add user ID for reference
+    urlParams['userId'] = user.id.toString();
+  }
+
+  // Add customer information if found
+  if (customer) {
+    if (customer.companyName) {
+      urlParams['companyName'] = customer.companyName;
+    }
+    if (customer.contactFirstName) {
+      urlParams['name'] = customer.contactFirstName;
+    }
+    if (customer.contactLastName) {
+      urlParams['name[last]'] = customer.contactLastName;
+    }
+    if (customer.email) {
+      urlParams['email11'] = customer.email;
+    }
+    if (customer.phone) {
+      // Parse phone number if it contains country code
+      const phoneMatch = customer.phone.match(/^\+?(\d{1})(\d+)$/);
+      if (phoneMatch) {
+        const [, countryCode, phoneNumber] = phoneMatch;
+        urlParams['phoneNumber12[area]'] = `+${countryCode}`;
+        urlParams['phoneNumber12[phone]'] = phoneNumber;
+      } else {
+        urlParams['phoneNumber12[area]'] = '+1';
+        urlParams['phoneNumber12[phone]'] = customer.phone.replace(/[\s-]/g, '');
+      }
+    }
+  }
+
   return (
-    <div className="@container/main h-full min-h-[80vh]">
-      <div className="w-full h-full">
-        <iframe
-          id="JotFormIFrame-252806991289270"
-          title="Equipment Request Form"
-          onLoad={() => window.parent.scrollTo(0, 0)}
-          allowTransparency={true}
-          allow="geolocation; microphone; camera; fullscreen; payment"
-          src="https://form.jotform.com/252806991289270"
-          frameBorder={0}
-          style={{
-            width: '100%',
-            height: '85vh',
-            border: 'none',
-          }}
-          scrolling="auto"
-        />
-      </div>
-
-      <Script src="https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js" />
-      <Script id="jotform-handler">
-        {`window.jotformEmbedHandler("iframe[id='JotFormIFrame-252806991289270']", "https://form.jotform.com/")`}
-      </Script>
-    </div>
+    <JotForm
+      formId="252806991289270"
+      title="Equipment Request Form"
+      urlParams={Object.keys(urlParams).length > 0 ? urlParams : undefined}
+    />
   );
 }
