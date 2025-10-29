@@ -5,7 +5,16 @@ import { ArrowRight, FileText, Zap, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const companyLogos = ['CAT', 'Volvo', 'JCB', 'Komatsu', 'Hitachi', 'Deere', 'Liebherr', 'Bobcat'];
+const companyLogos = [
+  { name: 'CAT', url: 'https://logo.clearbit.com/caterpillar.com' },
+  { name: 'Volvo', url: 'https://logo.clearbit.com/volvo.com' },
+  { name: 'JCB', url: 'https://logo.clearbit.com/jcb.com' },
+  { name: 'Komatsu', url: 'https://logo.clearbit.com/komatsu.com' },
+  { name: 'Hitachi', url: 'https://logo.clearbit.com/hitachi.com' },
+  { name: 'John Deere', url: 'https://logo.clearbit.com/deere.com' },
+  { name: 'Case', url: 'https://logo.clearbit.com/casece.com' },
+  { name: 'Bobcat', url: 'https://logo.clearbit.com/bobcat.com' },
+];
 
 export default function HomePage() {
   return (
@@ -56,16 +65,21 @@ export default function HomePage() {
               </Badge>
             </div>
             <p className="text-sm text-muted-foreground mb-8">Trusted by industry leaders</p>
-
             {/* Logo Ticker */}
-            <div className="relative overflow-hidden py-8 ticker-fade">
-              <div className="flex animate-scroll">
+            <div className="relative overflow-hidden py-8 mb-12 ticker-fade">
+              <div className="flex animate-scroll-reverse">
                 {[...companyLogos, ...companyLogos].map((logo, i) => (
                   <div
                     key={i}
-                    className="flex-shrink-0 mx-8 flex items-center justify-center w-32 h-16 bg-muted/50 rounded-lg backdrop-blur-sm"
+                    className="flex-shrink-0 mx-8 flex items-center justify-center w-32 h-16 bg-white/80 dark:bg-gray-800/80 rounded-lg backdrop-blur-sm p-3"
                   >
-                    <span className="text-lg font-bold text-muted-foreground">{logo}</span>
+                    <Image
+                      src={logo.url}
+                      alt={logo.name}
+                      width={120}
+                      height={60}
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                 ))}
               </div>
@@ -202,23 +216,9 @@ export default function HomePage() {
               Trusted by industry leaders and loved by clients
             </h2>
             <p className="text-lg text-muted-foreground mb-12">
-              At Impact, our clients' success stories are our greatest achievement. Hear what our
-              partners have to say.
+              FleetLink's success is measured by our clients' results. Hear from equipment owners
+              and contractors who've transformed their operations.
             </p>
-
-            {/* Logo Ticker */}
-            <div className="relative overflow-hidden py-8 mb-12 ticker-fade">
-              <div className="flex animate-scroll-reverse">
-                {[...companyLogos, ...companyLogos].map((logo, i) => (
-                  <div
-                    key={i}
-                    className="flex-shrink-0 mx-8 flex items-center justify-center w-32 h-16 bg-muted/50 rounded-lg backdrop-blur-sm"
-                  >
-                    <span className="text-lg font-bold text-muted-foreground">{logo}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -232,22 +232,22 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-muted-foreground mb-6">
-                  "We came with a challenge, and they delivered beyond our expectations. Their team
-                  was not only creative but also strategic, helping us navigate the digital
-                  landscape with ease."
+                  "FleetLink completely transformed our operations. We got a last-minute rental
+                  request on a Friday afternoon, and within 90 minutes, they had us matched with the
+                  perfect excavator. Got paid within 48 hours instead of the usual 30+ days!"
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="relative h-12 w-12 rounded-full overflow-hidden">
                     <Image
                       src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop"
-                      alt="David Lawson"
+                      alt="Mike Thompson"
                       fill
                       className="object-cover"
                     />
                   </div>
                   <div>
-                    <p className="font-semibold">David Lawson</p>
-                    <p className="text-sm text-muted-foreground">GreenLeaf Organics</p>
+                    <p className="font-semibold">Mike Thompson</p>
+                    <p className="text-sm text-muted-foreground">Thompson Equipment Rentals</p>
                   </div>
                 </div>
               </CardContent>
@@ -263,22 +263,22 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-muted-foreground mb-6">
-                  "Impact brought our ideas to life in ways we never imagined. Their innovative
-                  approach and attention to detail made our project a huge success. Highly
-                  recommended."
+                  "Before FleetLink, we'd wait weeks for payment and constantly chase down
+                  paperwork. Now? Equipment rented out in under 2 hours, payment in 4 days. Our cash
+                  flow has never been better. This platform is a game-changer."
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="relative h-12 w-12 rounded-full overflow-hidden">
                     <Image
                       src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2070&auto=format&fit=crop"
-                      alt="Ricky Stokes"
+                      alt="Sarah Martinez"
                       fill
                       className="object-cover"
                     />
                   </div>
                   <div>
-                    <p className="font-semibold">Ricky Stokes</p>
-                    <p className="text-sm text-muted-foreground">Vista Ventures</p>
+                    <p className="font-semibold">Sarah Martinez</p>
+                    <p className="text-sm text-muted-foreground">Martinez Construction Supply</p>
                   </div>
                 </div>
               </CardContent>
