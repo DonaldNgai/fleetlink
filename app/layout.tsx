@@ -3,10 +3,11 @@ import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 import { getUser, getTeamForUser } from '@/lib/db/queries';
 import { SWRConfig } from 'swr';
+import { APP_CONFIG } from '@/config/app-config';
 
 export const metadata: Metadata = {
-  title: 'Next.js SaaS Starter',
-  description: 'Get started quickly with Next.js, Postgres, and Stripe.',
+  title: APP_CONFIG.meta.title,
+  description: APP_CONFIG.meta.description,
 };
 
 export const viewport: Viewport = {
