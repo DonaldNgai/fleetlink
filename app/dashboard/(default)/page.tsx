@@ -22,6 +22,19 @@ const quickLinksData = [
 ];
 
 export default function Page() {
+  const transformedData = data.map(item => ({
+    ...item,
+    booking: {
+      ...item.booking,
+      id: parseInt(item.booking.id, 10),
+      hours: parseFloat(item.booking.hours),
+    },
+    supply: {
+      ...item.supply,
+      id: parseInt(item.supply.id, 10),
+    },
+  }));
+
   return (
     <div className="@container/main flex flex-col gap-4 md:gap-6">
       <SectionCards />
@@ -37,7 +50,7 @@ export default function Page() {
       </div>
 
       {/* <ChartAreaInteractive /> */}
-      <DataTable data={data} />
+      <DataTable data={transformedData} />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { TrendingUp } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
-import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -31,7 +30,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { useIsMobile } from '@/lib/hooks/use-mobile';
 
-import { sectionSchema } from './schema';
+import type { BookingWithSupply } from './schema';
 
 const chartData = [
   { month: 'January', desktop: 186, mobile: 80 },
@@ -53,20 +52,20 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function TableCellViewer({ item }: { item: z.infer<typeof sectionSchema> }) {
+export function TableCellViewer({ item }: { item: BookingWithSupply }) {
   const isMobile = useIsMobile();
 
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'}>
       <DrawerTrigger asChild>
         <Button variant="link" className="text-foreground w-fit px-0 text-left">
-          {item.header}
+          {item.booking.equipment || 'N/A'}
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">
-          <DrawerTitle>{item.header}</DrawerTitle>
-          <DrawerDescription>Showing total visitors for the last 6 months</DrawerDescription>
+          <DrawerTitle>{item.booking.equipment || 'Equipment Booking'}</DrawerTitle>
+          <DrawerDescription>Booking details and information</DrawerDescription>
         </DrawerHeader>
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           {!isMobile && (
@@ -123,64 +122,65 @@ export function TableCellViewer({ item }: { item: z.infer<typeof sectionSchema> 
           )}
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
-              <Label htmlFor="header">Header</Label>
-              <Input id="header" defaultValue={item.header} />
+              <Label htmlFor="equipment">Equipment</Label>
+              <Input id="equipment" defaultValue={item.booking.equipment || ''} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="type">Type</Label>
-                <Select defaultValue={item.type}>
-                  <SelectTrigger id="type" className="w-full">
-                    <SelectValue placeholder="Select a type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Table of Contents">Table of Contents</SelectItem>
-                    <SelectItem value="Executive Summary">Executive Summary</SelectItem>
-                    <SelectItem value="Technical Approach">Technical Approach</SelectItem>
-                    <SelectItem value="Design">Design</SelectItem>
-                    <SelectItem value="Capabilities">Capabilities</SelectItem>
-                    <SelectItem value="Focus Documents">Focus Documents</SelectItem>
-                    <SelectItem value="Narrative">Narrative</SelectItem>
-                    <SelectItem value="Cover Page">Cover Page</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="customer">Customer</Label>
+                <Input id="customer" defaultValue={item.booking.customer} />
               </div>
               <div className="flex flex-col gap-3">
                 <Label htmlFor="status">Status</Label>
-                <Select defaultValue={item.status}>
+                <Select defaultValue={item.booking.customerStatus}>
                   <SelectTrigger id="status" className="w-full">
                     <SelectValue placeholder="Select a status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Done">Done</SelectItem>
-                    <SelectItem value="In Progress">In Progress</SelectItem>
-                    <SelectItem value="Not Started">Not Started</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="booked">Booked</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="unpaid">Unpaid</SelectItem>
+                    <SelectItem value="overdue">Overdue</SelectItem>
+                    <SelectItem value="cancelled">Cancelled</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="location">Location</Label>
+              <Input id="location" defaultValue={item.booking.location} />
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="target">Target</Label>
-                <Input id="target" defaultValue={item.target} />
+                <Label htmlFor="hours">Hours</Label>
+                <Input
+                  id="hours"
+                  type="number"
+                  defaultValue={item.booking.hours?.toString() || ''}
+                />
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="limit">Limit</Label>
-                <Input id="limit" defaultValue={item.limit} />
+                <Label htmlFor="totalCost">Total Cost</Label>
+                <Input
+                  id="totalCost"
+                  defaultValue={
+                    item.booking.totalCustomerCharges
+                      ? `$${parseFloat(item.booking.totalCustomerCharges).toFixed(2)}`
+                      : ''
+                  }
+                  readOnly
+                />
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="reviewer">Reviewer</Label>
-              <Select defaultValue={item.reviewer}>
-                <SelectTrigger id="reviewer" className="w-full">
-                  <SelectValue placeholder="Select a reviewer" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                  <SelectItem value="Jamik Tashpulatov">Jamik Tashpulatov</SelectItem>
-                  <SelectItem value="Emily Whalen">Emily Whalen</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="operator">Operator</Label>
+              <Input
+                id="operator"
+                defaultValue={`${item.booking.operatorFirstName} ${item.booking.operatorLastName || ''}`.trim()}
+                readOnly
+              />
             </div>
           </form>
         </div>

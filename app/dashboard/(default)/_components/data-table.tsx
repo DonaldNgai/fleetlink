@@ -24,17 +24,17 @@ import { DataTableViewOptions } from '@/components/ui/data-table/data-table-view
 import { withDndColumn } from '@/components/ui/data-table/table-utils';
 
 import { dashboardColumns } from './columns';
-import { sectionSchema } from './schema';
+import { BookingWithSupply } from './schema';
 
-export function DataTable({ data: initialData }: { data: z.infer<typeof sectionSchema>[] }) {
+export function DataTable({ data: initialData }: { data: BookingWithSupply[] }) {
   const [data, setData] = React.useState(() => initialData);
   const columns = withDndColumn(dashboardColumns) as ReturnType<
-    typeof withDndColumn<z.infer<typeof sectionSchema>>
+    typeof withDndColumn<BookingWithSupply>
   >;
   const table = useDataTableInstance({
     data,
     columns,
-    getRowId: (row, index) => row.id?.toString() ?? `row-${index}`,
+    getRowId: (row, index) => row.booking.id?.toString() ?? `row-${index}`,
   });
 
   return (

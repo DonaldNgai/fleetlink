@@ -1,11 +1,23 @@
-import { z } from "zod";
+import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';
 
-export const sectionSchema = z.object({
-  id: z.number(),
-  header: z.string(),
-  type: z.string(),
-  status: z.string(),
-  target: z.string(),
-  limit: z.string(),
-  reviewer: z.string(),
-});
+// Type for the joined data that matches data.json structure
+export type BookingWithSupply = {
+  booking: Pick<
+    EquipmentBooking,
+    | 'id'
+    | 'equipment'
+    | 'customer'
+    | 'location'
+    | 'bookingDate'
+    | 'customerStatus'
+    | 'hours'
+    | 'totalCustomerCharges'
+    | 'operatorFirstName'
+    | 'operatorLastName'
+  >;
+  supply:
+    | (Pick<EquipmentSupply, 'id' | 'category'> & {
+        hourlyRate?: string;
+      })
+    | null;
+};
