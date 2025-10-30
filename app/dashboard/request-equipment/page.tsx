@@ -2,10 +2,17 @@ import { JotForm } from '@/components/ui/jotform';
 import { getUser } from '@/lib/db/queries';
 import { getCustomerForCurrentUser } from '@/lib/db/queries/customer';
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ equipmentType?: string; quantity?: string; budget?: string }>;
+}) {
   // Get the logged-in user
   const user = await getUser();
   const customer = await getCustomerForCurrentUser();
+
+  // Await searchParams to access the values
+  const params = await searchParams;
 
   // Build URL parameters from user data if logged in
   const urlParams: Record<string, string> = {};
@@ -47,6 +54,17 @@ export default async function Page() {
         urlParams['phoneNumber12[phone]'] = customer.phone.replace(/[\s-]/g, '');
       }
     }
+  }
+
+  // Add optional parameters if provided
+  if (params.equipmentType) {
+    urlParams['equipmentType'] = params.equipmentType;
+  }
+  if (params.quantity) {
+    urlParams['number'] = params.quantity;
+  }
+  if (params.budget) {
+    urlParams['budgetPer'] = params.budget;
   }
 
   return (
