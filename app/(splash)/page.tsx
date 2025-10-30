@@ -5,6 +5,7 @@ import { FadeIn, FadeInStagger, FadeInStaggerItem } from '@/components/ui/fade-i
 import { ArrowRight, FileText, Zap, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { WordDivider } from '@/components/ui/word-divider';
 
 const companyLogos = [
   { name: 'CAT', url: 'https://logo.clearbit.com/caterpillar.com' },
@@ -50,12 +51,13 @@ export default function HomePage() {
           <FadeInStagger className="text-center max-w-4xl mx-auto">
             <FadeInStaggerItem>
               <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-                Maximize Your Fleet Revenue
+                Book Trucks & Equipment Fast
               </h1>
             </FadeInStaggerItem>
             <FadeInStaggerItem>
               <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-                The Largest Construction Equipment Private Marketplace.
+                Pre-vetted and insured operators, fair pricing, and fast availability — all in one
+                place.
               </p>
             </FadeInStaggerItem>
             <FadeInStaggerItem>
@@ -72,11 +74,13 @@ export default function HomePage() {
               </div>
             </FadeInStaggerItem>
             <FadeInStaggerItem>
-              <p className="text-sm text-muted-foreground mb-8">Trusted by industry leaders</p>
+              <p className="text-sm text-muted-foreground mb-8 pt-12">
+                Trusted by <span className="font-bold italic">500+</span> contractors and suppliers
+              </p>
             </FadeInStaggerItem>
             <FadeInStaggerItem>
               {/* Logo Ticker */}
-              <div className="relative overflow-hidden py-8 mb-12 ticker-fade">
+              <div className="relative overflow-hidden mb-12 ticker-fade">
                 <div className="flex animate-scroll-reverse">
                   {[...companyLogos, ...companyLogos].map((logo, i) => (
                     <div
@@ -104,7 +108,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <FadeIn>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">More Revenue, Less Paperwork</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">Faster Jobs, Less Hassle</h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                 FleetLink is a private marketplace of +500 companies, connecting owner-operated
                 construction equipment to contractors. Every equipment supplier is pre-vetted to
@@ -121,13 +125,10 @@ export default function HomePage() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                     <FileText className="h-6 w-6" />
                   </div>
-                  <CardTitle>Automated Ticketing</CardTitle>
+                  <CardTitle>Hassle-Free Rentals</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription>
-                    FleetLink handles the ticketing for equipment owners. Our turnaround times are
-                    3x faster than going direct to renters.
-                  </CardDescription>
+                  <CardDescription>We handle coordination and paperwork</CardDescription>
                 </CardContent>
               </Card>
             </FadeInStaggerItem>
@@ -138,12 +139,11 @@ export default function HomePage() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                     <Zap className="h-6 w-6" />
                   </div>
-                  <CardTitle>Fast Payments</CardTitle>
+                  <CardTitle>Reliable Equipment</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    Suppliers get paid 4x faster when they rent their equipment out through our
-                    FleetLink network.
+                    Every operator is pre-vetted for safety and reliability.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -155,13 +155,10 @@ export default function HomePage() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                     <Clock className="h-6 w-6" />
                   </div>
-                  <CardTitle>Easy & Simple</CardTitle>
+                  <CardTitle>Fast Booking</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription>
-                    No more calling around. Equipment requests take 10 seconds and 90% of requests
-                    are filled within 2 hours.
-                  </CardDescription>
+                  <CardDescription>90% of requests are filled within 2 hours.</CardDescription>
                 </CardContent>
               </Card>
             </FadeInStaggerItem>
@@ -241,7 +238,7 @@ export default function HomePage() {
           <FadeIn>
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                Trusted by industry leaders and loved by clients
+                Trusted by Industry Leaders, Loved by Contractors
               </h2>
               <p className="text-lg text-muted-foreground mb-12">
                 FleetLink's success is measured by our clients' results. Hear from equipment owners
@@ -324,10 +321,20 @@ export default function HomePage() {
       <section className="py-20 bg-muted/50 relative z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <FadeIn>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Join and Start Earning</h2>
-            <Link href="/sign-up">
-              <Button size="lg" className="text-lg">
-                Request To Join FleetLink
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Book Equipment?</h2>
+            <p className="text-lg text-muted-foreground mb-8">
+              Get matched with a verified operator within 24 hours
+            </p>
+            <Link href="/request">
+              <Button size="lg" className="text-lg cursor-pointer">
+                Book Equipment Now
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <WordDivider word="or" />
+            <Link href="/submit">
+              <Button size="lg" className="text-lg cursor-pointer">
+                Join as a Supplier
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
