@@ -27,7 +27,6 @@ export function JotForm({ formId, title = 'Form', urlParams, height = '85vh' }: 
             id={iframeId}
             title={title}
             onLoad={() => window.parent.scrollTo(0, 0)}
-            allowTransparency={true}
             allow="geolocation; microphone; camera; fullscreen; payment"
             src={formUrl}
             frameBorder={0}
