@@ -1,11 +1,18 @@
-"use client";
+'use client';
 
-import { format, subMonths } from "date-fns";
-import { Wallet, BadgeDollarSign } from "lucide-react";
-import { Area, AreaChart, Line, LineChart, Bar, BarChart, XAxis } from "recharts";
+import { format, subMonths } from 'date-fns';
+import { Wallet, BadgeDollarSign } from 'lucide-react';
+import { Area, AreaChart, Line, LineChart, Bar, BarChart, XAxis } from 'recharts';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
 import {
   leadsChartData,
@@ -14,31 +21,38 @@ import {
   proposalsChartConfig,
   revenueChartData,
   revenueChartConfig,
-} from "./crm.config";
+} from './crm.config';
 
-const lastMonth = format(subMonths(new Date(), 1), "LLLL");
+const lastMonth = format(subMonths(new Date(), 1), 'LLLL');
 
 export function OverviewCards() {
   return (
     <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
       <Card>
         <CardHeader>
-          <CardTitle>New Leads</CardTitle>
+          <CardTitle>New Rentals</CardTitle>
           <CardDescription>Last Month</CardDescription>
         </CardHeader>
         <CardContent className="size-full">
           <ChartContainer className="size-full min-h-24" config={leadsChartConfig}>
             <BarChart accessibilityLayer data={leadsChartData} barSize={8}>
               <XAxis dataKey="date" tickLine={false} tickMargin={10} axisLine={false} hide />
-              <ChartTooltip content={<ChartTooltipContent labelFormatter={(label) => `${lastMonth}: ${label}`} />} />
+              <ChartTooltip
+                content={<ChartTooltipContent labelFormatter={label => `${lastMonth}: ${label}`} />}
+              />
               <Bar
-                background={{ fill: "var(--color-background)", radius: 4, opacity: 0.07 }}
+                background={{ fill: 'var(--color-background)', radius: 4, opacity: 0.07 }}
                 dataKey="newLeads"
                 stackId="a"
                 fill="var(--color-newLeads)"
                 radius={[0, 0, 0, 0]}
               />
-              <Bar dataKey="disqualified" stackId="a" fill="var(--color-disqualified)" radius={[4, 4, 0, 0]} />
+              <Bar
+                dataKey="disqualified"
+                stackId="a"
+                fill="var(--color-disqualified)"
+                radius={[4, 4, 0, 0]}
+              />
             </BarChart>
           </ChartContainer>
         </CardContent>
@@ -65,7 +79,12 @@ export function OverviewCards() {
             >
               <XAxis dataKey="date" tickLine={false} tickMargin={10} axisLine={false} hide />
               <ChartTooltip
-                content={<ChartTooltipContent labelFormatter={(label) => `${lastMonth}: ${label}`} hideIndicator />}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={label => `${lastMonth}: ${label}`}
+                    hideIndicator
+                  />
+                }
               />
               <Area
                 dataKey="proposalsSent"
@@ -92,7 +111,9 @@ export function OverviewCards() {
             <CardDescription>Last 6 Months</CardDescription>
           </div>
           <p className="text-2xl font-medium tabular-nums">$56,050</p>
-          <div className="w-fit rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-500">+22.2%</div>
+          <div className="w-fit rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-500">
+            +22.2%
+          </div>
         </CardContent>
       </Card>
 
@@ -108,7 +129,9 @@ export function OverviewCards() {
             <CardDescription>Last 6 Months</CardDescription>
           </div>
           <p className="text-2xl font-medium tabular-nums">136</p>
-          <div className="text-destructive bg-destructive/10 w-fit rounded-md px-2 py-1 text-xs font-medium">-2.5%</div>
+          <div className="text-destructive bg-destructive/10 w-fit rounded-md px-2 py-1 text-xs font-medium">
+            -2.5%
+          </div>
         </CardContent>
       </Card>
 

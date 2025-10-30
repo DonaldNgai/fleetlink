@@ -16,23 +16,25 @@ import {
 } from '@/components/ui/card';
 import { useDataTableInstance } from '@/lib/hooks/use-data-table-instance';
 
-import { recentLeadsColumns } from './columns.crm';
+import { recentLeadsColumns, type BookingWithSupply } from './columns.crm';
 import { recentLeadsData } from './crm.config';
 
 export function TableCards() {
-  const table = useDataTableInstance({
-    data: recentLeadsData,
+  const table = useDataTableInstance<BookingWithSupply, unknown>({
+    data: recentLeadsData as BookingWithSupply[],
     columns: recentLeadsColumns,
-    getRowId: row => row.id.toString(),
+    getRowId: row => row.booking.id.toString(),
   });
 
   return (
     <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs">
       <Card>
         <CardHeader>
-          <CardTitle>Recent Leads</CardTitle>
-          <CardDescription>Track and manage your latest leads and their status.</CardDescription>
-          <CardAction>
+          <CardTitle>Equipment Orders</CardTitle>
+          <CardDescription>
+            Track and manage your equipment orders and their status.
+          </CardDescription>
+          {/* <CardAction>
             <div className="flex items-center gap-2">
               <DataTableViewOptions table={table} />
               <Button variant="outline" size="sm">
@@ -40,7 +42,7 @@ export function TableCards() {
                 <span className="hidden lg:inline">Export</span>
               </Button>
             </div>
-          </CardAction>
+          </CardAction> */}
         </CardHeader>
         <CardContent className="flex size-full flex-col gap-4">
           <div className="overflow-hidden rounded-md border">

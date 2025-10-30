@@ -1,7 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { CircleCheck, Loader, EllipsisVertical } from 'lucide-react';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -24,164 +23,100 @@ import {
 } from '@/components/ui/select';
 
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
+import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';
 
-import { sectionSchema } from './schema';
-import { TableCellViewer } from './table-cell-viewer';
+// Type for the joined data from queries
+type BookingWithSupply = {
+  booking: EquipmentBooking;
+  supply: EquipmentSupply | null;
+};
 
-export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
+export const dashboardColumns: ColumnDef<BookingWithSupply>[] = [
   {
-    id: 'select',
-    header: ({ table }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
+    accessorKey: 'booking.bookingDate',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Booking Date" />,
+    cell: ({ row }) => {
+      const date = new Date(row.original.booking.bookingDate);
+      return <div>{date.toLocaleDateString()}</div>;
+    },
+    enableSorting: true,
   },
   {
-    accessorKey: 'header',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Header" />,
+    accessorKey: 'booking.equipment',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Equipment" />,
     cell: ({ row }) => {
-      return <TableCellViewer item={row.original} />;
+      const equipment = row.original.booking.equipment || row.original.supply?.category || 'N/A';
+      return <div className="font-medium">{equipment}</div>;
     },
     enableSorting: false,
   },
   {
-    accessorKey: 'type',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Section Type" />,
+    accessorKey: 'booking.location',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Location" />,
     cell: ({ row }) => (
-      <div className="w-32">
+      <div className="max-w-[150px] truncate">{row.original.booking.location}</div>
+    ),
+    enableSorting: false,
+  },
+
+  {
+    accessorKey: 'booking.customerStatus',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+    cell: ({ row }) => {
+      const status = row.original.booking.customerStatus;
+
+      let icon = <Loader className="stroke-muted-foreground" />;
+      let fillClass = '';
+
+      if (status === 'booked') {
+        icon = <CircleCheck className="stroke-border fill-green-500 dark:fill-green-400" />;
+      } else if (status === 'completed') {
+        icon = <CircleCheck className="stroke-border fill-blue-500 dark:fill-blue-400" />;
+      } else if (status === 'unpaid') {
+        icon = <CircleCheck className="stroke-border fill-yellow-500 dark:fill-yellow-400" />;
+      } else if (status === 'overdue') {
+        icon = <CircleCheck className="stroke-border fill-red-500 dark:fill-red-400" />;
+      }
+
+      return (
         <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.type}
+          {icon}
+          {status}
         </Badge>
+      );
+    },
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'booking.hours',
+    header: ({ column }) => (
+      <DataTableColumnHeader className="w-full text-right" column={column} title="Hours" />
+    ),
+    cell: ({ row }) => (
+      <div className="text-right">
+        {row.original.booking.hours ? `${row.original.booking.hours} hrs` : 'TBD'}
       </div>
     ),
     enableSorting: false,
   },
   {
-    accessorKey: 'status',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
-    cell: ({ row }) => (
-      <Badge variant="outline" className="text-muted-foreground px-1.5">
-        {row.original.status === 'Done' ? (
-          <CircleCheck className="stroke-border fill-green-500 dark:fill-green-400" />
-        ) : (
-          <Loader />
-        )}
-        {row.original.status}
-      </Badge>
-    ),
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'target',
+    accessorKey: 'booking.totalCustomerCharges',
     header: ({ column }) => (
-      <DataTableColumnHeader className="w-full text-right" column={column} title="Target" />
+      <DataTableColumnHeader className="w-full text-right" column={column} title="Total Cost" />
     ),
-    cell: ({ row }) => (
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          toast.promise(new Promise(resolve => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: 'Done',
-            error: 'Error',
-          });
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-          Target
-        </Label>
-        <Input
-          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-          defaultValue={row.original.target}
-          id={`${row.original.id}-target`}
-        />
-      </form>
-    ),
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'limit',
-    header: ({ column }) => (
-      <DataTableColumnHeader className="w-full text-right" column={column} title="Limit" />
-    ),
-    cell: ({ row }) => (
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          toast.promise(new Promise(resolve => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: 'Done',
-            error: 'Error',
-          });
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
-          Limit
-        </Label>
-        <Input
-          className="hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent"
-          defaultValue={row.original.limit}
-          id={`${row.original.id}-limit`}
-        />
-      </form>
-    ),
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'reviewer',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Reviewer" />,
     cell: ({ row }) => {
-      const isAssigned = row.original.reviewer !== 'Assign reviewer';
-
-      if (isAssigned) {
-        return row.original.reviewer;
-      }
-
+      const total = row.original.booking.totalCustomerCharges;
       return (
-        <>
-          <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-            Reviewer
-          </Label>
-          <Select>
-            <SelectTrigger
-              className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-              size="sm"
-              id={`${row.original.id}-reviewer`}
-            >
-              <SelectValue placeholder="Assign reviewer" />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-              <SelectItem value="Jamik Tashpulatov">Jamik Tashpulatov</SelectItem>
-            </SelectContent>
-          </Select>
-        </>
+        <div className="text-right font-medium">
+          {total ? `$${parseFloat(total).toFixed(2)}` : 'TBD'}
+        </div>
       );
     },
     enableSorting: false,
   },
   {
     id: 'actions',
-    cell: () => (
+    cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -194,11 +129,11 @@ export const dashboardColumns: ColumnDef<z.infer<typeof sectionSchema>>[] = [
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Make a copy</DropdownMenuItem>
-          <DropdownMenuItem>Favorite</DropdownMenuItem>
+          <DropdownMenuItem>Pay Now</DropdownMenuItem>
+          <DropdownMenuItem>Book Again</DropdownMenuItem>
+          <DropdownMenuItem>Edit Booking</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+          <DropdownMenuItem variant="destructive">Cancel</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),

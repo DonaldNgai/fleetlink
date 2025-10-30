@@ -9,13 +9,15 @@ const quickLinksData = [
     title: 'Tri Axle Dump Truck',
     description: '$120 CAD Per Hour',
     href: '/dashboard/request-equipment?equipmentType=Tri%20Axle%20Dump%20Truck&quantity=1&budget=120',
-    backgroundImage: 'https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800&q=80',
+    backgroundImage:
+      'https://images.unsplash.com/photo-1686945127938-0296f10937ed?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070',
   },
   {
     title: 'Sweeper Truck',
     description: '$225 CAD Per Hour',
     href: '/dashboard/request-equipment?equipmentType=Sweeper%20Truck&quantity=1&budget=225',
-    backgroundImage: 'https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800&q=80',
+    backgroundImage:
+      'https://www.elginsweeper.com/hs-fs/hubfs/IMG_1583.jpeg?width=1200&height=800&name=IMG_1583.jpeg',
   },
 ];
 
