@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { User as UserIcon, Home, LogOut, EllipsisVertical } from 'lucide-react';
 import { User } from '@/lib/db/schema';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@ui';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,11 +13,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuGroup,
-} from '@/components/ui/dropdown-menu';
+} from '@ui';
 import { cn, getInitials } from '@/lib/utils';
 import Link from 'next/link';
 import { adminRedirectPath } from '@/config/app-config';
-import { SidebarMenuButton } from '@/components/ui/sidebar';
+import { SidebarMenuButton } from '@ui';
 import { signOut } from '@/app/(login)/actions';
 import useSWR, { mutate } from 'swr';
 import { useRouter } from 'next/navigation';

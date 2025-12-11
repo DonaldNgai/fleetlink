@@ -1,6 +1,6 @@
 'use client';
 
-import { SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar';
+import { SidebarMenu, SidebarMenuItem } from '@ui';
 import { User } from '@/lib/db/schema';
 import { AccountSwitcher } from './account-switcher';
 

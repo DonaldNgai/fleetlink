@@ -4,6 +4,7 @@ import { Manrope } from 'next/font/google';
 import { getUser, getTeamForUser } from '@/lib/db/queries';
 import { SWRConfig } from 'swr';
 import { APP_CONFIG } from '@/config/app-config';
+import { ChakraUIProvider } from '@/components/providers/chakra-provider';
 
 export const metadata: Metadata = {
   title: APP_CONFIG.meta.title,
@@ -23,18 +24,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
     >
       <body className="min-h-[100dvh]">
-        <SWRConfig
-          value={{
-            fallback: {
-              // We do NOT await here
-              // Only components that read this data will suspend
-              '/api/user': getUser(),
-              '/api/team': getTeamForUser(),
-            },
-          }}
-        >
-          {children}
-        </SWRConfig>
+        <ChakraUIProvider>
+          <SWRConfig
+            value={{
+              fallback: {
+                // We do NOT await here
+                // Only components that read this data will suspend
+                '/api/user': getUser(),
+                '/api/team': getTeamForUser(),
+              },
+            }}
+          >
+            {children}
+          </SWRConfig>
+        </ChakraUIProvider>
       </body>
     </html>
   );

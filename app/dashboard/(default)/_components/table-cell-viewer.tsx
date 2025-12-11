@@ -1,13 +1,13 @@
 import { TrendingUp } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@ui';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@/components/ui/chart';
+} from '@ui';
 import {
   Drawer,
   DrawerClose,
@@ -17,17 +17,17 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from '@ui';
+import { Input } from '@ui';
+import { Label } from '@ui';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
+} from '@ui';
+import { Separator } from '@ui';
 import { useIsMobile } from '@/lib/hooks/use-mobile';
 
 import type { BookingWithSupply } from './schema';

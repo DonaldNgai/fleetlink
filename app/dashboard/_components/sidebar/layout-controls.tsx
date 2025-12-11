@@ -2,17 +2,17 @@
 
 import { Settings } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@ui';
+import { Label } from '@ui';
+import { Popover, PopoverContent, PopoverTrigger } from '@ui';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+} from '@ui';
+import { ToggleGroup, ToggleGroupItem } from '@ui';
 import { updateContentLayout, updateNavbarStyle } from '@/lib/layout-utils';
 import { updateThemeMode, updateThemePreset } from '@/lib/theme-utils';
 import { setValueToCookie } from '@/lib/server/server-actions';

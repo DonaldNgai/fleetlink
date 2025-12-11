@@ -1,23 +1,23 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@ui';
+import { Avatar, AvatarFallback, AvatarImage } from '@ui';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardFooter
-} from '@/components/ui/card';
+} from '@ui';
 import { customerPortalAction } from '@/lib/payments/actions';
 import { useActionState } from 'react';
 import { TeamDataWithMembers, User } from '@/lib/db/schema';
 import { removeTeamMember, inviteTeamMember } from '@/app/(login)/actions';
 import useSWR from 'swr';
 import { Suspense } from 'react';
-import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
+import { Input } from '@ui';
+import { RadioGroup, RadioGroupItem } from '@ui';
+import { Label } from '@ui';
 import { Loader2, PlusCircle } from 'lucide-react';
 
 type ActionState = {

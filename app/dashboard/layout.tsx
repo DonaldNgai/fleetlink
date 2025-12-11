@@ -2,11 +2,11 @@ import { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 
 import { AppSidebar } from './_components/sidebar/app-sidebar';
-import { Separator } from '@/components/ui/separator';
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { Separator } from '@ui';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@ui';
 import { cn } from '@/lib/utils';
 import { getPreference } from '@/lib/server/server-actions';
-import { Toaster } from '@/components/ui/sonner';
+import { Toaster } from '@ui';
 import { PreferencesStoreProvider } from '@/lib/stores/preferences/preferences-provider';
 import {
   THEME_MODE_VALUES,

@@ -3,10 +3,10 @@
 import { ArrowDownLeft, ArrowUpRight, CalendarCheck } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@ui";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@ui";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@ui";
+import { Separator } from "@ui";
 import { formatCurrency } from "@/lib/utils";
 
 const chartData = [

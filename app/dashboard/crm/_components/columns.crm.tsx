@@ -1,17 +1,17 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { EllipsisVertical } from 'lucide-react';
 
-import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import { DataTableColumnHeader } from '@ui-column-header';
+import { Badge } from '@ui';
+import { Button } from '@ui';
+import { Checkbox } from '@ui';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@ui';
 import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';
 
 // Type for the joined data from queries

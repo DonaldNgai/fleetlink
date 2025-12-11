@@ -2,10 +2,10 @@
 
 import { ArrowLeftRight, RefreshCw } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@ui";
+import { Card, CardContent, CardHeader, CardTitle } from "@ui";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@ui";
+import { Separator } from "@ui";
 import { formatCurrency } from "@/lib/utils";
 
 function CurrencySelector(props: { defaultValue: string }) {

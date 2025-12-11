@@ -39,3 +39,10 @@ next-env.d.ts
 # Docker
 postgres_data/
 .env*.local
+
+# Local npmrc with tokens
+.npmrc.local
+packages/*/.npmrc.local
+
+# Git submodules (if using submodule approach)
+# Note: Don't ignore packages/ui if it's a submodule - git handles it

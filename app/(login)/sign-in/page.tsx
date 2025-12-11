@@ -8,7 +8,7 @@ import { Globe } from 'lucide-react';
 import { APP_CONFIG } from '@/config/app-config';
 
 import { AuthForm } from '../login-form';
-import { GoogleButton } from '@/components/ui/google-button';
+import { GoogleButton } from '@ui';
 
 export default function LoginV2() {
   return (

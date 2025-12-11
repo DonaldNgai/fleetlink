@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { LayoutDashboard, ChartBar, Gauge, ShoppingBag, GraduationCap, Forklift, Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@ui";
 import {
   CommandDialog,
   CommandEmpty,
@@ -12,7 +12,7 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command";
+} from "@ui";
 
 const searchItems = [
   { group: "Dashboards", icon: LayoutDashboard, label: "Default" },

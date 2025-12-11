@@ -2,27 +2,27 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CircleCheck, Loader, EllipsisVertical } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@ui';
+import { Button } from '@ui';
+import { Checkbox } from '@ui';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from '@ui';
+import { Input } from '@ui';
+import { Label } from '@ui';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@ui';
 
-import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
+import { DataTableColumnHeader } from '@ui-column-header';
 import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';
 
 // Type for the joined data from queries

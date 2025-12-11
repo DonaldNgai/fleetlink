@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { FadeIn, FadeInStagger, FadeInStaggerItem } from '@/components/ui/fade-in';
+import { Button } from '@ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui';
+import { Badge } from '@ui';
+import { FadeIn, FadeInStagger, FadeInStaggerItem } from '@ui';
 import { ArrowRight, FileText, Zap, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { WordDivider } from '@/components/ui/word-divider';
+import { WordDivider } from '@ui';
 
 const companyLogos = [
   { name: 'CAT', url: 'https://logo.clearbit.com/caterpillar.com' },

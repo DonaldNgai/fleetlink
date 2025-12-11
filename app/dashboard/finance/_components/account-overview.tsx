@@ -3,8 +3,8 @@
 import { Plus } from 'lucide-react';
 import { siApple, siPaypal, siOpenai, siVercel, siFigma } from 'simple-icons';
 
-import { SimpleIcon } from '@/components/ui/simple-icon';
-import { Button } from '@/components/ui/button';
+import { SimpleIcon } from '@ui';
+import { Button } from '@ui';
 import {
   Card,
   CardAction,
@@ -12,9 +12,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+} from '@ui';
+import { Separator } from '@ui';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui';
 import { formatCurrency, cn } from '@/lib/utils';
 
 function ChipSVG() {

@@ -1,4 +1,4 @@
-import { JotForm } from '@/components/ui/jotform';
+import { JotForm } from '@ui';
 
 type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

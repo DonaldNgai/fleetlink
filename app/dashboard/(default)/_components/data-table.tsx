@@ -5,23 +5,23 @@ import * as React from 'react';
 import { Plus } from 'lucide-react';
 import { z } from 'zod';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
+import { Badge } from '@ui';
+import { Button } from '@ui';
+import { Label } from '@ui';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+} from '@ui';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui';
 import { useDataTableInstance } from '@/lib/hooks/use-data-table-instance';
 
-import { DataTable as DataTableNew } from '@/components/ui/data-table/data-table';
-import { DataTablePagination } from '@/components/ui/data-table/data-table-pagination';
-import { DataTableViewOptions } from '@/components/ui/data-table/data-table-view-options';
-import { withDndColumn } from '@/components/ui/data-table/table-utils';
+import { DataTable as DataTableNew } from '@ui';
+import { DataTablePagination } from '@ui-pagination';
+import { DataTableViewOptions } from '@ui-view-options';
+import { withDndColumn } from '@ui';
 
 import { dashboardColumns } from './columns';
 import { BookingWithSupply } from './schema';

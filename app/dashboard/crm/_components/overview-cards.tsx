@@ -11,8 +11,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+} from '@ui';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@ui';
 
 import {
   leadsChartData,

@@ -2,10 +2,10 @@
 
 import { Download } from 'lucide-react';
 
-import { DataTable } from '@/components/ui/data-table/data-table';
-import { DataTablePagination } from '@/components/ui/data-table/data-table-pagination';
-import { DataTableViewOptions } from '@/components/ui/data-table/data-table-view-options';
-import { Button } from '@/components/ui/button';
+import { DataTable } from '@ui';
+import { DataTablePagination } from '@ui-pagination';
+import { DataTableViewOptions } from '@ui-view-options';
+import { Button } from '@ui';
 import {
   Card,
   CardHeader,
@@ -13,7 +13,7 @@ import {
   CardContent,
   CardDescription,
   CardAction,
-} from '@/components/ui/card';
+} from '@ui';
 import { useDataTableInstance } from '@/lib/hooks/use-data-table-instance';
 
 import { recentLeadsColumns, type BookingWithSupply } from './columns.crm';
