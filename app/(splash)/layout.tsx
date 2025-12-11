@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { use, useState, Suspense } from 'react';
-import { Button } from '@ui';
+import { Button } from '@chakra-ui/react';
 import { CircleIcon, Home, LogOut, User as UserIcon } from 'lucide-react';
 import Image from 'next/image';
 import {
@@ -11,8 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@ui';
-import { Avatar, AvatarFallback, AvatarImage } from '@ui';
+} from '@chakra-ui/react';
+import { Avatar, AvatarImage } from '@chakra-ui/react';
+import { AvatarFallback } from '@ui';
 import { signOut } from '@/app/(login)/actions';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/db/schema';

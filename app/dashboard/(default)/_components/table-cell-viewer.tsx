@@ -1,13 +1,13 @@
 import { TrendingUp } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
-import { Button } from '@ui';
+import { Button } from '@chakra-ui/react';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@ui';
+} from '@chakra-ui/react';
 import {
   Drawer,
   DrawerClose,
@@ -17,17 +17,17 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@ui';
-import { Input } from '@ui';
-import { Label } from '@ui';
+} from '@chakra-ui/react';
+import { Input } from '@chakra-ui/react';
+import { FormLabel as Label } from '@chakra-ui/react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@ui';
-import { Separator } from '@ui';
+} from '@chakra-ui/react';
+import { Separator } from '@chakra-ui/react';
 import { useIsMobile } from '@/lib/hooks/use-mobile';
 
 import type { BookingWithSupply } from './schema';

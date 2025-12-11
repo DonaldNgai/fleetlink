@@ -11,21 +11,21 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@ui';
+} from '@chakra-ui/react';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@ui';
+} from '@chakra-ui/react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@ui';
-import { ToggleGroup, ToggleGroupItem } from '@ui';
+} from '@chakra-ui/react';
+// ToggleGroup removed - use Chakra UI ButtonGroup or similar;
 import { useIsMobile } from '@/lib/hooks/use-mobile';
 
 export const description = 'An interactive area chart';

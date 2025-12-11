@@ -1,11 +1,11 @@
-import { Button } from '@ui';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui';
-import { Badge } from '@ui';
-import { FadeIn, FadeInStagger, FadeInStaggerItem } from '@ui';
+import { Button } from '@chakra-ui/react';
+import { CardRoot as Card, CardBody as CardContent, Text as CardDescription, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
+import { Badge } from '@chakra-ui/react';
+// FadeIn removed - use Chakra UI animations;
 import { ArrowRight, FileText, Zap, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { WordDivider } from '@ui';
+// WordDivider removed - use Chakra UI Separator;
 
 const companyLogos = [
   { name: 'CAT', url: 'https://logo.clearbit.com/caterpillar.com' },

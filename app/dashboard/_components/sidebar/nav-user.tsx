@@ -1,6 +1,6 @@
 'use client';
 
-import { SidebarMenu, SidebarMenuItem } from '@ui';
+import { SidebarMenu, SidebarMenuItem } from '@chakra-ui/react';
 import { User } from '@/lib/db/schema';
 import { AccountSwitcher } from './account-switcher';
 

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@chakra-ui/react';
 import {
   Settings,
   LogOut,

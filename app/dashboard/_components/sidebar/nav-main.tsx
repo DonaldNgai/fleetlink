@@ -5,14 +5,14 @@ import { usePathname } from 'next/navigation';
 
 import { PlusCircleIcon, MailIcon, ChevronRight } from 'lucide-react';
 
-import { Button } from '@ui';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@ui';
+import { Button } from '@chakra-ui/react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@chakra-ui/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@ui';
+} from '@chakra-ui/react';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -24,8 +24,8 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   useSidebar,
-} from '@ui';
-import { type NavGroup, type NavMainItem } from '@ui';
+} from '@chakra-ui/react';
+import { type NavGroup, type NavMainItem } from '@chakra-ui/react';
 import { loginRedirectPath } from '@/config/app-config';
 
 interface NavMainProps {

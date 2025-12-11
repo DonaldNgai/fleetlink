@@ -2,16 +2,16 @@ import { ColumnDef } from '@tanstack/react-table';
 import { EllipsisVertical } from 'lucide-react';
 
 import { DataTableColumnHeader } from '@ui-column-header';
-import { Badge } from '@ui';
-import { Button } from '@ui';
-import { Checkbox } from '@ui';
+import { Badge } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
+import { Checkbox } from '@chakra-ui/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@ui';
+} from '@chakra-ui/react';
 import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';
 
 // Type for the joined data from queries

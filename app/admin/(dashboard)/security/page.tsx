@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from '@ui';
-import { Input } from '@ui';
-import { Card, CardContent, CardHeader, CardTitle } from '@ui';
-import { Label } from '@ui';
+import { Button } from '@chakra-ui/react';
+import { Input } from '@chakra-ui/react';
+import { Card, CardContent, CardHeader, CardTitle } from '@chakra-ui/react';
+import { FormLabel as Label } from '@chakra-ui/react';
 import { Lock, Trash2, Loader2 } from 'lucide-react';
 import { useActionState } from 'react';
 import { updatePassword, deleteAccount } from '@/app/(login)/actions';

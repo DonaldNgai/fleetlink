@@ -12,11 +12,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@ui';
+} from '@chakra-ui/react';
 import { APP_CONFIG } from '@/config/app-config';
 import { User } from '@/lib/db/schema';
 import useSWR from 'swr';
-import { sidebarItems } from '@ui';
+import { sidebarItems } from '@chakra-ui/react';
 
 import { NavMain } from './nav-main';
 import { NavUser } from './nav-user';

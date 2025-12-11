@@ -2,17 +2,17 @@
 
 import { Settings } from 'lucide-react';
 
-import { Button } from '@ui';
-import { Label } from '@ui';
-import { Popover, PopoverContent, PopoverTrigger } from '@ui';
+import { Button } from '@chakra-ui/react';
+import { FormLabel as Label } from '@chakra-ui/react';
+import { Popover, PopoverContent, PopoverTrigger } from '@chakra-ui/react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@ui';
-import { ToggleGroup, ToggleGroupItem } from '@ui';
+} from '@chakra-ui/react';
+// ToggleGroup removed - use Chakra UI ButtonGroup or similar;
 import { updateContentLayout, updateNavbarStyle } from '@/lib/layout-utils';
 import { updateThemeMode, updateThemePreset } from '@/lib/theme-utils';
 import { setValueToCookie } from '@/lib/server/server-actions';

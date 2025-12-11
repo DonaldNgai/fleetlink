@@ -5,20 +5,20 @@ import * as React from 'react';
 import { Plus } from 'lucide-react';
 import { z } from 'zod';
 
-import { Badge } from '@ui';
-import { Button } from '@ui';
-import { Label } from '@ui';
+import { Badge } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
+import { FormLabel as Label } from '@chakra-ui/react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@ui';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui';
+} from '@chakra-ui/react';
+import { Tabs, TabPanels as TabsContent, TabList as TabsList, Tab as TabsTrigger } from '@chakra-ui/react';
 import { useDataTableInstance } from '@/lib/hooks/use-data-table-instance';
 
-import { DataTable as DataTableNew } from '@ui';
+import { DataTable as DataTableNew } from '@chakra-ui/react';
 import { DataTablePagination } from '@ui-pagination';
 import { DataTableViewOptions } from '@ui-view-options';
 import { withDndColumn } from '@ui';

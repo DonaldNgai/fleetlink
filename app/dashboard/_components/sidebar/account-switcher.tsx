@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { User as UserIcon, Home, LogOut, EllipsisVertical } from 'lucide-react';
 import { User } from '@/lib/db/schema';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@ui';
+import { Avatar, AvatarImage } from '@chakra-ui/react';
+import { AvatarFallback } from '@ui';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,11 +14,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuGroup,
-} from '@ui';
+} from '@chakra-ui/react';
 import { cn, getInitials } from '@/lib/utils';
 import Link from 'next/link';
 import { adminRedirectPath } from '@/config/app-config';
-import { SidebarMenuButton } from '@ui';
+import { SidebarMenuButton } from '@chakra-ui/react';
 import { signOut } from '@/app/(login)/actions';
 import useSWR, { mutate } from 'swr';
 import { useRouter } from 'next/navigation';

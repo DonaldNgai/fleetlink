@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@ui';
+import { Button } from '@chakra-ui/react';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
 

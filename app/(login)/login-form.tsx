@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { Button } from '@ui';
-import { Checkbox } from '@ui';
+import { Button } from '@chakra-ui/react';
+import { Checkbox } from '@chakra-ui/react';
 import {
   Form,
   FormControl,
@@ -15,8 +15,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@ui';
-import { Input } from '@ui';
+} from '@chakra-ui/react';
+import { Input } from '@chakra-ui/react';
 import { Loader2 } from 'lucide-react';
 import { signIn, signUp } from './actions';
 import { ActionState } from '@/lib/auth/middleware';

@@ -12,14 +12,14 @@ import {
   YAxis,
 } from 'recharts';
 
-import { Button } from '@ui';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@ui';
+import { Button } from '@chakra-ui/react';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@chakra-ui/react';
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
-} from '@ui';
+} from '@chakra-ui/react';
 
 import {
   leadsBySourceChartData,

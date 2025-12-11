@@ -11,8 +11,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@ui';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@ui';
+} from '@chakra-ui/react';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@chakra-ui/react';
 
 import {
   leadsChartData,

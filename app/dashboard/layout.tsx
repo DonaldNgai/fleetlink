@@ -2,11 +2,11 @@ import { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 
 import { AppSidebar } from './_components/sidebar/app-sidebar';
-import { Separator } from '@ui';
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@ui';
+import { Separator } from '@chakra-ui/react';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@chakra-ui/react';
 import { cn } from '@/lib/utils';
 import { getPreference } from '@/lib/server/server-actions';
-import { Toaster } from '@ui';
+import { Toaster } from '@chakra-ui/react';
 import { PreferencesStoreProvider } from '@/lib/stores/preferences/preferences-provider';
 import {
   THEME_MODE_VALUES,

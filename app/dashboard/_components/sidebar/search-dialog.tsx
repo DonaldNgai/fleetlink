@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { LayoutDashboard, ChartBar, Gauge, ShoppingBag, GraduationCap, Forklift, Search } from "lucide-react";
 
-import { Button } from "@ui";
+import { Button } from '@chakra-ui/react';
 import {
   CommandDialog,
   CommandEmpty,

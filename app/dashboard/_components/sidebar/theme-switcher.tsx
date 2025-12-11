@@ -2,7 +2,7 @@
 
 import { Moon, Sun } from 'lucide-react';
 
-import { Button } from '@ui';
+import { Button } from '@chakra-ui/react';
 import { updateThemeMode } from '@/lib/theme-utils';
 import { setValueToCookie } from '@/lib/server/server-actions';
 import { usePreferencesStore } from '@/lib/stores/preferences/preferences-provider';

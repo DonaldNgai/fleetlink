@@ -1,23 +1,24 @@
 'use client';
 
-import { Button } from '@ui';
-import { Avatar, AvatarFallback, AvatarImage } from '@ui';
+import { Button } from '@chakra-ui/react';
+import { Avatar, AvatarImage } from '@chakra-ui/react';
+import { AvatarFallback } from '@ui';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardFooter
-} from '@ui';
+} from '@chakra-ui/react';
 import { customerPortalAction } from '@/lib/payments/actions';
 import { useActionState } from 'react';
 import { TeamDataWithMembers, User } from '@/lib/db/schema';
 import { removeTeamMember, inviteTeamMember } from '@/app/(login)/actions';
 import useSWR from 'swr';
 import { Suspense } from 'react';
-import { Input } from '@ui';
-import { RadioGroup, RadioGroupItem } from '@ui';
-import { Label } from '@ui';
+import { Input } from '@chakra-ui/react';
+import { RadioGroup, Radio as RadioGroupItem } from '@chakra-ui/react';
+import { FormLabel as Label } from '@chakra-ui/react';
 import { Loader2, PlusCircle } from 'lucide-react';
 
 type ActionState = {

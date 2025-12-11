@@ -3,10 +3,10 @@
 import { Clock } from "lucide-react";
 import { FunnelChart, Funnel, LabelList } from "recharts";
 
-import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@ui";
+import { CardRoot as Card, CardHeader, Heading as CardTitle, CardBody as CardContent, CardFooter, Text as CardDescription } from '@chakra-ui/react';
 import { ChartContainer } from "@ui";
-import { Checkbox } from "@ui";
-import { Progress } from "@ui";
+import { Checkbox } from "@chakra-ui/react";
+import { Progress } from "@chakra-ui/react";
 import { formatCurrency, cn } from "@/lib/utils";
 
 import { salesPipelineChartData, salesPipelineChartConfig, regionSalesData, actionItems } from "./crm.config";

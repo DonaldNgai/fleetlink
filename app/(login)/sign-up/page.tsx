@@ -8,7 +8,7 @@ import { Globe } from 'lucide-react';
 import { APP_CONFIG } from '@/config/app-config';
 
 import { AuthForm } from '../login-form';
-import { GoogleButton } from '@ui';
+// GoogleButton removed - use Chakra UI Button;
 
 export default function RegisterV2() {
   return (

@@ -1,10 +1,10 @@
 'use client';
 
 import { useActionState } from 'react';
-import { Button } from '@ui';
-import { Input } from '@ui';
-import { Card, CardContent, CardHeader, CardTitle } from '@ui';
-import { Label } from '@ui';
+import { Button } from '@chakra-ui/react';
+import { Input } from '@chakra-ui/react';
+import { Card, CardContent, CardHeader, CardTitle } from '@chakra-ui/react';
+import { FormLabel as Label } from '@chakra-ui/react';
 import { Loader2 } from 'lucide-react';
 import { updateAccount } from '@/app/(login)/actions';
 import { User } from '@/lib/db/schema';

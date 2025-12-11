@@ -2,25 +2,25 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CircleCheck, Loader, EllipsisVertical } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Badge } from '@ui';
-import { Button } from '@ui';
-import { Checkbox } from '@ui';
+import { Badge } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
+import { Checkbox } from '@chakra-ui/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@ui';
-import { Input } from '@ui';
-import { Label } from '@ui';
+} from '@chakra-ui/react';
+import { Input } from '@chakra-ui/react';
+import { FormLabel } from '@chakra-ui/react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@ui';
+} from '@chakra-ui/react';
 
 import { DataTableColumnHeader } from '@ui-column-header';
 import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';

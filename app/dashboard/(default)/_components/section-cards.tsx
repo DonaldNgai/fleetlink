@@ -1,6 +1,6 @@
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
-import { Badge } from '@ui';
+import { Badge } from '@chakra-ui/react';
 import {
   Card,
   CardAction,
@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@ui';
+} from '@chakra-ui/react';
 
 export function SectionCards() {
   return (
