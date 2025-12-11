@@ -5,15 +5,8 @@ import { use, useState, Suspense } from 'react';
 import { Button } from '@chakra-ui/react';
 import { CircleIcon, Home, LogOut, User as UserIcon } from 'lucide-react';
 import Image from 'next/image';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@chakra-ui/react';
-import { Avatar, AvatarImage } from '@chakra-ui/react';
-import { AvatarFallback } from '@ui';
+import { Menu } from '@chakra-ui/react';
+import { Avatar } from '@chakra-ui/react';
 import { signOut } from '@/app/(login)/actions';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/db/schema';
@@ -48,42 +41,45 @@ function UserMenu() {
   }
 
   return (
-    <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-      <DropdownMenuTrigger>
-        <Avatar className="cursor-pointer size-9">
-          <AvatarImage alt={user.name || ''} />
-          <AvatarFallback>
-            {user.email
-              .split(' ')
-              .map(n => n[0])
-              .join('')}
-          </AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="flex flex-col gap-1">
-        <DropdownMenuItem className="cursor-pointer">
-          <Link href={loginRedirectPath} className="flex w-full items-center">
-            <Home className="mr-2 h-4 w-4" />
-            <span>Dashboard</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          <Link href={adminRedirectPath} className="flex w-full items-center">
-            <UserIcon className="mr-2 h-4 w-4" />
-            <span>Account</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <form action={handleSignOut} className="w-full">
-          <button type="submit" className="flex w-full">
-            <DropdownMenuItem className="w-full flex-1 cursor-pointer">
-              <LogOut className="h-4 w-4" />
-              <span>Sign out</span>
-            </DropdownMenuItem>
-          </button>
-        </form>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Menu.Root open={isMenuOpen} onOpenChange={(e) => setIsMenuOpen(e.open)}>
+      <Menu.Trigger asChild>
+        <button className="cursor-pointer">
+          <Avatar.Root className="size-9">
+            <Avatar.Fallback>
+              {user.email
+                .split(' ')
+                .map(n => n[0])
+                .join('')}
+            </Avatar.Fallback>
+          </Avatar.Root>
+        </button>
+      </Menu.Trigger>
+      <Menu.Positioner>
+        <Menu.Content className="flex flex-col gap-1">
+          <Menu.Item value="dashboard" className="cursor-pointer">
+            <Link href={loginRedirectPath} className="flex w-full items-center">
+              <Home className="mr-2 h-4 w-4" />
+              <span>Dashboard</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item value="account" className="cursor-pointer">
+            <Link href={adminRedirectPath} className="flex w-full items-center">
+              <UserIcon className="mr-2 h-4 w-4" />
+              <span>Account</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Separator />
+          <form action={handleSignOut} className="w-full">
+            <button type="submit" className="flex w-full">
+              <Menu.Item value="signout" className="w-full flex-1 cursor-pointer">
+                <LogOut className="h-4 w-4" />
+                <span>Sign out</span>
+              </Menu.Item>
+            </button>
+          </form>
+        </Menu.Content>
+      </Menu.Positioner>
+    </Menu.Root>
   );
 }
 

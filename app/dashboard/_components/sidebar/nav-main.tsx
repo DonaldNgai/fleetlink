@@ -7,12 +7,7 @@ import { PlusCircleIcon, MailIcon, ChevronRight } from 'lucide-react';
 
 import { Button } from '@chakra-ui/react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@chakra-ui/react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@chakra-ui/react';
+import { Menu } from '@chakra-ui/react';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -115,8 +110,8 @@ const NavItemCollapsed = ({
 }) => {
   return (
     <SidebarMenuItem key={item.title}>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+      <Menu.Root>
+        <Menu.Trigger asChild>
           <SidebarMenuButton
             disabled={item.comingSoon}
             tooltip={item.title}
@@ -127,9 +122,10 @@ const NavItemCollapsed = ({
             <ChevronRight />
           </SidebarMenuButton>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-50 space-y-1" side="right" align="start">
+        <Menu.Positioner>
+          <Menu.Content className="w-50 space-y-1" side="right" align="start">
           {item.subItems?.map(subItem => (
-            <DropdownMenuItem key={subItem.title} asChild>
+            <Menu.Item key={subItem.title} value={subItem.title}>
               <SidebarMenuSubButton
                 key={subItem.title}
                 asChild
@@ -143,10 +139,11 @@ const NavItemCollapsed = ({
                   {subItem.comingSoon && <IsComingSoon />}
                 </Link>
               </SidebarMenuSubButton>
-            </DropdownMenuItem>
+            </Menu.Item>
           ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
+          </Menu.Content>
+        </Menu.Positioner>
+      </Menu.Root>
     </SidebarMenuItem>
   );
 };

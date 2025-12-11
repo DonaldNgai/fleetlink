@@ -5,13 +5,7 @@ import { DataTableColumnHeader } from '@ui-column-header';
 import { Badge } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import { Checkbox } from '@chakra-ui/react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@chakra-ui/react';
+import { Menu } from '@chakra-ui/react';
 import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';
 
 // Type for the joined data from queries
@@ -88,23 +82,25 @@ export const recentLeadsColumns: ColumnDef<BookingWithSupply>[] = [
   {
     id: 'actions',
     cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+      <Menu.Root>
+        <Menu.Trigger asChild>
           <Button
             variant="ghost"
             className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
+            size="sm"
           >
             <EllipsisVertical />
             <span className="sr-only">Open menu</span>
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit Booking</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Cancel</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        </Menu.Trigger>
+        <Menu.Positioner>
+          <Menu.Content className="w-32">
+            <Menu.Item value="edit">Edit Booking</Menu.Item>
+            <Menu.Separator />
+            <Menu.Item value="cancel">Cancel</Menu.Item>
+          </Menu.Content>
+        </Menu.Positioner>
+      </Menu.Root>
     ),
     enableSorting: false,
   },

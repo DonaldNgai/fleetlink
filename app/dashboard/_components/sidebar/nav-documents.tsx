@@ -2,13 +2,7 @@
 
 import { LucideIcon, Ellipsis, Folder, Forward, Trash2 } from "lucide-react";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@ui";
+import { Menu } from "@chakra-ui/react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -42,33 +36,35 @@ export function NavDocuments({
                 <span>{item.name}</span>
               </a>
             </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+            <Menu.Root>
+              <Menu.Trigger asChild>
                 <SidebarMenuAction showOnHover className="data-[state=open]:bg-accent rounded-sm">
                   <Ellipsis />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-24 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem>
-                  <Folder />
-                  <span>Open</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Forward />
-                  <span>Share</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem variant="destructive">
-                  <Trash2 />
-                  <span>Delete</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </Menu.Trigger>
+              <Menu.Positioner>
+                <Menu.Content
+                  className="w-24 rounded-lg"
+                  side={isMobile ? "bottom" : "right"}
+                  align={isMobile ? "end" : "start"}
+                >
+                  <Menu.Item value="open">
+                    <Folder />
+                    <span>Open</span>
+                  </Menu.Item>
+                  <Menu.Item value="share">
+                    <Forward />
+                    <span>Share</span>
+                  </Menu.Item>
+                  <Menu.Separator />
+                  <Menu.Item value="delete">
+                    <Trash2 />
+                    <span>Delete</span>
+                  </Menu.Item>
+                </Menu.Content>
+              </Menu.Positioner>
+            </Menu.Root>
           </SidebarMenuItem>
         ))}
         <SidebarMenuItem>

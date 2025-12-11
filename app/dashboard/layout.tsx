@@ -5,7 +5,7 @@ import { AppSidebar } from './_components/sidebar/app-sidebar';
 import { Separator } from '@chakra-ui/react';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@chakra-ui/react';
 import { cn } from '@utils';
-import { getPreference } from '@utils';
+import { getPreference } from '@utils/server/preferences';
 import { Toaster } from '@chakra-ui/react';
 import { PreferencesStoreProvider } from '@utils';
 import {
