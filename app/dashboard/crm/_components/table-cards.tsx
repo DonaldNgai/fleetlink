@@ -14,7 +14,7 @@ import {
   CardDescription,
   CardAction,
 } from '@chakra-ui/react';
-import { useDataTableInstance } from '@/lib/hooks/use-data-table-instance';
+import { useDataTableInstance } from '@ui';
 
 import { recentLeadsColumns, type BookingWithSupply } from './columns.crm';
 import { recentLeadsData } from './crm.config';

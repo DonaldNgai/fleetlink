@@ -32,6 +32,12 @@
       ],
       "@ui/*": [
         "./packages/ui/src/*"
+      ],
+      "@utils": [
+        "./packages/next-utils/src/index.ts"
+      ],
+      "@utils/*": [
+        "./packages/next-utils/src/*"
       ]
     }
   },

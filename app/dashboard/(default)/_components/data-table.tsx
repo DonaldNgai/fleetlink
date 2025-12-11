@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@chakra-ui/react';
 import { Tabs, TabPanels as TabsContent, TabList as TabsList, Tab as TabsTrigger } from '@chakra-ui/react';
-import { useDataTableInstance } from '@/lib/hooks/use-data-table-instance';
+import { useDataTableInstance } from '@ui';
 
 import { DataTable as DataTableNew } from '@chakra-ui/react';
 import { DataTablePagination } from '@ui-pagination';

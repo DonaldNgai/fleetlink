@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { Separator } from '@chakra-ui/react';
 import { Tabs, TabPanels as TabsContent, TabList as TabsList, Tab as TabsTrigger } from '@chakra-ui/react';
-import { formatCurrency, cn } from '@/lib/utils';
+import { formatCurrency, cn } from '@utils';
 
 function ChipSVG() {
   return (

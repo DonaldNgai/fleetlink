@@ -7,7 +7,7 @@ import { CardRoot as Card, CardHeader, Heading as CardTitle, CardBody as CardCon
 import { ChartContainer } from "@ui";
 import { Checkbox } from "@chakra-ui/react";
 import { Progress } from "@chakra-ui/react";
-import { formatCurrency, cn } from "@/lib/utils";
+import { formatCurrency, cn } from '@utils';
 
 import { salesPipelineChartData, salesPipelineChartConfig, regionSalesData, actionItems } from "./crm.config";
 

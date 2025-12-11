@@ -13,17 +13,16 @@ import {
   SelectValue,
 } from '@chakra-ui/react';
 // ToggleGroup removed - use Chakra UI ButtonGroup or similar;
-import { updateContentLayout, updateNavbarStyle } from '@/lib/layout-utils';
-import { updateThemeMode, updateThemePreset } from '@/lib/theme-utils';
-import { setValueToCookie } from '@/lib/server/server-actions';
-import { usePreferencesStore } from '@/lib/stores/preferences/preferences-provider';
+import { updateContentLayout, updateNavbarStyle, updateThemeMode, updateThemePreset } from '@ui';
+import { setValueToCookie } from '@utils';
+import { usePreferencesStore } from '@utils';
 import type {
   SidebarVariant,
   SidebarCollapsible,
   ContentLayout,
   NavbarStyle,
-} from '@/types/preferences/layout';
-import { THEME_PRESET_OPTIONS, type ThemePreset, type ThemeMode } from '@/types/preferences/theme';
+} from '@utils';
+import { THEME_PRESET_OPTIONS, type ThemePreset, type ThemeMode } from '@utils';
 
 type LayoutControlsProps = {
   readonly variant: SidebarVariant;

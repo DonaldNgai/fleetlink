@@ -7,7 +7,7 @@ import { CardRoot as Card, Box as CardAction, CardBody as CardContent, Text as C
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@ui";
 import { Select } from '@chakra-ui/react';
 import { Separator } from "@chakra-ui/react";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency } from '@utils';
 
 const chartData = [
   { month: "Jan", scheduled: 2000, expenses: 4000, income: 9500 },

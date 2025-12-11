@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuGroup,
 } from '@chakra-ui/react';
-import { cn, getInitials } from '@/lib/utils';
+import { cn, getInitials } from '@utils';
 import Link from 'next/link';
 import { adminRedirectPath } from '@/config/app-config';
 import { SidebarMenuButton } from '@chakra-ui/react';

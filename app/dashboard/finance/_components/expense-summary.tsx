@@ -6,7 +6,7 @@ import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
 import { CardRoot as Card, CardBody as CardContent, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@ui";
 import { Separator } from "@chakra-ui/react";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency } from '@utils';
 
 const chartData = [{ period: "last-week", groceries: 380, transport: 120, other: 80 }];
 

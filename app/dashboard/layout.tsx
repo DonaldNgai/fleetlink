@@ -4,16 +4,16 @@ import { cookies } from 'next/headers';
 import { AppSidebar } from './_components/sidebar/app-sidebar';
 import { Separator } from '@chakra-ui/react';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@chakra-ui/react';
-import { cn } from '@/lib/utils';
-import { getPreference } from '@/lib/server/server-actions';
+import { cn } from '@utils';
+import { getPreference } from '@utils';
 import { Toaster } from '@chakra-ui/react';
-import { PreferencesStoreProvider } from '@/lib/stores/preferences/preferences-provider';
+import { PreferencesStoreProvider } from '@utils';
 import {
   THEME_MODE_VALUES,
   THEME_PRESET_VALUES,
   type ThemeMode,
   type ThemePreset,
-} from '@/types/preferences/theme';
+} from '@utils';
 import {
   SIDEBAR_VARIANT_VALUES,
   SIDEBAR_COLLAPSIBLE_VALUES,
@@ -23,7 +23,7 @@ import {
   type SidebarCollapsible,
   type ContentLayout,
   type NavbarStyle,
-} from '@/types/preferences/layout';
+} from '@utils';
 
 import { AccountSwitcher } from './_components/sidebar/account-switcher';
 import { LayoutControls } from './_components/sidebar/layout-controls';
