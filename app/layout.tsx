@@ -5,7 +5,6 @@ import { getUser, getTeamForUser } from '@/lib/db/queries';
 import { SWRConfig } from 'swr';
 import { APP_CONFIG } from '@/config/app-config';
 import { ChakraUIProvider } from '@ui';
-import { system } from '@/lib/chakra-theme';
 
 export const metadata: Metadata = {
   title: APP_CONFIG.meta.title,
@@ -25,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
     >
       <body className="min-h-[100dvh]">
-        <ChakraUIProvider system={system}>
+        <ChakraUIProvider>
           <SWRConfig
             value={{
               fallback: {

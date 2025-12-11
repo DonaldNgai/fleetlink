@@ -62,33 +62,33 @@ export function AccountSwitcher({
       </Menu.Trigger>
       <Menu.Positioner>
         <Menu.Content
-          className="min-w-56 space-y-1 rounded-lg"
-          side="bottom"
-          align="end"
-        >
-          {users.map(user => (
+        className="min-w-56 space-y-1 rounded-lg"
+        side="bottom"
+        align="end"
+      >
+        {users.map(user => (
             <Menu.Item
-              key={user.email}
+            key={user.email}
               value={user.email}
-              className={cn(
-                'p-0',
-                user.id === activeUser?.id && 'bg-accent/50 border-l-primary border-l-2'
-              )}
-              onClick={() => setActiveUser(user)}
-            >
-              <div className="flex w-full items-center justify-between gap-2 px-1 py-1.5">
+            className={cn(
+              'p-0',
+              user.id === activeUser?.id && 'bg-accent/50 border-l-primary border-l-2'
+            )}
+            onClick={() => setActiveUser(user)}
+          >
+            <div className="flex w-full items-center justify-between gap-2 px-1 py-1.5">
                 <Avatar.Root className="size-9 rounded-lg">
                   <Avatar.Fallback className="rounded-lg">
-                    {getInitials(user.name || user.email)}
+                  {getInitials(user.name || user.email)}
                   </Avatar.Fallback>
                 </Avatar.Root>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name || user.email}</span>
-                  <span className="truncate text-xs capitalize">{user.role}</span>
-                </div>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">{user.name || user.email}</span>
+                <span className="truncate text-xs capitalize">{user.role}</span>
               </div>
+            </div>
             </Menu.Item>
-          ))}
+        ))}
           <Menu.Separator />
           <Menu.Item value="dashboard" className="w-full flex-1 cursor-pointer">
             <Link href={loginRedirectPath} className="flex w-full items-center">
@@ -104,14 +104,14 @@ export function AccountSwitcher({
           </Menu.Item>
           <Menu.Separator />
           <Menu.Item value="signout" className="p-0">
-            <form action={handleSignOut} className="w-full">
-              <button type="submit" className="flex w-full">
+          <form action={handleSignOut} className="w-full">
+            <button type="submit" className="flex w-full">
                 <div className="w-full flex-1 cursor-pointer flex items-center">
                   <LogOut className="h-4 w-4 mr-2" />
-                  <span>Sign out</span>
+                <span>Sign out</span>
                 </div>
-              </button>
-            </form>
+            </button>
+          </form>
           </Menu.Item>
         </Menu.Content>
       </Menu.Positioner>

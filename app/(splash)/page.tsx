@@ -1,11 +1,66 @@
+'use client';
+
 import { Button } from '@chakra-ui/react';
 import { CardRoot as Card, CardBody as CardContent, Text as CardDescription, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
-import { Badge } from '@chakra-ui/react';
-// FadeIn removed - use Chakra UI animations;
+import { Badge, Separator } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import { ArrowRight, FileText, Zap, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-// WordDivider removed - use Chakra UI Separator;
+
+// Animation components using Framer Motion
+const FadeIn = ({ children, className, ...props }: { children: React.ReactNode; className?: string; [key: string]: any }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className={className}
+    {...props}
+  >
+    {children}
+  </motion.div>
+);
+
+const FadeInStagger = ({ children, className, ...props }: { children: React.ReactNode; className?: string; [key: string]: any }) => (
+  <motion.div
+    initial="hidden"
+    animate="show"
+    variants={{
+      hidden: { opacity: 0 },
+      show: {
+        opacity: 1,
+        transition: {
+          staggerChildren: 0.2,
+        },
+      },
+    }}
+    className={className}
+    {...props}
+  >
+    {children}
+  </motion.div>
+);
+
+const FadeInStaggerItem = ({ children, className, ...props }: { children: React.ReactNode; className?: string; [key: string]: any }) => (
+  <motion.div
+    variants={{
+      hidden: { opacity: 0, y: 20 },
+      show: { opacity: 1, y: 0 },
+    }}
+    className={className}
+    {...props}
+  >
+    {children}
+  </motion.div>
+);
+
+const WordDivider = ({ word }: { word: string }) => (
+  <div className="flex items-center gap-4 my-6">
+    <Separator className="flex-1" />
+    <span className="text-sm text-muted-foreground">{word}</span>
+    <Separator className="flex-1" />
+  </div>
+);
 
 const companyLogos = [
   { name: 'CAT', url: 'https://logo.clearbit.com/caterpillar.com' },
@@ -62,13 +117,13 @@ export default function HomePage() {
             </FadeInStaggerItem>
             <FadeInStaggerItem>
               <div className="flex flex-wrap gap-3 justify-center mb-12">
-                <Badge variant="secondary" className="text-sm py-2 px-4">
+                <Badge variant="subtle" className="text-sm py-2 px-4">
                   Fast Payments
                 </Badge>
-                <Badge variant="secondary" className="text-sm py-2 px-4">
+                <Badge variant="subtle" className="text-sm py-2 px-4">
                   Reliability
                 </Badge>
-                <Badge variant="secondary" className="text-sm py-2 px-4">
+                <Badge variant="subtle" className="text-sm py-2 px-4">
                   Seamless
                 </Badge>
               </div>

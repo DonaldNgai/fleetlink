@@ -45,22 +45,22 @@ export function NavDocuments({
               </Menu.Trigger>
               <Menu.Positioner>
                 <Menu.Content
-                  className="w-24 rounded-lg"
-                  side={isMobile ? "bottom" : "right"}
-                  align={isMobile ? "end" : "start"}
-                >
+                className="w-24 rounded-lg"
+                side={isMobile ? "bottom" : "right"}
+                align={isMobile ? "end" : "start"}
+              >
                   <Menu.Item value="open">
-                    <Folder />
-                    <span>Open</span>
+                  <Folder />
+                  <span>Open</span>
                   </Menu.Item>
                   <Menu.Item value="share">
-                    <Forward />
-                    <span>Share</span>
+                  <Forward />
+                  <span>Share</span>
                   </Menu.Item>
                   <Menu.Separator />
                   <Menu.Item value="delete">
-                    <Trash2 />
-                    <span>Delete</span>
+                  <Trash2 />
+                  <span>Delete</span>
                   </Menu.Item>
                 </Menu.Content>
               </Menu.Positioner>

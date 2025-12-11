@@ -46,10 +46,10 @@ function UserMenu() {
         <button className="cursor-pointer">
           <Avatar.Root className="size-9">
             <Avatar.Fallback>
-              {user.email
-                .split(' ')
-                .map(n => n[0])
-                .join('')}
+            {user.email
+              .split(' ')
+              .map(n => n[0])
+              .join('')}
             </Avatar.Fallback>
           </Avatar.Root>
         </button>
@@ -57,26 +57,26 @@ function UserMenu() {
       <Menu.Positioner>
         <Menu.Content className="flex flex-col gap-1">
           <Menu.Item value="dashboard" className="cursor-pointer">
-            <Link href={loginRedirectPath} className="flex w-full items-center">
-              <Home className="mr-2 h-4 w-4" />
-              <span>Dashboard</span>
-            </Link>
+          <Link href={loginRedirectPath} className="flex w-full items-center">
+            <Home className="mr-2 h-4 w-4" />
+            <span>Dashboard</span>
+          </Link>
           </Menu.Item>
           <Menu.Item value="account" className="cursor-pointer">
-            <Link href={adminRedirectPath} className="flex w-full items-center">
-              <UserIcon className="mr-2 h-4 w-4" />
-              <span>Account</span>
-            </Link>
+          <Link href={adminRedirectPath} className="flex w-full items-center">
+            <UserIcon className="mr-2 h-4 w-4" />
+            <span>Account</span>
+          </Link>
           </Menu.Item>
           <Menu.Separator />
-          <form action={handleSignOut} className="w-full">
-            <button type="submit" className="flex w-full">
+        <form action={handleSignOut} className="w-full">
+          <button type="submit" className="flex w-full">
               <Menu.Item value="signout" className="w-full flex-1 cursor-pointer">
-                <LogOut className="h-4 w-4" />
-                <span>Sign out</span>
+              <LogOut className="h-4 w-4" />
+              <span>Sign out</span>
               </Menu.Item>
-            </button>
-          </form>
+          </button>
+        </form>
         </Menu.Content>
       </Menu.Positioner>
     </Menu.Root>
