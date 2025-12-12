@@ -1,28 +1,20 @@
-import { cookies } from 'next/headers';
-import { verifyToken } from '@/lib/auth/session';
+import { getAuth0UserEmail } from '@utils/auth';
 import { db } from '../drizzle';
 import { users, teamMembers } from '../schema';
 import { eq, and, isNull } from 'drizzle-orm';
 
 export async function getUser() {
-  const sessionCookie = (await cookies()).get('session');
-  if (!sessionCookie || !sessionCookie.value) {
+  const email = await getAuth0UserEmail();
+  
+  if (!email) {
     return null;
   }
 
-  const sessionData = await verifyToken(sessionCookie.value);
-  if (!sessionData || !sessionData.user || typeof sessionData.user.id !== 'number') {
-    return null;
-  }
-
-  if (new Date(sessionData.expires) < new Date()) {
-    return null;
-  }
-
+  // Look up user in database by email (Auth0 email)
   const user = await db
     .select()
     .from(users)
-    .where(and(eq(users.id, sessionData.user.id), isNull(users.deletedAt)))
+    .where(and(eq(users.email, email), isNull(users.deletedAt)))
     .limit(1);
 
   if (user.length === 0) {

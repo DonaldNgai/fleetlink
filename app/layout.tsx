@@ -30,8 +30,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               fallback: {
                 // We do NOT await here
                 // Only components that read this data will suspend
-                '/api/user': getUser(),
-                '/api/team': getTeamForUser(),
+                // Wrap in Promise.resolve to handle errors gracefully
+                '/api/user': getUser().catch(() => null),
+                '/api/team': getTeamForUser().catch(() => null),
               },
             }}
           >

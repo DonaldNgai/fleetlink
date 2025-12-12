@@ -1,10 +1,9 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  transpilePackages: ['chakraui', '@repo/next-utils'],
   experimental: {
-    ppr: true,
     clientSegmentCache: true,
-    nodeMiddleware: true,
   },
   images: {
     remotePatterns: [
