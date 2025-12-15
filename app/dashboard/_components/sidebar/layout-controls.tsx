@@ -3,7 +3,6 @@
 import { Settings } from 'lucide-react';
 
 import { Button } from '@chakra-ui/react';
-import { FormLabel as Label } from '@chakra-ui/react';
 import { Popover, PopoverContent, PopoverTrigger } from '@chakra-ui/react';
 import {
   Select,
@@ -77,7 +76,7 @@ export function LayoutControls(props: LayoutControlsProps) {
           </div>
           <div className="space-y-3">
             <div className="space-y-1">
-              <Label className="text-xs font-medium">Preset</Label>
+              <label className="text-xs font-medium">Preset</label>
               <Select
                 value={themePreset}
                 onValueChange={value => handleValueChange('theme_preset', value)}
@@ -103,7 +102,7 @@ export function LayoutControls(props: LayoutControlsProps) {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-xs font-medium">Mode</Label>
+              <label className="text-xs font-medium">Mode</label>
               <ToggleGroup
                 className="w-full"
                 size="sm"
@@ -122,7 +121,7 @@ export function LayoutControls(props: LayoutControlsProps) {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-xs font-medium">Sidebar Variant</Label>
+              <label className="text-xs font-medium">Sidebar Variant</label>
               <ToggleGroup
                 className="w-full"
                 size="sm"
@@ -144,7 +143,7 @@ export function LayoutControls(props: LayoutControlsProps) {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-xs font-medium">Navbar Style</Label>
+              <label className="text-xs font-medium">Navbar Style</label>
               <ToggleGroup
                 className="w-full"
                 size="sm"
@@ -163,7 +162,7 @@ export function LayoutControls(props: LayoutControlsProps) {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-xs font-medium">Sidebar Collapsible</Label>
+              <label className="text-xs font-medium">Sidebar Collapsible</label>
               <ToggleGroup
                 className="w-full"
                 size="sm"
@@ -186,7 +185,7 @@ export function LayoutControls(props: LayoutControlsProps) {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-xs font-medium">Content Layout</Label>
+              <label className="text-xs font-medium">Content Layout</label>
               <ToggleGroup
                 className="w-full"
                 size="sm"

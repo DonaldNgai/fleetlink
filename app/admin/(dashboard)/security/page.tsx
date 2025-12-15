@@ -2,11 +2,9 @@
 
 import { Button } from '@chakra-ui/react';
 import { Input } from '@chakra-ui/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@chakra-ui/react';
-import { FormLabel as Label } from '@chakra-ui/react';
+import { CardRoot as Card, CardBody as CardContent, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
 import { Lock, Trash2, Loader2 } from 'lucide-react';
 import { useActionState } from 'react';
-import { updatePassword, deleteAccount } from '@/app/(login)/actions';
 
 type PasswordState = {
   currentPassword?: string;
@@ -45,9 +43,9 @@ export default function SecurityPage() {
         <CardContent>
           <form className="space-y-4" action={passwordAction}>
             <div>
-              <Label htmlFor="current-password" className="mb-2">
+              <label htmlFor="current-password" className="mb-2 block text-sm font-medium">
                 Current Password
-              </Label>
+              </label>
               <Input
                 id="current-password"
                 name="currentPassword"
@@ -60,9 +58,9 @@ export default function SecurityPage() {
               />
             </div>
             <div>
-              <Label htmlFor="new-password" className="mb-2">
+              <label htmlFor="new-password" className="mb-2 block text-sm font-medium">
                 New Password
-              </Label>
+              </label>
               <Input
                 id="new-password"
                 name="newPassword"
@@ -75,9 +73,9 @@ export default function SecurityPage() {
               />
             </div>
             <div>
-              <Label htmlFor="confirm-password" className="mb-2">
+              <label htmlFor="confirm-password" className="mb-2 block text-sm font-medium">
                 Confirm New Password
-              </Label>
+              </label>
               <Input
                 id="confirm-password"
                 name="confirmPassword"
@@ -125,9 +123,9 @@ export default function SecurityPage() {
           </p>
           <form action={deleteAction} className="space-y-4">
             <div>
-              <Label htmlFor="delete-password" className="mb-2">
+              <label htmlFor="delete-password" className="mb-2 block text-sm font-medium">
                 Confirm Password
-              </Label>
+              </label>
               <Input
                 id="delete-password"
                 name="password"

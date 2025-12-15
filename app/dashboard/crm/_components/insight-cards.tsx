@@ -13,7 +13,7 @@ import {
 } from 'recharts';
 
 import { Button } from '@chakra-ui/react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@chakra-ui/react';
+import { CardRoot as Card, CardBody as CardContent, CardFooter, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
 import {
   ChartContainer,
   ChartTooltip,

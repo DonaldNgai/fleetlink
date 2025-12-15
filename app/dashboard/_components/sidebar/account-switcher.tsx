@@ -12,8 +12,6 @@ import { cn, getInitials } from '@utils';
 import Link from 'next/link';
 import { adminRedirectPath } from '@/config/app-config';
 import { SidebarMenuButton } from '@chakra-ui/react';
-import { signOut } from '@/app/(login)/actions';
-import useSWR, { mutate } from 'swr';
 import { useRouter } from 'next/navigation';
 import { loginRedirectPath, logoutRedirectPath } from '@/config/app-config';
 
@@ -29,7 +27,6 @@ export function AccountSwitcher({
 
   async function handleSignOut() {
     await signOut();
-    mutate('/api/user');
     router.push(logoutRedirectPath);
   }
 

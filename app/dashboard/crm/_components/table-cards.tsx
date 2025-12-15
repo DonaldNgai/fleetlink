@@ -7,12 +7,12 @@ import { DataTablePagination } from '@ui-pagination';
 import { DataTableViewOptions } from '@ui-view-options';
 import { Button } from '@chakra-ui/react';
 import {
-  Card,
+  CardRoot as Card,
   CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-  CardAction,
+  Heading as CardTitle,
+  CardBody as CardContent,
+  Text as CardDescription,
+  Box as CardAction,
 } from '@chakra-ui/react';
 import { useDataTableInstance } from '@ui';
 

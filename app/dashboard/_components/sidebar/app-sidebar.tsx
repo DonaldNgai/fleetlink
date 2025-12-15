@@ -17,6 +17,8 @@ import { APP_CONFIG } from '@/config/app-config';
 import { User } from '@/lib/db/schema';
 import useSWR from 'swr';
 import { sidebarItems } from '@chakra-ui/react';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { getUserByEmail } from '@/app/actions/user';
 
 import { NavMain } from './nav-main';
 import { NavUser } from './nav-user';
@@ -59,8 +61,14 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const fetcher = (url: string) => fetch(url).then(res => res.json());
-  const { data: user } = useSWR<User>('/api/user', fetcher);
+  const { user: auth0User } = useUser();
+  const { data: user } = useSWR<User | null>(
+    auth0User?.email ? `user-${auth0User.email}` : null,
+    async () => {
+      if (!auth0User?.email) return null;
+      return getUserByEmail(auth0User.email);
+    }
+  );
 
   return (
     <Sidebar {...props}>

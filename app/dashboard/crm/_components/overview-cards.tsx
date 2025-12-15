@@ -5,12 +5,12 @@ import { Wallet, BadgeDollarSign } from 'lucide-react';
 import { Area, AreaChart, Line, LineChart, Bar, BarChart, XAxis } from 'recharts';
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
+  CardRoot as Card,
+  CardBody as CardContent,
+  Text as CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  Heading as CardTitle,
 } from '@chakra-ui/react';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@chakra-ui/react';
 

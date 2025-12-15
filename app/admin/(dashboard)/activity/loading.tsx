@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@chakra-ui/react';
+import { CardRoot as Card, CardBody as CardContent, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
 
 export default function ActivityPageSkeleton() {
   return (

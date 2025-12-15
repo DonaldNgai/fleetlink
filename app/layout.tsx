@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
-import { getUser, getTeamForUser } from '@/lib/db/queries';
+import { getTeamForUser } from '@/lib/db/queries';
 import { SWRConfig } from 'swr';
 import { APP_CONFIG } from '@/config/app-config';
 import { ChakraUIProvider } from '@ui';
@@ -31,7 +31,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 // We do NOT await here
                 // Only components that read this data will suspend
                 // Wrap in Promise.resolve to handle errors gracefully
-                '/api/user': getUser().catch(() => null),
                 '/api/team': getTeamForUser().catch(() => null),
               },
             }}

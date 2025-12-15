@@ -3,15 +3,13 @@
 import { useActionState } from 'react';
 import { Button } from '@chakra-ui/react';
 import { Input } from '@chakra-ui/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@chakra-ui/react';
-import { FormLabel as Label } from '@chakra-ui/react';
+import { CardRoot as Card, CardBody as CardContent, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
 import { Loader2 } from 'lucide-react';
-import { updateAccount } from '@/app/(login)/actions';
 import { User } from '@/lib/db/schema';
 import useSWR from 'swr';
 import { Suspense } from 'react';
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { getUserByEmail } from '@/app/actions/user';
 
 type ActionState = {
   name?: string;
@@ -33,9 +31,9 @@ function AccountForm({
   return (
     <>
       <div>
-        <Label htmlFor="name" className="mb-2">
+        <label htmlFor="name" className="mb-2 block text-sm font-medium">
           Name
-        </Label>
+        </label>
         <Input
           id="name"
           name="name"
@@ -45,9 +43,9 @@ function AccountForm({
         />
       </div>
       <div>
-        <Label htmlFor="email" className="mb-2">
+        <label htmlFor="email" className="mb-2 block text-sm font-medium">
           Email
-        </Label>
+        </label>
         <Input
           id="email"
           name="email"
@@ -62,7 +60,14 @@ function AccountForm({
 }
 
 function AccountFormWithData({ state }: { state: ActionState }) {
-  const { data: user } = useSWR<User>('/api/user', fetcher);
+  const { user: auth0User } = useUser();
+  const { data: user } = useSWR<User | null>(
+    auth0User?.email ? `user-${auth0User.email}` : null,
+    async () => {
+      if (!auth0User?.email) return null;
+      return getUserByEmail(auth0User.email);
+    }
+  );
   return (
     <AccountForm
       state={state}

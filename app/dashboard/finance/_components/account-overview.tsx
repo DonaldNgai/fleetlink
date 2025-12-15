@@ -6,12 +6,12 @@ import { siApple, siPaypal, siOpenai, siVercel, siFigma } from 'simple-icons';
 // SimpleIcon removed;
 import { Button } from '@chakra-ui/react';
 import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
+  CardRoot as Card,
+  Box as CardAction,
+  CardBody as CardContent,
+  Text as CardDescription,
   CardHeader,
-  CardTitle,
+  Heading as CardTitle,
 } from '@chakra-ui/react';
 import { Separator } from '@chakra-ui/react';
 import { Tabs, TabPanels as TabsContent, TabList as TabsList, Tab as TabsTrigger } from '@chakra-ui/react';

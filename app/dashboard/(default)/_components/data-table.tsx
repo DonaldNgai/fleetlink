@@ -7,7 +7,6 @@ import { z } from 'zod';
 
 import { Badge } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
-import { FormLabel as Label } from '@chakra-ui/react';
 import {
   Select,
   SelectContent,
@@ -16,7 +15,6 @@ import {
   SelectValue,
 } from '@chakra-ui/react';
 import { Tabs, TabPanels as TabsContent, TabList as TabsList, Tab as TabsTrigger } from '@chakra-ui/react';
-import { useDataTableInstance } from '@ui';
 
 import { DataTable as DataTableNew } from '@chakra-ui/react';
 import { DataTablePagination } from '@ui-pagination';
@@ -40,9 +38,9 @@ export function DataTable({ data: initialData }: { data: BookingWithSupply[] }) 
   return (
     <Tabs defaultValue="all" className="w-full flex-col justify-start gap-6">
       {/* <div className="flex items-center justify-between">
-        <Label htmlFor="view-selector" className="sr-only">
+        <label htmlFor="view-selector" className="sr-only">
           View
-        </Label>
+        </label>
         <Select defaultValue="all">
           <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
             <SelectValue placeholder="Select a view" />

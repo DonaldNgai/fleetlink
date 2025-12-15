@@ -4,22 +4,22 @@ import { Button } from '@chakra-ui/react';
 import { Avatar, AvatarImage } from '@chakra-ui/react';
 import { AvatarFallback } from '@ui';
 import {
-  Card,
-  CardContent,
+  CardRoot as Card,
+  CardBody as CardContent,
   CardHeader,
-  CardTitle,
+  Heading as CardTitle,
   CardFooter
 } from '@chakra-ui/react';
 import { customerPortalAction } from '@/lib/payments/actions';
 import { useActionState } from 'react';
 import { TeamDataWithMembers, User } from '@/lib/db/schema';
-import { removeTeamMember, inviteTeamMember } from '@/app/(login)/actions';
 import useSWR from 'swr';
 import { Suspense } from 'react';
 import { Input } from '@chakra-ui/react';
-import { RadioGroup, Radio as RadioGroupItem } from '@chakra-ui/react';
-import { FormLabel as Label } from '@chakra-ui/react';
+import { RadioGroup } from '@chakra-ui/react';
 import { Loader2, PlusCircle } from 'lucide-react';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { getUserByEmail } from '@/app/actions/user';
 
 type ActionState = {
   error?: string;
@@ -96,10 +96,11 @@ function TeamMembersSkeleton() {
 
 function TeamMembers() {
   const { data: teamData } = useSWR<TeamDataWithMembers>('/api/team', fetcher);
+  // TODO: Implement removeTeamMember action
   const [removeState, removeAction, isRemovePending] = useActionState<
     ActionState,
     FormData
-  >(removeTeamMember, {});
+  >(async () => ({}), {});
 
   const getUserDisplayName = (user: Pick<User, 'id' | 'name' | 'email'>) => {
     return user.name || user.email || 'Unknown User';
@@ -128,12 +129,12 @@ function TeamMembers() {
           {teamData.teamMembers.map((member, index) => (
             <li key={member.id} className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <Avatar>
+                <Avatar.Root>
                   {/* 
                     This app doesn't save profile images, but here
                     is how you'd show them:
 
-                    <AvatarImage
+                    <Avatar.Image
                       src={member.user.image || ''}
                       alt={getUserDisplayName(member.user)}
                     />
@@ -144,7 +145,7 @@ function TeamMembers() {
                       .map((n) => n[0])
                       .join('')}
                   </AvatarFallback>
-                </Avatar>
+                </Avatar.Root>
                 <div>
                   <p className="font-medium">
                     {getUserDisplayName(member.user)}
@@ -189,12 +190,20 @@ function InviteTeamMemberSkeleton() {
 }
 
 function InviteTeamMember() {
-  const { data: user } = useSWR<User>('/api/user', fetcher);
+  const { user: auth0User } = useUser();
+  const { data: user } = useSWR<User | null>(
+    auth0User?.email ? `user-${auth0User.email}` : null,
+    async () => {
+      if (!auth0User?.email) return null;
+      return getUserByEmail(auth0User.email);
+    }
+  );
   const isOwner = user?.role === 'owner';
+  // TODO: Implement inviteTeamMember action
   const [inviteState, inviteAction, isInvitePending] = useActionState<
     ActionState,
     FormData
-  >(inviteTeamMember, {});
+  >(async () => ({}), {});
 
   return (
     <Card>
@@ -204,9 +213,9 @@ function InviteTeamMember() {
       <CardContent>
         <form action={inviteAction} className="space-y-4">
           <div>
-            <Label htmlFor="email" className="mb-2">
+            <label htmlFor="email" className="mb-2 block text-sm font-medium">
               Email
-            </Label>
+            </label>
             <Input
               id="email"
               name="email"
@@ -217,22 +226,22 @@ function InviteTeamMember() {
             />
           </div>
           <div>
-            <Label>Role</Label>
-            <RadioGroup
+            <label className="block text-sm font-medium mb-2">Role</label>
+            <RadioGroup.Root
               defaultValue="member"
               name="role"
               className="flex space-x-4"
               disabled={!isOwner}
             >
               <div className="flex items-center space-x-2 mt-2">
-                <RadioGroupItem value="member" id="member" />
-                <Label htmlFor="member">Member</Label>
+                <RadioGroup.Item value="member" id="member" />
+                <label htmlFor="member" className="cursor-pointer">Member</label>
               </div>
               <div className="flex items-center space-x-2 mt-2">
-                <RadioGroupItem value="owner" id="owner" />
-                <Label htmlFor="owner">Owner</Label>
+                <RadioGroup.Item value="owner" id="owner" />
+                <label htmlFor="owner" className="cursor-pointer">Owner</label>
               </div>
-            </RadioGroup>
+            </RadioGroup.Root>
           </div>
           {inviteState?.error && (
             <p className="text-red-500">{inviteState.error}</p>

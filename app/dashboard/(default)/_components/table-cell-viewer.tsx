@@ -19,7 +19,6 @@ import {
   DrawerTrigger,
 } from '@chakra-ui/react';
 import { Input } from '@chakra-ui/react';
-import { FormLabel as Label } from '@chakra-ui/react';
 import {
   Select,
   SelectContent,
@@ -122,16 +121,16 @@ export function TableCellViewer({ item }: { item: BookingWithSupply }) {
           )}
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
-              <Label htmlFor="equipment">Equipment</Label>
+              <label htmlFor="equipment" className="text-sm font-medium">Equipment</label>
               <Input id="equipment" defaultValue={item.booking.equipment || ''} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="customer">Customer</Label>
+                <label htmlFor="customer" className="text-sm font-medium">Customer</label>
                 <Input id="customer" defaultValue={item.booking.customer} />
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="status">Status</Label>
+                <label htmlFor="status" className="text-sm font-medium">Status</label>
                 <Select defaultValue={item.booking.customerStatus}>
                   <SelectTrigger id="status" className="w-full">
                     <SelectValue placeholder="Select a status" />
@@ -149,12 +148,12 @@ export function TableCellViewer({ item }: { item: BookingWithSupply }) {
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="location">Location</Label>
+              <label htmlFor="location" className="text-sm font-medium">Location</label>
               <Input id="location" defaultValue={item.booking.location} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="hours">Hours</Label>
+                <label htmlFor="hours" className="text-sm font-medium">Hours</label>
                 <Input
                   id="hours"
                   type="number"
@@ -162,7 +161,7 @@ export function TableCellViewer({ item }: { item: BookingWithSupply }) {
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="totalCost">Total Cost</Label>
+                <label htmlFor="totalCost" className="text-sm font-medium">Total Cost</label>
                 <Input
                   id="totalCost"
                   defaultValue={
@@ -175,7 +174,7 @@ export function TableCellViewer({ item }: { item: BookingWithSupply }) {
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="operator">Operator</Label>
+              <label htmlFor="operator" className="text-sm font-medium">Operator</label>
               <Input
                 id="operator"
                 defaultValue={`${item.booking.operatorFirstName} ${item.booking.operatorLastName || ''}`.trim()}
