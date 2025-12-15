@@ -1,22 +1,31 @@
 'use client';
 
-import { Button } from '@chakra-ui/react';
-import { Avatar, AvatarImage } from '@chakra-ui/react';
-import { AvatarFallback } from '@ui';
 import {
+  Button,
+  Box,
+  VStack,
+  HStack,
+  Text,
+  Heading,
+  Avatar,
+  AvatarImage,
   CardRoot as Card,
   CardBody as CardContent,
   CardHeader,
   Heading as CardTitle,
-  CardFooter
+  CardFooter,
+  Input,
+  RadioGroup,
+  Skeleton,
+  SkeletonText,
+  SkeletonCircle
 } from '@chakra-ui/react';
+import { AvatarFallback } from '@ui';
 import { customerPortalAction } from '@/lib/payments/actions';
 import { useActionState } from 'react';
 import { TeamDataWithMembers, User } from '@/lib/db/schema';
 import useSWR from 'swr';
 import { Suspense } from 'react';
-import { Input } from '@chakra-ui/react';
-import { RadioGroup } from '@chakra-ui/react';
 import { Loader2, PlusCircle } from 'lucide-react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { getUserByEmail } from '@/app/actions/user';
@@ -30,10 +39,16 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function SubscriptionSkeleton() {
   return (
-    <Card className="mb-8 h-[140px]">
+    <Card mb={8}>
       <CardHeader>
         <CardTitle>Team Subscription</CardTitle>
       </CardHeader>
+      <CardContent>
+        <VStack align="stretch" gap={4}>
+          <Skeleton height="20px" width="200px" />
+          <Skeleton height="16px" width="150px" />
+        </VStack>
+      </CardContent>
     </Card>
   );
 }
@@ -42,32 +57,37 @@ function ManageSubscription() {
   const { data: teamData } = useSWR<TeamDataWithMembers>('/api/team', fetcher);
 
   return (
-    <Card className="mb-8">
+    <Card mb={8}>
       <CardHeader>
         <CardTitle>Team Subscription</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            <div className="mb-4 sm:mb-0">
-              <p className="font-medium">
+        <VStack align="stretch" gap={4}>
+          <HStack
+            justify="space-between"
+            align={{ base: 'start', sm: 'center' }}
+            flexDirection={{ base: 'column', sm: 'row' }}
+            gap={4}
+          >
+            <VStack align="start" gap={1}>
+              <Text fontWeight="medium" fontSize="md">
                 Current Plan: {teamData?.planName || 'Free'}
-              </p>
-              <p className="text-sm text-muted-foreground">
+              </Text>
+              <Text fontSize="sm" color="gray.500">
                 {teamData?.subscriptionStatus === 'active'
                   ? 'Billed monthly'
                   : teamData?.subscriptionStatus === 'trialing'
                   ? 'Trial period'
                   : 'No active subscription'}
-              </p>
-            </div>
+              </Text>
+            </VStack>
             <form action={customerPortalAction}>
               <Button type="submit" variant="outline">
                 Manage Subscription
               </Button>
             </form>
-          </div>
-        </div>
+          </HStack>
+        </VStack>
       </CardContent>
     </Card>
   );
@@ -75,20 +95,20 @@ function ManageSubscription() {
 
 function TeamMembersSkeleton() {
   return (
-    <Card className="mb-8 h-[140px]">
+    <Card mb={8}>
       <CardHeader>
         <CardTitle>Team Members</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="animate-pulse space-y-4 mt-1">
-          <div className="flex items-center space-x-4">
-            <div className="size-8 rounded-full bg-gray-200"></div>
-            <div className="space-y-2">
-              <div className="h-4 w-32 bg-gray-200 rounded"></div>
-              <div className="h-3 w-14 bg-gray-200 rounded"></div>
-            </div>
-          </div>
-        </div>
+        <VStack align="stretch" gap={4}>
+          <HStack gap={4}>
+            <SkeletonCircle size="10" />
+            <VStack align="start" gap={2}>
+              <Skeleton height="16px" width="120px" />
+              <Skeleton height="12px" width="60px" />
+            </VStack>
+          </HStack>
+        </VStack>
       </CardContent>
     </Card>
   );
@@ -108,27 +128,32 @@ function TeamMembers() {
 
   if (!teamData?.teamMembers?.length) {
     return (
-      <Card className="mb-8">
+      <Card mb={8}>
         <CardHeader>
           <CardTitle>Team Members</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">No team members yet.</p>
+          <Text color="gray.500">No team members yet.</Text>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="mb-8">
+    <Card mb={8}>
       <CardHeader>
         <CardTitle>Team Members</CardTitle>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-4">
+        <VStack align="stretch" gap={4}>
           {teamData.teamMembers.map((member, index) => (
-            <li key={member.id} className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
+            <HStack
+              key={member.id}
+              justify="space-between"
+              align="center"
+              gap={4}
+            >
+              <HStack gap={4}>
                 <Avatar.Root>
                   {/* 
                     This app doesn't save profile images, but here
@@ -146,15 +171,15 @@ function TeamMembers() {
                       .join('')}
                   </AvatarFallback>
                 </Avatar.Root>
-                <div>
-                  <p className="font-medium">
+                <VStack align="start" gap={0}>
+                  <Text fontWeight="medium" fontSize="md">
                     {getUserDisplayName(member.user)}
-                  </p>
-                  <p className="text-sm text-muted-foreground capitalize">
+                  </Text>
+                  <Text fontSize="sm" color="gray.500" textTransform="capitalize">
                     {member.role}
-                  </p>
-                </div>
-              </div>
+                  </Text>
+                </VStack>
+              </HStack>
               {index > 1 ? (
                 <form action={removeAction}>
                   <input type="hidden" name="memberId" value={member.id} />
@@ -168,11 +193,13 @@ function TeamMembers() {
                   </Button>
                 </form>
               ) : null}
-            </li>
+            </HStack>
           ))}
-        </ul>
+        </VStack>
         {removeState?.error && (
-          <p className="text-red-500 mt-4">{removeState.error}</p>
+          <Box mt={4} p={3} bg="red.50" borderColor="red.200" borderWidth="1px" borderRadius="md">
+            <Text color="red.600" fontSize="sm">{removeState.error}</Text>
+          </Box>
         )}
       </CardContent>
     </Card>
@@ -181,10 +208,26 @@ function TeamMembers() {
 
 function InviteTeamMemberSkeleton() {
   return (
-    <Card className="h-[260px]">
+    <Card>
       <CardHeader>
         <CardTitle>Invite Team Member</CardTitle>
       </CardHeader>
+      <CardContent>
+        <VStack align="stretch" gap={4}>
+          <Box>
+            <Skeleton height="16px" width="50px" mb={2} />
+            <Skeleton height="40px" />
+          </Box>
+          <Box>
+            <Skeleton height="16px" width="40px" mb={2} />
+            <HStack gap={4}>
+              <Skeleton height="20px" width="80px" />
+              <Skeleton height="20px" width="80px" />
+            </HStack>
+          </Box>
+          <Skeleton height="40px" width="150px" />
+        </VStack>
+      </CardContent>
     </Card>
   );
 }
@@ -211,68 +254,95 @@ function InviteTeamMember() {
         <CardTitle>Invite Team Member</CardTitle>
       </CardHeader>
       <CardContent>
-        <form action={inviteAction} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="mb-2 block text-sm font-medium">
-              Email
-            </label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter email"
-              required
-              disabled={!isOwner}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">Role</label>
-            <RadioGroup.Root
-              defaultValue="member"
-              name="role"
-              className="flex space-x-4"
-              disabled={!isOwner}
-            >
-              <div className="flex items-center space-x-2 mt-2">
-                <RadioGroup.Item value="member" id="member" />
-                <label htmlFor="member" className="cursor-pointer">Member</label>
-              </div>
-              <div className="flex items-center space-x-2 mt-2">
-                <RadioGroup.Item value="owner" id="owner" />
-                <label htmlFor="owner" className="cursor-pointer">Owner</label>
-              </div>
-            </RadioGroup.Root>
-          </div>
-          {inviteState?.error && (
-            <p className="text-red-500">{inviteState.error}</p>
-          )}
-          {inviteState?.success && (
-            <p className="text-green-500">{inviteState.success}</p>
-          )}
-          <Button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white"
-            disabled={isInvitePending || !isOwner}
-          >
-            {isInvitePending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Inviting...
-              </>
-            ) : (
-              <>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Invite Member
-              </>
+        <form action={inviteAction}>
+          <VStack align="stretch" gap={4}>
+            <Box>
+              <label
+                htmlFor="email"
+                style={{
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                  display: 'block',
+                  marginBottom: '0.5rem',
+                  cursor: 'pointer'
+                }}
+              >
+                Email
+              </label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter email"
+                required
+                disabled={!isOwner}
+              />
+            </Box>
+            <Box>
+              <Text
+                fontSize="sm"
+                fontWeight="medium"
+                display="block"
+                mb={2}
+              >
+                Role
+              </Text>
+              <RadioGroup.Root
+                defaultValue="member"
+                name="role"
+                disabled={!isOwner}
+              >
+                <HStack gap={4} mt={2}>
+                  <HStack gap={2}>
+                    <RadioGroup.Item value="member" id="member" />
+                    <label htmlFor="member" style={{ cursor: 'pointer', fontSize: '0.875rem' }}>
+                      Member
+                    </label>
+                  </HStack>
+                  <HStack gap={2}>
+                    <RadioGroup.Item value="owner" id="owner" />
+                    <label htmlFor="owner" style={{ cursor: 'pointer', fontSize: '0.875rem' }}>
+                      Owner
+                    </label>
+                  </HStack>
+                </HStack>
+              </RadioGroup.Root>
+            </Box>
+            {inviteState?.error && (
+              <Box p={3} bg="red.50" borderColor="red.200" borderWidth="1px" borderRadius="md">
+                <Text color="red.600" fontSize="sm">{inviteState.error}</Text>
+              </Box>
             )}
-          </Button>
+            {inviteState?.success && (
+              <Box p={3} bg="green.50" borderColor="green.200" borderWidth="1px" borderRadius="md">
+                <Text color="green.600" fontSize="sm">{inviteState.success}</Text>
+              </Box>
+            )}
+            <Button
+              type="submit"
+              colorScheme="orange"
+              disabled={isInvitePending || !isOwner}
+            >
+              {isInvitePending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Inviting...
+                </>
+              ) : (
+                <>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Invite Member
+                </>
+              )}
+            </Button>
+          </VStack>
         </form>
       </CardContent>
       {!isOwner && (
         <CardFooter>
-          <p className="text-sm text-muted-foreground">
+          <Text fontSize="sm" color="gray.500">
             You must be a team owner to invite new members.
-          </p>
+          </Text>
         </CardFooter>
       )}
     </Card>
@@ -281,17 +351,32 @@ function InviteTeamMember() {
 
 export default function SettingsPage() {
   return (
-    <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium mb-6">Team Settings</h1>
-      <Suspense fallback={<SubscriptionSkeleton />}>
-        <ManageSubscription />
-      </Suspense>
-      <Suspense fallback={<TeamMembersSkeleton />}>
-        <TeamMembers />
-      </Suspense>
-      <Suspense fallback={<InviteTeamMemberSkeleton />}>
-        <InviteTeamMember />
-      </Suspense>
-    </section>
+    <Box
+      flex="1"
+      p={{ base: 4, lg: 8 }}
+      maxW="4xl"
+      mx="auto"
+      w="full"
+    >
+      <Heading
+        as="h1"
+        size={{ base: 'lg', lg: 'xl' }}
+        fontWeight="medium"
+        mb={6}
+      >
+        Team Settings
+      </Heading>
+      <VStack align="stretch" gap={0}>
+        <Suspense fallback={<SubscriptionSkeleton />}>
+          <ManageSubscription />
+        </Suspense>
+        <Suspense fallback={<TeamMembersSkeleton />}>
+          <TeamMembers />
+        </Suspense>
+        <Suspense fallback={<InviteTeamMemberSkeleton />}>
+          <InviteTeamMember />
+        </Suspense>
+      </VStack>
+    </Box>
   );
 }
