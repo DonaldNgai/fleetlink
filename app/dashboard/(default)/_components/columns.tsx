@@ -2,20 +2,9 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CircleCheck, Loader, EllipsisVertical } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Badge } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/react';
-import { Checkbox } from '@chakra-ui/react';
-import { Menu } from '@chakra-ui/react';
-import { Input } from '@chakra-ui/react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@chakra-ui/react';
+import { Badge, Button, Checkbox, Menu, Input } from '@chakra-ui/react';
 
-import { DataTableColumnHeader } from '@ui-column-header';
+import { DataTableColumnHeader } from '@ui';
 import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';
 
 // Type for the joined data from queries

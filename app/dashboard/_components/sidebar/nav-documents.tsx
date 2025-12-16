@@ -44,11 +44,7 @@ export function NavDocuments({
                 </SidebarMenuAction>
               </Menu.Trigger>
               <Menu.Positioner>
-                <Menu.Content
-                className="w-24 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
+                <Menu.Content className="w-24 rounded-lg">
                   <Menu.Item value="open">
                   <Folder />
                   <span>Open</span>

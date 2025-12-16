@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { EllipsisVertical } from 'lucide-react';
 
-import { DataTableColumnHeader } from '@ui-column-header';
+import { DataTableColumnHeader } from '@ui';
 import { Badge } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import { Checkbox } from '@chakra-ui/react';

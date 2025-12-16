@@ -2,7 +2,7 @@
 
 import { Settings } from 'lucide-react';
 
-import { Button } from '@chakra-ui/react';
+import { Button, RadioGroup, HStack } from '@chakra-ui/react';
 import { Popover, PopoverContent, PopoverTrigger } from '@chakra-ui/react';
 import {
   Select,
@@ -11,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@chakra-ui/react';
-// ToggleGroup removed - use Chakra UI ButtonGroup or similar;
 import { updateContentLayout, updateNavbarStyle, updateThemeMode, updateThemePreset } from '@ui';
 import { setValueToCookie } from '@utils';
 import { usePreferencesStore } from '@utils';
@@ -60,7 +59,7 @@ export function LayoutControls(props: LayoutControlsProps) {
   };
 
   return (
-    <Popover>
+    <Popover.Root>
       <PopoverTrigger asChild>
         <Button size="icon">
           <Settings />
@@ -103,112 +102,105 @@ export function LayoutControls(props: LayoutControlsProps) {
 
             <div className="space-y-1">
               <label className="text-xs font-medium">Mode</label>
-              <ToggleGroup
-                className="w-full"
-                size="sm"
-                variant="outline"
-                type="single"
+              <RadioGroup.Root
                 value={themeMode}
                 onValueChange={value => handleValueChange('theme_mode', value)}
               >
-                <ToggleGroupItem className="text-xs" value="light" aria-label="Toggle inset">
-                  Light
-                </ToggleGroupItem>
-                <ToggleGroupItem className="text-xs" value="dark" aria-label="Toggle sidebar">
-                  Dark
-                </ToggleGroupItem>
-              </ToggleGroup>
+                <HStack gap={2}>
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="light" id="mode-light" />
+                    <label htmlFor="mode-light" className="text-xs cursor-pointer">Light</label>
+                  </HStack>
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="dark" id="mode-dark" />
+                    <label htmlFor="mode-dark" className="text-xs cursor-pointer">Dark</label>
+                  </HStack>
+                </HStack>
+              </RadioGroup.Root>
             </div>
 
             <div className="space-y-1">
               <label className="text-xs font-medium">Sidebar Variant</label>
-              <ToggleGroup
-                className="w-full"
-                size="sm"
-                variant="outline"
-                type="single"
+              <RadioGroup.Root
                 value={variant}
                 onValueChange={value => handleValueChange('sidebar_variant', value)}
               >
-                <ToggleGroupItem className="text-xs" value="inset" aria-label="Toggle inset">
-                  Inset
-                </ToggleGroupItem>
-                <ToggleGroupItem className="text-xs" value="sidebar" aria-label="Toggle sidebar">
-                  Sidebar
-                </ToggleGroupItem>
-                <ToggleGroupItem className="text-xs" value="floating" aria-label="Toggle floating">
-                  Floating
-                </ToggleGroupItem>
-              </ToggleGroup>
+                <HStack gap={2} flexWrap="wrap">
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="inset" id="variant-inset" />
+                    <label htmlFor="variant-inset" className="text-xs cursor-pointer">Inset</label>
+                  </HStack>
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="sidebar" id="variant-sidebar" />
+                    <label htmlFor="variant-sidebar" className="text-xs cursor-pointer">Sidebar</label>
+                  </HStack>
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="floating" id="variant-floating" />
+                    <label htmlFor="variant-floating" className="text-xs cursor-pointer">Floating</label>
+                  </HStack>
+                </HStack>
+              </RadioGroup.Root>
             </div>
 
             <div className="space-y-1">
               <label className="text-xs font-medium">Navbar Style</label>
-              <ToggleGroup
-                className="w-full"
-                size="sm"
-                variant="outline"
-                type="single"
+              <RadioGroup.Root
                 value={navbarStyle}
                 onValueChange={value => handleValueChange('navbar_style', value)}
               >
-                <ToggleGroupItem className="text-xs" value="sticky" aria-label="Toggle sticky">
-                  Sticky
-                </ToggleGroupItem>
-                <ToggleGroupItem className="text-xs" value="scroll" aria-label="Toggle scroll">
-                  Scroll
-                </ToggleGroupItem>
-              </ToggleGroup>
+                <HStack gap={2}>
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="sticky" id="navbar-sticky" />
+                    <label htmlFor="navbar-sticky" className="text-xs cursor-pointer">Sticky</label>
+                  </HStack>
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="scroll" id="navbar-scroll" />
+                    <label htmlFor="navbar-scroll" className="text-xs cursor-pointer">Scroll</label>
+                  </HStack>
+                </HStack>
+              </RadioGroup.Root>
             </div>
 
             <div className="space-y-1">
               <label className="text-xs font-medium">Sidebar Collapsible</label>
-              <ToggleGroup
-                className="w-full"
-                size="sm"
-                variant="outline"
-                type="single"
+              <RadioGroup.Root
                 value={collapsible}
                 onValueChange={value => handleValueChange('sidebar_collapsible', value)}
               >
-                <ToggleGroupItem className="text-xs" value="icon" aria-label="Toggle icon">
-                  Icon
-                </ToggleGroupItem>
-                <ToggleGroupItem
-                  className="text-xs"
-                  value="offcanvas"
-                  aria-label="Toggle offcanvas"
-                >
-                  OffCanvas
-                </ToggleGroupItem>
-              </ToggleGroup>
+                <HStack gap={2}>
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="icon" id="collapsible-icon" />
+                    <label htmlFor="collapsible-icon" className="text-xs cursor-pointer">Icon</label>
+                  </HStack>
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="offcanvas" id="collapsible-offcanvas" />
+                    <label htmlFor="collapsible-offcanvas" className="text-xs cursor-pointer">OffCanvas</label>
+                  </HStack>
+                </HStack>
+              </RadioGroup.Root>
             </div>
 
             <div className="space-y-1">
               <label className="text-xs font-medium">Content Layout</label>
-              <ToggleGroup
-                className="w-full"
-                size="sm"
-                variant="outline"
-                type="single"
+              <RadioGroup.Root
                 value={contentLayout}
                 onValueChange={value => handleValueChange('content_layout', value)}
               >
-                <ToggleGroupItem className="text-xs" value="centered" aria-label="Toggle centered">
-                  Centered
-                </ToggleGroupItem>
-                <ToggleGroupItem
-                  className="text-xs"
-                  value="full-width"
-                  aria-label="Toggle full-width"
-                >
-                  Full Width
-                </ToggleGroupItem>
-              </ToggleGroup>
+                <HStack gap={2}>
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="centered" id="layout-centered" />
+                    <label htmlFor="layout-centered" className="text-xs cursor-pointer">Centered</label>
+                  </HStack>
+                  <HStack gap={1}>
+                    <RadioGroup.Item value="full-width" id="layout-full-width" />
+                    <label htmlFor="layout-full-width" className="text-xs cursor-pointer">Full Width</label>
+                  </HStack>
+                </HStack>
+              </RadioGroup.Root>
             </div>
           </div>
         </div>
       </PopoverContent>
-    </Popover>
+    </Popover.Root>
   );
 }

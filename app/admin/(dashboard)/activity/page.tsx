@@ -1,4 +1,14 @@
-import { CardRoot as Card, CardBody as CardContent, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
+import {
+  CardRoot as Card,
+  CardBody as CardContent,
+  CardHeader,
+  Heading as CardTitle,
+  Box,
+  Heading,
+  VStack,
+  HStack,
+  Text,
+} from '@chakra-ui/react';
 import {
   Settings,
   LogOut,
@@ -72,17 +82,17 @@ export default async function ActivityPage() {
   const logs = await getActivityLogs();
 
   return (
-    <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">
+    <Box flex="1" maxW="4xl" w="full">
+      <Heading as="h1" size={{ base: 'lg', lg: 'xl' }} fontWeight="medium" mb={6}>
         Activity Log
-      </h1>
+      </Heading>
       <Card>
         <CardHeader>
           <CardTitle>Recent Activity</CardTitle>
         </CardHeader>
         <CardContent>
           {logs.length > 0 ? (
-            <ul className="space-y-4">
+            <VStack align="stretch" gap={4}>
               {logs.map((log) => {
                 const Icon = iconMap[log.action as ActivityType] || Settings;
                 const formattedAction = formatAction(
@@ -90,37 +100,51 @@ export default async function ActivityPage() {
                 );
 
                 return (
-                  <li key={log.id} className="flex items-center space-x-4">
-                    <div className="bg-orange-100 rounded-full p-2">
+                  <HStack key={log.id} align="start" gap={4}>
+                    <Box
+                      bg="orange.50"
+                      borderRadius="full"
+                      p={2}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
                       <Icon className="w-5 h-5 text-orange-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">
+                    </Box>
+                    <VStack align="start" gap={0} flex="1">
+                      <Text fontWeight="medium" fontSize="sm">
                         {formattedAction}
                         {log.ipAddress && ` from IP ${log.ipAddress}`}
-                      </p>
-                      <p className="text-xs text-gray-500">
+                      </Text>
+                      <Text fontSize="xs" color="gray.500">
                         {getRelativeTime(new Date(log.timestamp))}
-                      </p>
-                    </div>
-                  </li>
+                      </Text>
+                    </VStack>
+                  </HStack>
                 );
               })}
-            </ul>
+            </VStack>
           ) : (
-            <div className="flex flex-col items-center justify-center text-center py-12">
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              textAlign="center"
+              py={12}
+            >
               <AlertCircle className="h-12 w-12 text-orange-500 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <Heading as="h3" size="md" fontWeight="semibold" mb={2}>
                 No activity yet
-              </h3>
-              <p className="text-sm text-gray-500 max-w-sm">
+              </Heading>
+              <Text fontSize="sm" color="gray.500" maxW="sm">
                 When you perform actions like signing in or updating your
                 account, they'll appear here.
-              </p>
-            </div>
+              </Text>
+            </Box>
           )}
         </CardContent>
       </Card>
-    </section>
+    </Box>
   );
 }

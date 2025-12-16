@@ -1,15 +1,27 @@
 'use client';
 
 import { useActionState } from 'react';
-import { Button } from '@chakra-ui/react';
-import { Input } from '@chakra-ui/react';
-import { CardRoot as Card, CardBody as CardContent, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
+import {
+  Button,
+  Input,
+  CardRoot as Card,
+  CardBody as CardContent,
+  CardHeader,
+  Heading as CardTitle,
+  Box,
+  VStack,
+  Text,
+  Alert,
+  AlertIndicator,
+  AlertTitle,
+  AlertDescription,
+} from '@chakra-ui/react';
 import { Loader2 } from 'lucide-react';
 import { User } from '@/lib/db/schema';
 import useSWR from 'swr';
 import { Suspense } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { getUserByEmail } from '@/app/actions/user';
+import { getUserByEmail, updateAccount } from '@/app/actions/user';
 
 type ActionState = {
   name?: string;
@@ -29,11 +41,11 @@ function AccountForm({
   emailValue = ''
 }: AccountFormProps) {
   return (
-    <>
-      <div>
-        <label htmlFor="name" className="mb-2 block text-sm font-medium">
+    <VStack align="stretch" gap={4}>
+      <Box>
+        <Text as="label" htmlFor="name" fontSize="sm" fontWeight="medium" display="block" mb={2}>
           Name
-        </label>
+        </Text>
         <Input
           id="name"
           name="name"
@@ -41,11 +53,11 @@ function AccountForm({
           defaultValue={state.name || nameValue}
           required
         />
-      </div>
-      <div>
-        <label htmlFor="email" className="mb-2 block text-sm font-medium">
+      </Box>
+      <Box>
+        <Text as="label" htmlFor="email" fontSize="sm" fontWeight="medium" display="block" mb={2}>
           Email
-        </label>
+        </Text>
         <Input
           id="email"
           name="email"
@@ -54,8 +66,8 @@ function AccountForm({
           defaultValue={emailValue}
           required
         />
-      </div>
-    </>
+      </Box>
+    </VStack>
   );
 }
 
@@ -84,43 +96,59 @@ export default function GeneralPage() {
   );
 
   return (
-    <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">
+    <Box flex="1" maxW="4xl" w="full">
+      <Heading as="h1" size={{ base: 'lg', lg: 'xl' }} fontWeight="medium" mb={6}>
         General Settings
-      </h1>
+      </Heading>
 
       <Card>
         <CardHeader>
           <CardTitle>Account Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4" action={formAction}>
-            <Suspense fallback={<AccountForm state={state} />}>
-              <AccountFormWithData state={state} />
-            </Suspense>
-            {state.error && (
-              <p className="text-red-500 text-sm">{state.error}</p>
-            )}
-            {state.success && (
-              <p className="text-green-500 text-sm">{state.success}</p>
-            )}
-            <Button
-              type="submit"
-              className="bg-orange-500 hover:bg-orange-600 text-white"
-              disabled={isPending}
-            >
-              {isPending ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                'Save Changes'
+          <form action={formAction}>
+            <VStack align="stretch" gap={4}>
+              <Suspense fallback={<AccountForm state={state} />}>
+                <AccountFormWithData state={state} />
+              </Suspense>
+              
+              {state.error && (
+                <Alert.Root status="error" borderRadius="md">
+                  <AlertIndicator />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{state.error}</AlertDescription>
+                </Alert.Root>
               )}
-            </Button>
+              
+              {state.success && (
+                <Alert.Root status="success" borderRadius="md">
+                  <AlertIndicator />
+                  <AlertTitle>Success</AlertTitle>
+                  <AlertDescription>{state.success}</AlertDescription>
+                </Alert.Root>
+              )}
+              
+              <Box>
+                <Button
+                  type="submit"
+                  colorScheme="orange"
+                  disabled={isPending}
+                  width={{ base: 'full', sm: 'auto' }}
+                >
+                  {isPending ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Changes'
+                  )}
+                </Button>
+              </Box>
+            </VStack>
           </form>
         </CardContent>
       </Card>
-    </section>
+    </Box>
   );
 }

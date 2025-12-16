@@ -1,8 +1,8 @@
 'use client';
 
-import { SidebarMenu, SidebarMenuItem } from '@chakra-ui/react';
+import { SidebarMenu, SidebarMenuItem } from '@ui';
 import { User } from '@/lib/db/schema';
-import { AccountSwitcher } from './account-switcher';
+import { AccountSwitcher } from '@ui';
 
 export function NavUser({ users }: { readonly users: ReadonlyArray<User> }) {
   return (

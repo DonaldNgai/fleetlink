@@ -12,11 +12,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@chakra-ui/react';
+} from '@ui';
 import { APP_CONFIG } from '@/config/app-config';
 import { User } from '@/lib/db/schema';
 import useSWR from 'swr';
-import { sidebarItems } from '@chakra-ui/react';
+import { sidebarItems } from '@ui';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { getUserByEmail } from '@/app/actions/user';
 

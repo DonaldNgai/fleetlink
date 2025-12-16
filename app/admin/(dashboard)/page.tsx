@@ -18,7 +18,11 @@ import {
   RadioGroup,
   Skeleton,
   SkeletonText,
-  SkeletonCircle
+  SkeletonCircle,
+  Alert,
+  AlertIndicator,
+  AlertTitle,
+  AlertDescription,
 } from '@chakra-ui/react';
 import { AvatarFallback } from '@ui';
 import { customerPortalAction } from '@/lib/payments/actions';
@@ -57,7 +61,7 @@ function ManageSubscription() {
   const { data: teamData } = useSWR<TeamDataWithMembers>('/api/team', fetcher);
 
   return (
-    <Card mb={8}>
+    <Card>
       <CardHeader>
         <CardTitle>Team Subscription</CardTitle>
       </CardHeader>
@@ -197,9 +201,11 @@ function TeamMembers() {
           ))}
         </VStack>
         {removeState?.error && (
-          <Box mt={4} p={3} bg="red.50" borderColor="red.200" borderWidth="1px" borderRadius="md">
-            <Text color="red.600" fontSize="sm">{removeState.error}</Text>
-          </Box>
+          <Alert.Root status="error" borderRadius="md" mt={4}>
+            <AlertIndicator />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{removeState.error}</AlertDescription>
+          </Alert.Root>
         )}
       </CardContent>
     </Card>
@@ -257,16 +263,7 @@ function InviteTeamMember() {
         <form action={inviteAction}>
           <VStack align="stretch" gap={4}>
             <Box>
-              <label
-                htmlFor="email"
-                style={{
-                  fontSize: '0.875rem',
-                  fontWeight: '500',
-                  display: 'block',
-                  marginBottom: '0.5rem',
-                  cursor: 'pointer'
-                }}
-              >
+              <label htmlFor="email" className="block text-sm font-medium mb-2">
                 Email
               </label>
               <Input
@@ -295,13 +292,13 @@ function InviteTeamMember() {
                 <HStack gap={4} mt={2}>
                   <HStack gap={2}>
                     <RadioGroup.Item value="member" id="member" />
-                    <label htmlFor="member" style={{ cursor: 'pointer', fontSize: '0.875rem' }}>
+                    <label htmlFor="member" className="text-sm cursor-pointer">
                       Member
                     </label>
                   </HStack>
                   <HStack gap={2}>
                     <RadioGroup.Item value="owner" id="owner" />
-                    <label htmlFor="owner" style={{ cursor: 'pointer', fontSize: '0.875rem' }}>
+                    <label htmlFor="owner" className="text-sm cursor-pointer">
                       Owner
                     </label>
                   </HStack>
@@ -309,20 +306,26 @@ function InviteTeamMember() {
               </RadioGroup.Root>
             </Box>
             {inviteState?.error && (
-              <Box p={3} bg="red.50" borderColor="red.200" borderWidth="1px" borderRadius="md">
-                <Text color="red.600" fontSize="sm">{inviteState.error}</Text>
-              </Box>
+              <Alert.Root status="error" borderRadius="md">
+                <AlertIndicator />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{inviteState.error}</AlertDescription>
+              </Alert.Root>
             )}
             {inviteState?.success && (
-              <Box p={3} bg="green.50" borderColor="green.200" borderWidth="1px" borderRadius="md">
-                <Text color="green.600" fontSize="sm">{inviteState.success}</Text>
-              </Box>
+              <Alert.Root status="success" borderRadius="md">
+                <AlertIndicator />
+                <AlertTitle>Success</AlertTitle>
+                <AlertDescription>{inviteState.success}</AlertDescription>
+              </Alert.Root>
             )}
-            <Button
-              type="submit"
-              colorScheme="orange"
-              disabled={isInvitePending || !isOwner}
-            >
+            <Box>
+              <Button
+                type="submit"
+                colorScheme="orange"
+                disabled={isInvitePending || !isOwner}
+                width={{ base: 'full', sm: 'auto' }}
+              >
               {isInvitePending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -334,7 +337,8 @@ function InviteTeamMember() {
                   Invite Member
                 </>
               )}
-            </Button>
+              </Button>
+            </Box>
           </VStack>
         </form>
       </CardContent>
@@ -351,13 +355,7 @@ function InviteTeamMember() {
 
 export default function SettingsPage() {
   return (
-    <Box
-      flex="1"
-      p={{ base: 4, lg: 8 }}
-      maxW="4xl"
-      mx="auto"
-      w="full"
-    >
+    <Box flex="1" maxW="4xl" w="full">
       <Heading
         as="h1"
         size={{ base: 'lg', lg: 'xl' }}
@@ -366,7 +364,7 @@ export default function SettingsPage() {
       >
         Team Settings
       </Heading>
-      <VStack align="stretch" gap={0}>
+      <VStack align="stretch" gap={6}>
         <Suspense fallback={<SubscriptionSkeleton />}>
           <ManageSubscription />
         </Suspense>

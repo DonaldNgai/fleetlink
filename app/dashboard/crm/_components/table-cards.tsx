@@ -2,9 +2,8 @@
 
 import { Download } from 'lucide-react';
 
-import { DataTable } from '@ui';
-import { DataTablePagination } from '@ui-pagination';
-import { DataTableViewOptions } from '@ui-view-options';
+import { DataTable, DataTablePagination, DataTableViewOptions } from '@ui';
+import { useDataTableInstance } from '@utils';
 import { Button } from '@chakra-ui/react';
 import {
   CardRoot as Card,
@@ -14,7 +13,6 @@ import {
   Text as CardDescription,
   Box as CardAction,
 } from '@chakra-ui/react';
-import { useDataTableInstance } from '@ui';
 
 import { recentLeadsColumns, type BookingWithSupply } from './columns.crm';
 import { recentLeadsData } from './crm.config';

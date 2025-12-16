@@ -12,14 +12,11 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from '@chakra-ui/react';
-import { Tabs, TabPanels as TabsContent, TabList as TabsList, Tab as TabsTrigger } from '@chakra-ui/react';
+import { Tabs } from '@chakra-ui/react';
 
-import { DataTable as DataTableNew } from '@chakra-ui/react';
-import { DataTablePagination } from '@ui-pagination';
-import { DataTableViewOptions } from '@ui-view-options';
-import { withDndColumn } from '@ui';
+import { DataTable as DataTableNew, DataTablePagination, DataTableViewOptions, withDndColumn } from '@ui';
+import { useDataTableInstance } from '@utils';
 
 import { dashboardColumns } from './columns';
 import { BookingWithSupply } from './schema';
@@ -36,7 +33,7 @@ export function DataTable({ data: initialData }: { data: BookingWithSupply[] }) 
   });
 
   return (
-    <Tabs defaultValue="all" className="w-full flex-col justify-start gap-6">
+    <Tabs.Root defaultValue="all" className="w-full flex-col justify-start gap-6">
       {/* <div className="flex items-center justify-between">
         <label htmlFor="view-selector" className="sr-only">
           View
@@ -64,24 +61,24 @@ export function DataTable({ data: initialData }: { data: BookingWithSupply[] }) 
           </Button>
         </div>
       </div> */}
-      <TabsContent value="all" className="relative flex flex-col gap-4 overflow-auto">
+      <Tabs.Content value="all" className="relative flex flex-col gap-4 overflow-auto">
         <div className="overflow-hidden rounded-lg border">
           <DataTableNew dndEnabled table={table} columns={columns} onReorder={setData} />
         </div>
         <DataTablePagination table={table} />
-      </TabsContent>
-      <TabsContent value="active" className="relative flex flex-col gap-4 overflow-auto">
+      </Tabs.Content>
+      <Tabs.Content value="active" className="relative flex flex-col gap-4 overflow-auto">
         <div className="overflow-hidden rounded-lg border">
           <DataTableNew dndEnabled table={table} columns={columns} onReorder={setData} />
         </div>
         <DataTablePagination table={table} />
-      </TabsContent>
-      <TabsContent value="unpaid" className="relative flex flex-col gap-4 overflow-auto">
+      </Tabs.Content>
+      <Tabs.Content value="unpaid" className="relative flex flex-col gap-4 overflow-auto">
         <div className="overflow-hidden rounded-lg border">
           <DataTableNew dndEnabled table={table} columns={columns} onReorder={setData} />
         </div>
         <DataTablePagination table={table} />
-      </TabsContent>
-    </Tabs>
+      </Tabs.Content>
+    </Tabs.Root>
   );
 }

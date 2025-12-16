@@ -14,7 +14,7 @@ import {
   Heading as CardTitle,
 } from '@chakra-ui/react';
 import { Separator } from '@chakra-ui/react';
-import { Tabs, TabPanels as TabsContent, TabList as TabsList, Tab as TabsTrigger } from '@chakra-ui/react';
+import { Tabs } from '@chakra-ui/react';
 import { formatCurrency, cn } from '@utils';
 
 function ChipSVG() {
@@ -133,14 +133,14 @@ export function AccountOverview() {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <Tabs className="gap-4" defaultValue="virtual">
-          <TabsList className="w-full">
-            <TabsTrigger value="virtual">Virtual</TabsTrigger>
-            <TabsTrigger value="physical" disabled>
+        <Tabs.Root className="gap-4" defaultValue="virtual">
+          <Tabs.List className="w-full">
+            <Tabs.Trigger value="virtual">Virtual</Tabs.Trigger>
+            <Tabs.Trigger value="physical" disabled>
               Physical
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="virtual">
+            </Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="virtual">
             <div className="space-y-4">
               <div className="bg-primary relative aspect-8/5 w-full max-w-96 overflow-hidden rounded-xl perspective-distant">
                 <div className="absolute top-6 left-6">
@@ -229,11 +229,11 @@ export function AccountOverview() {
                 </Button>
               </div>
             </div>
-          </TabsContent>
-          <TabsContent value="physical">
+          </Tabs.Content>
+          <Tabs.Content value="physical">
             Physical card details are currently unavailable
-          </TabsContent>
-        </Tabs>
+          </Tabs.Content>
+        </Tabs.Root>
       </CardContent>
     </Card>
   );

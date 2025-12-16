@@ -2,8 +2,7 @@ import { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 
 import { AppSidebar } from './_components/sidebar/app-sidebar';
-import { Separator } from '@chakra-ui/react';
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@chakra-ui/react';
+import { Separator, SidebarInset, SidebarProvider, SidebarTrigger } from '@ui';
 import { cn } from '@utils';
 import { getPreference } from '@utils/server/preferences';
 import { Toaster } from '@chakra-ui/react';
@@ -25,9 +24,8 @@ import {
   type NavbarStyle,
 } from '@utils';
 
-import { AccountSwitcher } from './_components/sidebar/account-switcher';
+import { AccountSwitcher, SearchDialog } from '@ui';
 import { LayoutControls } from './_components/sidebar/layout-controls';
-import { SearchDialog } from './_components/sidebar/search-dialog';
 import { ThemeSwitcher } from './_components/sidebar/theme-switcher';
 import { getUser } from '@/lib/db/queries';
 
@@ -93,7 +91,12 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
               <div className="flex items-center gap-2">
                 {/* <LayoutControls {...layoutPreferences} /> */}
                 {/* <ThemeSwitcher /> */}
-                <AccountSwitcher users={user ? [user] : []} />
+                <AccountSwitcher 
+                  users={user ? [user] : []}
+                  loginRedirectPath={loginRedirectPath}
+                  adminRedirectPath={adminRedirectPath}
+                  logoutRedirectPath={logoutRedirectPath}
+                />
               </div>
             </div>
           </header>

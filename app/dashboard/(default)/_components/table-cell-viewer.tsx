@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@chakra-ui/react';
-import { Separator } from '@chakra-ui/react';
+import { Separator } from '@ui';
 import { useIsMobile } from '@ui';
 
 import type { BookingWithSupply } from './schema';

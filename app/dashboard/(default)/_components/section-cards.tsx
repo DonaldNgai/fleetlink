@@ -1,13 +1,12 @@
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
-import { Badge } from '@chakra-ui/react';
+import { Badge, Box } from '@chakra-ui/react';
 import {
-  Card,
-  CardAction,
+  CardRoot as Card,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  Heading as CardTitle,
 } from '@chakra-ui/react';
 
 export function SectionCards() {
@@ -19,12 +18,12 @@ export function SectionCards() {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             53 hrs
           </CardTitle>
-          <CardAction>
+          <Box className="mt-2">
             <Badge variant="outline">
               <TrendingUp />
               +18.2%
             </Badge>
-          </CardAction>
+          </Box>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
@@ -39,12 +38,12 @@ export function SectionCards() {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             2.4 hrs
           </CardTitle>
-          <CardAction>
+          <Box className="mt-2">
             <Badge variant="outline">
               <TrendingDown />
               -15%
             </Badge>
-          </CardAction>
+          </Box>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
@@ -59,11 +58,11 @@ export function SectionCards() {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             0
           </CardTitle>
-          <CardAction>
+          <Box className="mt-2">
             <Badge variant="outline" className="border-green-500 text-green-500">
               All Paid
             </Badge>
-          </CardAction>
+          </Box>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">No outstanding invoices</div>
@@ -76,12 +75,12 @@ export function SectionCards() {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             3
           </CardTitle>
-          <CardAction>
+          <Box className="mt-2">
             <Badge variant="outline">
               <TrendingUp />
               +300%
             </Badge>
-          </CardAction>
+          </Box>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">

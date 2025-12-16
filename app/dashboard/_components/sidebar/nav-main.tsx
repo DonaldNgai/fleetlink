@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { PlusCircleIcon, MailIcon, ChevronRight } from 'lucide-react';
 
 import { Button } from '@chakra-ui/react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@chakra-ui/react';
 import { Menu } from '@chakra-ui/react';
 import {
   SidebarGroup,
@@ -19,8 +18,9 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   useSidebar,
-} from '@chakra-ui/react';
-import { type NavGroup, type NavMainItem } from '@chakra-ui/react';
+} from '@ui';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@ui';
+import { type NavGroup, type NavMainItem } from '@ui';
 import { loginRedirectPath } from '@/config/app-config';
 
 interface NavMainProps {
@@ -121,9 +121,9 @@ const NavItemCollapsed = ({
             <span>{item.title}</span>
             <ChevronRight />
           </SidebarMenuButton>
-        </DropdownMenuTrigger>
+        </Menu.Trigger>
         <Menu.Positioner>
-          <Menu.Content className="w-50 space-y-1" side="right" align="start">
+          <Menu.Content className="w-50 space-y-1">
           {item.subItems?.map(subItem => (
             <Menu.Item key={subItem.title} value={subItem.title}>
               <SidebarMenuSubButton
