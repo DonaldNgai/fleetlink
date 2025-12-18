@@ -1,8 +1,6 @@
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
-import { getTeamForUser } from '@repo/next-utils/db/queries';
-import { SWRConfig } from 'swr';
 import { APP_CONFIG } from '@/config/app-config';
 import { ChakraUIProvider } from '@ui';
 
@@ -25,18 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="min-h-[100dvh]">
         <ChakraUIProvider>
-          <SWRConfig
-            value={{
-              fallback: {
-                // We do NOT await here
-                // Only components that read this data will suspend
-                // Wrap in Promise.resolve to handle errors gracefully
-                '/api/team': getTeamForUser().catch(() => null),
-              },
-            }}
-          >
             {children}
-          </SWRConfig>
         </ChakraUIProvider>
       </body>
     </html>
