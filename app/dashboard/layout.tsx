@@ -5,7 +5,7 @@ import { AppSidebar } from './_components/sidebar/app-sidebar';
 import { Separator, SidebarInset, SidebarProvider, SidebarTrigger } from '@ui';
 import { cn } from '@utils';
 import { getPreference } from '@utils/server/preferences';
-import { Toaster } from '@chakra-ui/react';
+import { Toaster } from '@ui';
 import { PreferencesStoreProvider } from '@utils';
 import {
   THEME_MODE_VALUES,
@@ -27,12 +27,13 @@ import {
 import { AccountSwitcher, SearchDialog } from '@ui';
 import { LayoutControls } from './_components/sidebar/layout-controls';
 import { ThemeSwitcher } from './_components/sidebar/theme-switcher';
-import { getUser } from '@repo/next-utils/db/queries';
+import { getCurrentUserFullDetails } from '@utils/auth/users';
+import { adminRedirectPath, loginRedirectPath, logoutRedirectPath } from '@/config/app-config';
 
 
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
   // Get user data server-side instead of using SWR
-  const user = await getUser();
+  const user = await getCurrentUserFullDetails();
 
   const themeMode = await getPreference<ThemeMode>('theme_mode', THEME_MODE_VALUES, 'dark');
   const themePreset = await getPreference<ThemePreset>(
@@ -93,7 +94,12 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
                 {/* <LayoutControls {...layoutPreferences} /> */}
                 {/* <ThemeSwitcher /> */}
                 <AccountSwitcher 
-                  users={user ? [user] : []}
+                  users={user ? [{
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.app_metadata?.role as string | undefined || null,
+                  }] : []}
                   loginRedirectPath={loginRedirectPath}
                   adminRedirectPath={adminRedirectPath}
                   logoutRedirectPath={logoutRedirectPath}

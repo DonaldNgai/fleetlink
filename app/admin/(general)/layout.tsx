@@ -6,7 +6,7 @@ import { AdminSidebar } from '@ui';
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider defaultOpen={true}>
-      <AdminSidebar variant="inset" collapsible="icon" />
+        <AdminSidebar variant="inset" collapsible="icon" />
       <SidebarInset>
         <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger />

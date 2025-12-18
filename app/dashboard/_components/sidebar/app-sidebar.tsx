@@ -1,9 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-
-import { Settings, CircleHelp, Search, Database, ClipboardList, File, Command } from 'lucide-react';
-
+import { usePathname } from 'next/navigation';
 import {
   Sidebar,
   SidebarContent,
@@ -12,92 +10,124 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
 } from '@ui';
 import { APP_CONFIG } from '@/config/app-config';
-import { User } from '@repo/next-utils/db/schema';
+import { User } from '@utils/auth/users';
 import useSWR from 'swr';
-import { sidebarItems } from '@ui';
-import { useUser } from '@auth0/nextjs-auth0/client';
-import { getUserByEmail } from '@/app/actions/user';
-
-import { NavMain } from './nav-main';
+import { getCurrentUserFullDetails } from '@utils/auth/users';
 import { NavUser } from './nav-user';
+import {
+  LayoutDashboard,
+  ChartBar,
+  Mail,
+  MessageSquare,
+  type LucideIcon,
+} from 'lucide-react';
 
-const data = {
-  navSecondary: [
-    {
-      title: 'Settings',
-      url: '#',
-      icon: Settings,
-    },
-    {
-      title: 'Get Help',
-      url: '#',
-      icon: CircleHelp,
-    },
-    {
-      title: 'Search',
-      url: '#',
-      icon: Search,
-    },
-  ],
-  documents: [
-    {
-      name: 'Data Library',
-      url: '#',
-      icon: Database,
-    },
-    {
-      name: 'Reports',
-      url: '#',
-      icon: ClipboardList,
-    },
-    {
-      name: 'Word Assistant',
-      url: '#',
-      icon: File,
-    },
-  ],
-};
+interface NavItem {
+  title: string;
+  url: string;
+  icon: LucideIcon;
+  badge?: string;
+}
+
+const navigation: { label: string; items: NavItem[] }[] = [
+  {
+    label: 'Dashboards',
+    items: [
+      { title: 'Requests', url: '/dashboard', icon: LayoutDashboard },
+      { title: 'Fleet', url: '/dashboard/crm', icon: ChartBar },
+    ],
+  },
+  {
+    label: 'Actions',
+    items: [
+      { title: 'Request Equipment', url: '/dashboard/request-equipment', icon: Mail },
+      { title: 'Submit Equipment To Rent', url: '/dashboard/submit-equipment', icon: MessageSquare },
+    ],
+  },
+];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user: auth0User } = useUser();
+  const pathname = usePathname();
   const { data: user } = useSWR<User | null>(
-    auth0User?.email ? `user-${auth0User.email}` : null,
-    async () => {
-      if (!auth0User?.email) return null;
-      return getUserByEmail(auth0User.email);
-    }
+    'current-user',
+    getCurrentUserFullDetails
   );
+
+  const isActive = (url: string) => {
+    if (url === '/dashboard') {
+      return pathname === '/dashboard';
+    }
+    return pathname?.startsWith(url);
+  };
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
+      <SidebarHeader className="border-b px-4 py-4">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <Link href="/dashboard">
+            <SidebarMenuButton asChild size="lg" className="data-[slot=sidebar-menu-button]:!p-2">
+              <Link href="/dashboard" className="flex items-center gap-2">
                 <img
                   src="/logo.png"
                   alt={APP_CONFIG.name}
-                  className="h-5 w-auto group-data-[collapsible=icon]:hidden"
+                  className="h-6 w-auto group-data-[collapsible=icon]:hidden"
                 />
                 <img
                   src="/logo-icon.png"
                   alt={APP_CONFIG.name}
-                  className="h-6 w-auto hidden group-data-[collapsible=icon]:block"
+                  className="h-7 w-auto hidden group-data-[collapsible=icon]:block"
                 />
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={sidebarItems} />
-        {/* <NavDocuments items={data.documents} /> */}
-        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+      
+      <SidebarContent className="px-2 py-4">
+        {navigation.map((section, sectionIndex) => (
+          <SidebarGroup key={sectionIndex} className="mb-6 last:mb-0">
+            {section.label && (
+              <SidebarGroupLabel className="px-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                {section.label}
+              </SidebarGroupLabel>
+            )}
+            <SidebarGroupContent>
+              <SidebarMenu className="space-y-1">
+                {section.items.map((item) => {
+                  const active = isActive(item.url);
+                  return (
+                    <SidebarMenuItem key={item.url}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={active}
+                        tooltip={item.title}
+                        className="w-full justify-start gap-3 px-3 py-2.5"
+                      >
+                        <Link href={item.url}>
+                          <item.icon className="h-4 w-4 shrink-0" />
+                          <span className="font-medium">{item.title}</span>
+                          {item.badge && (
+                            <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                              {item.badge}
+                            </span>
+                          )}
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
-      <SidebarFooter>
+
+      <SidebarFooter className="border-t p-2">
         <NavUser users={user ? [user] : []} />
       </SidebarFooter>
     </Sidebar>

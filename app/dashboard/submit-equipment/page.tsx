@@ -1,10 +1,10 @@
 import { JotForm } from '@ui';
-import { getUser } from '@repo/next-utils/db/queries';
+import { getCurrentUserFullDetails } from '@utils/auth/users';
 import { getCustomerForCurrentUser } from '@repo/next-utils/db/queries/customer';
 
 export default async function Page() {
   // Get the logged-in user
-  const user = await getUser();
+  const user = await getCurrentUserFullDetails();
   const customer = await getCustomerForCurrentUser();
 
   // Build URL parameters from user data if logged in
@@ -18,7 +18,7 @@ export default async function Page() {
       urlParams['email17'] = user.email;
     }
     // Add user ID for reference
-    urlParams['userId'] = user.id.toString();
+    urlParams['userId'] = user.id;
   }
 
   // Add customer information if found
