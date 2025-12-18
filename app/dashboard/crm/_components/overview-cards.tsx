@@ -12,7 +12,7 @@ import {
   CardHeader,
   Heading as CardTitle,
 } from '@chakra-ui/react';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@chakra-ui/react';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@ui';
 
 import {
   leadsChartData,

@@ -7,10 +7,9 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@chakra-ui/react';
+} from '@ui';
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
@@ -24,10 +23,12 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValueText,
+  SelectControl,
+  SelectPositioner,
 } from '@chakra-ui/react';
 import { Separator } from '@ui';
-import { useIsMobile } from '@ui';
+import { useIsMobile } from '@utils';
 
 import type { BookingWithSupply } from './schema';
 
@@ -55,13 +56,14 @@ export function TableCellViewer({ item }: { item: BookingWithSupply }) {
   const isMobile = useIsMobile();
 
   return (
-    <Drawer direction={isMobile ? 'bottom' : 'right'}>
+    <Drawer.Root placement={isMobile ? 'bottom' : 'end'}>
       <DrawerTrigger asChild>
-        <Button variant="link" className="text-foreground w-fit px-0 text-left">
+        <Button variant="ghost" className="text-foreground w-fit px-0 text-left">
           {item.booking.equipment || 'N/A'}
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <Drawer.Positioner>
+        <DrawerContent>
         <DrawerHeader className="gap-1">
           <DrawerTitle>{item.booking.equipment || 'Equipment Booking'}</DrawerTitle>
           <DrawerDescription>Booking details and information</DrawerDescription>
@@ -131,20 +133,24 @@ export function TableCellViewer({ item }: { item: BookingWithSupply }) {
               </div>
               <div className="flex flex-col gap-3">
                 <label htmlFor="status" className="text-sm font-medium">Status</label>
-                <Select defaultValue={item.booking.customerStatus}>
-                  <SelectTrigger id="status" className="w-full">
-                    <SelectValue placeholder="Select a status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="booked">Booked</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="unpaid">Unpaid</SelectItem>
-                    <SelectItem value="overdue">Overdue</SelectItem>
-                    <SelectItem value="cancelled">Cancelled</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Select.Root defaultValue={item.booking.customerStatus}>
+                  <SelectControl>
+                    <SelectTrigger id="status" className="w-full">
+                      <SelectValueText placeholder="Select a status" />
+                    </SelectTrigger>
+                  </SelectControl>
+                  <SelectPositioner>
+                    <SelectContent>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="booked">Booked</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="unpaid">Unpaid</SelectItem>
+                      <SelectItem value="overdue">Overdue</SelectItem>
+                      <SelectItem value="cancelled">Cancelled</SelectItem>
+                    </SelectContent>
+                  </SelectPositioner>
+                </Select.Root>
               </div>
             </div>
             <div className="flex flex-col gap-3">
@@ -185,11 +191,12 @@ export function TableCellViewer({ item }: { item: BookingWithSupply }) {
         </div>
         <DrawerFooter>
           <Button>Submit</Button>
-          <DrawerClose asChild>
+          <Drawer.CloseTrigger asChild>
             <Button variant="outline">Done</Button>
-          </DrawerClose>
+          </Drawer.CloseTrigger>
         </DrawerFooter>
       </DrawerContent>
-    </Drawer>
+      </Drawer.Positioner>
+    </Drawer.Root>
   );
 }

@@ -12,6 +12,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
+  SelectValueText,
 } from '@chakra-ui/react';
 import { Tabs } from '@chakra-ui/react';
 
@@ -40,7 +41,7 @@ export function DataTable({ data: initialData }: { data: BookingWithSupply[] }) 
         </label>
         <Select defaultValue="all">
           <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
-            <SelectValue placeholder="Select a view" />
+            <SelectValueText placeholder="Select a view" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All</SelectItem>

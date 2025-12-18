@@ -9,7 +9,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValueText,
 } from '@chakra-ui/react';
 import { updateContentLayout, updateNavbarStyle, updateThemeMode, updateThemePreset } from '@ui';
 import { setValueToCookie } from '@utils';
@@ -81,7 +81,7 @@ export function LayoutControls(props: LayoutControlsProps) {
                 onValueChange={value => handleValueChange('theme_preset', value)}
               >
                 <SelectTrigger size="sm" className="w-full text-xs">
-                  <SelectValue placeholder="Preset" />
+                  <SelectValueText placeholder="Preset" />
                 </SelectTrigger>
                 <SelectContent>
                   {THEME_PRESET_OPTIONS.map(preset => (

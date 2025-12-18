@@ -19,7 +19,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
-} from '@chakra-ui/react';
+} from '@ui';
 
 import {
   leadsBySourceChartData,

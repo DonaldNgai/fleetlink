@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 
-import { ChartConfig } from '@chakra-ui/react';
+import { ChartConfig } from '@ui';
 
 export const leadsChartData = [
   { date: '1-5', newLeads: 120, disqualified: 40 },
