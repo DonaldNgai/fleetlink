@@ -1,7 +1,7 @@
 import { db } from '../drizzle';
 import { teams, teamMembers } from '../schema';
 import { eq } from 'drizzle-orm';
-import { getUser } from './users';
+import { getTeamIdForUser } from '@utils/auth/teams';
 
 export async function getTeamByStripeCustomerId(customerId: string) {
   const result = await db
@@ -32,25 +32,23 @@ export async function updateTeamSubscription(
 }
 
 export async function getTeamForUser() {
-  const user = await getUser();
-  if (!user) {
+  // Get teamId from Auth0 user metadata
+  const teamId = await getTeamIdForUser();
+  if (!teamId) {
     return null;
   }
 
-  const result = await db.query.teamMembers.findFirst({
-    where: eq(teamMembers.userId, user.id),
+  // Fetch full team data from Postgres using the teamId from Auth0
+  const result = await db.query.teams.findFirst({
+    where: eq(teams.id, teamId),
     with: {
-      team: {
+      teamMembers: {
         with: {
-          teamMembers: {
-            with: {
-              user: {
-                columns: {
-                  id: true,
-                  name: true,
-                  email: true,
-                },
-              },
+          user: {
+            columns: {
+              id: true,
+              name: true,
+              email: true,
             },
           },
         },
@@ -58,5 +56,5 @@ export async function getTeamForUser() {
     },
   });
 
-  return result?.team || null;
+  return result || null;
 }

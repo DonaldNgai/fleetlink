@@ -151,6 +151,7 @@ export default function HomePage() {
                           alt={logo.name}
                           width={120}
                           height={60}
+                          unoptimized
                           className="w-full h-full object-contain"
                         />
                       </Box>

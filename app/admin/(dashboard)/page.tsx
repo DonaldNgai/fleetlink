@@ -26,13 +26,14 @@ import {
 } from '@chakra-ui/react';
 import { AvatarFallback } from '@ui';
 import { customerPortalAction } from '@/lib/payments/actions';
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { TeamDataWithMembers, User } from '@/lib/db/schema';
 import useSWR from 'swr';
 import { Suspense } from 'react';
 import { Loader2, PlusCircle } from 'lucide-react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { getUserByEmail } from '@/app/actions/user';
+
 
 type ActionState = {
   error?: string;
@@ -253,6 +254,10 @@ function InviteTeamMember() {
     ActionState,
     FormData
   >(async () => ({}), {});
+
+  useEffect(() => {
+    console.log('auth0User changed:', auth0User);
+  }, [auth0User]);
 
   return (
     <Card>

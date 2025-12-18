@@ -29,6 +29,7 @@ import { LayoutControls } from './_components/sidebar/layout-controls';
 import { ThemeSwitcher } from './_components/sidebar/theme-switcher';
 import { getUser } from '@/lib/db/queries';
 
+
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
   // Get user data server-side instead of using SWR
   const user = await getUser();
