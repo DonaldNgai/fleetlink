@@ -266,11 +266,57 @@
 */
 
 @layer base {
+  /* Override Tailwind's aggressive reset - restore natural browser defaults */
+  *,
+  *::before,
+  *::after {
+    margin: revert;
+    padding: revert;
+    font: revert;
+    box-sizing: border-box;
+  }
+  
+  /* Keep essential resets */
   * {
     @apply border-border outline-ring/50;
   }
+  
   body {
     @apply bg-background text-foreground;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Restore natural defaults for common elements */
+  h1, h2, h3, h4, h5, h6 {
+    margin: revert;
+    padding: revert;
+    font: revert;
+    font-weight: revert;
+  }
+  
+  p {
+    margin: revert;
+    padding: revert;
+    font: revert;
+  }
+  
+  div {
+    margin: revert;
+    padding: revert;
+  }
+  
+  ul, ol {
+    margin: revert;
+    padding: revert;
+    list-style: revert;
+  }
+  
+  button, input, select, textarea {
+    margin: revert;
+    padding: revert;
+    font: revert;
+    font-family: revert;
   }
 }
 

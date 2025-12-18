@@ -69,6 +69,12 @@ export default function ConfirmRentalPage() {
       startTime: searchParams.get('startTime') || '',
       endTime: searchParams.get('endTime') || '',
     });
+    
+    // Pre-populate location if provided
+    const locationFromUrl = searchParams.get('location');
+    if (locationFromUrl) {
+      setFormData((prev) => ({ ...prev, location: locationFromUrl, address: locationFromUrl }));
+    }
   }, [searchParams]);
 
   const steps: { id: Step; title: string; icon: React.ReactNode }[] = [
