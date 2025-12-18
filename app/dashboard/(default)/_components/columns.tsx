@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { Badge, Button, Checkbox, Menu, Input } from '@chakra-ui/react';
 
 import { DataTableColumnHeader } from '@ui';
-import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';
+import type { EquipmentBooking, EquipmentSupply } from '@repo/next-utils/db/schema';
 
 // Type for the joined data from queries
 type BookingWithSupply = {

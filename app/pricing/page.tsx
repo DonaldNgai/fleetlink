@@ -1,4 +1,4 @@
-import { getStripePrices, getStripeProducts } from '@/lib/payments/stripe';
+import { getStripePrices, getStripeProducts } from '@repo/next-utils/payments/stripe';
 import { PricingCard } from './pricing-card';
 
 // Prices are fresh for one hour max

@@ -17,7 +17,7 @@ import {
   AlertDescription,
 } from '@chakra-ui/react';
 import { Loader2 } from 'lucide-react';
-import { User } from '@/lib/db/schema';
+import { User } from '@repo/next-utils/db/schema';
 import useSWR from 'swr';
 import { Suspense } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';

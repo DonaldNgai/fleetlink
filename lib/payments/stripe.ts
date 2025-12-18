@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 import { redirect } from 'next/navigation';
-import { Team } from '@/lib/db/schema';
-import { getTeamByStripeCustomerId, getUser, updateTeamSubscription } from '@/lib/db/queries';
+import { Team } from '@repo/next-utils/db/schema';
+import { getTeamByStripeCustomerId, getUser, updateTeamSubscription } from '@repo/next-utils/db/queries';
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-08-27.basil',

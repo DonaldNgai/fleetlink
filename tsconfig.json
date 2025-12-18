@@ -38,6 +38,12 @@
       ],
       "@utils/*": [
         "./packages/next-utils/src/*"
+      ],
+      "@repo/next-utils": [
+        "./packages/next-utils/src/index.ts"
+      ],
+      "@repo/next-utils/*": [
+        "./packages/next-utils/src/*"
       ]
     }
   },

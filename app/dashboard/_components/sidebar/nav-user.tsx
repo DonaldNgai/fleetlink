@@ -1,7 +1,7 @@
 'use client';
 
 import { SidebarMenu, SidebarMenuItem } from '@ui';
-import { User } from '@/lib/db/schema';
+import { User } from '@repo/next-utils/db/schema';
 import { AccountSwitcher } from '@ui';
 
 export function NavUser({ users }: { readonly users: ReadonlyArray<User> }) {

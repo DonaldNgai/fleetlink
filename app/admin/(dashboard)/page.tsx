@@ -25,9 +25,9 @@ import {
   AlertDescription,
 } from '@chakra-ui/react';
 import { AvatarFallback } from '@ui';
-import { customerPortalAction } from '@/lib/payments/actions';
+import { customerPortalAction } from '@repo/next-utils/payments/actions';
 import { useActionState, useEffect } from 'react';
-import { TeamDataWithMembers, User } from '@/lib/db/schema';
+import { TeamDataWithMembers, User } from '@repo/next-utils/db/schema';
 import useSWR from 'swr';
 import { Suspense } from 'react';
 import { Loader2, PlusCircle } from 'lucide-react';

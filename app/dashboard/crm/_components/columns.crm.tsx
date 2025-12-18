@@ -6,7 +6,7 @@ import { Badge } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import { Checkbox } from '@chakra-ui/react';
 import { Menu } from '@chakra-ui/react';
-import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';
+import type { EquipmentBooking, EquipmentSupply } from '@repo/next-utils/db/schema';
 
 // Type for the joined data from queries
 export type BookingWithSupply = {

@@ -27,7 +27,7 @@ import {
 import { AccountSwitcher, SearchDialog } from '@ui';
 import { LayoutControls } from './_components/sidebar/layout-controls';
 import { ThemeSwitcher } from './_components/sidebar/theme-switcher';
-import { getUser } from '@/lib/db/queries';
+import { getUser } from '@repo/next-utils/db/queries';
 
 
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {

@@ -1,6 +1,6 @@
 import { JotForm } from '@ui';
-import { getUser } from '@/lib/db/queries';
-import { getCustomerForCurrentUser } from '@/lib/db/queries/customer';
+import { getUser } from '@repo/next-utils/db/queries';
+import { getCustomerForCurrentUser } from '@repo/next-utils/db/queries/customer';
 
 export default async function Page() {
   // Get the logged-in user

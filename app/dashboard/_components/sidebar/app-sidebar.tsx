@@ -14,7 +14,7 @@ import {
   SidebarMenuItem,
 } from '@ui';
 import { APP_CONFIG } from '@/config/app-config';
-import { User } from '@/lib/db/schema';
+import { User } from '@repo/next-utils/db/schema';
 import useSWR from 'swr';
 import { sidebarItems } from '@ui';
 import { useUser } from '@auth0/nextjs-auth0/client';

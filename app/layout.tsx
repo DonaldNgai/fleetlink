@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
-import { getTeamForUser } from '@/lib/db/queries';
+import { getTeamForUser } from '@repo/next-utils/db/queries';
 import { SWRConfig } from 'swr';
 import { APP_CONFIG } from '@/config/app-config';
 import { ChakraUIProvider } from '@ui';

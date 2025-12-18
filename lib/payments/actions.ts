@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { createCheckoutSession, createCustomerPortalSession } from './stripe';
-import { getUser, getTeamForUser } from '@/lib/db/queries';
+import { getUser, getTeamForUser } from '@repo/next-utils/db/queries';
 
 export async function checkoutAction(formData: FormData) {
   const priceId = formData.get('priceId') as string;

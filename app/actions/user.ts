@@ -1,7 +1,7 @@
 'use server';
 
-import { db } from '@/lib/db/drizzle';
-import { users } from '@/lib/db/schema';
+import { db } from '@repo/next-utils/db/drizzle';
+import { users } from '@repo/next-utils/db/schema';
 import { eq, and, isNull } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 

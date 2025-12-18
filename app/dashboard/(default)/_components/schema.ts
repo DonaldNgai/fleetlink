@@ -1,4 +1,4 @@
-import type { EquipmentBooking, EquipmentSupply } from '@/lib/db/schema';
+import type { EquipmentBooking, EquipmentSupply } from '@repo/next-utils/db/schema';
 
 // Type for the joined data that matches data.json structure
 export type BookingWithSupply = {
