@@ -1,5 +1,5 @@
 'use client';
-
+import { motion } from 'framer-motion';
 import { 
   Button, 
   Badge,
@@ -30,14 +30,74 @@ const companyLogos = [
   { name: 'CAT', url: 'https://cdn.simpleicons.org/caterpillar' },
   { name: 'Volvo', url: 'https://cdn.simpleicons.org/volvo' },
   { name: 'JCB', url: 'https://cdn.simpleicons.org/jcb' },
-  { name: 'Komatsu', url: 'https://cdn.simpleicons.org/komatsu' },
   { name: 'Hitachi', url: 'https://cdn.simpleicons.org/hitachi' },
   { name: 'John Deere', url: 'https://cdn.simpleicons.org/johndeere' },
-  { name: 'Case', url: 'https://cdn.simpleicons.org/caseih' },
-  { name: 'Bobcat', url: 'https://cdn.simpleicons.org/bobcat' },
 ];
 
+function LogoTicker({ slides }: { slides: typeof companyLogos }) {
+  const duplicatedSlides = [...slides, ...slides, ...slides];
+  // Each logo box is w="32" (8rem = 128px) + mx="4" (1rem = 16px on each side = 32px) = 160px per logo
+  // For 5 logos per set: 5 * 160px = 800px per set
+  const setWidth = slides.length * 160; // Approximate width of one set
+  
+  return (
+    <Box
+      position="relative"
+      overflow="hidden"
+      width="full"
+      className="ticker-fade"
+    >
+      <motion.div
+        className="flex"
+        animate={{
+          x: [0, -setWidth],
+        }}
+        transition={{
+          x: {
+            repeat: Infinity,
+            repeatType: 'loop',
+            duration: 30,
+            ease: 'linear',
+          },
+        }}
+        style={{
+          display: 'flex',
+          width: 'fit-content',
+        }}
+      >
+        {duplicatedSlides.map((logo, i) => (
+          <Box
+            key={i}
+            flexShrink="0"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            w="32"
+            h="16"
+            mx="4"
+            bg="white/80"
+            _dark={{ bg: 'gray.800/80' }}
+            borderRadius="lg"
+            backdropFilter="blur-sm"
+            p="3"
+          >
+            <Image
+              src={logo.url}
+              alt={logo.name}
+              width={120}
+              height={60}
+              unoptimized
+              className="w-full h-full object-contain"
+            />
+          </Box>
+        ))}
+      </motion.div>
+    </Box>
+  );
+}
+
 export default function HomePage() {
+
   return (
     <Box as="main" minH="100vh" position="relative" bg="bg.canvas">
       {/* Subtle background image */}
@@ -128,35 +188,8 @@ export default function HomePage() {
 
               <FadeInStaggerItem>
                 {/* Logo Ticker */}
-                <Box position="relative" overflow="hidden" mb="12" className="ticker-fade" width="full">
-                  <Box className="flex animate-scroll-reverse">
-                    {[...companyLogos, ...companyLogos].map((logo, i) => (
-                      <Box
-                        key={i}
-                        flexShrink="0"
-                        mx="8"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        w="32"
-                        h="16"
-                        bg="white/80"
-                        _dark={{ bg: 'gray.800/80' }}
-                        borderRadius="lg"
-                        backdropFilter="blur-sm"
-                        p="3"
-                      >
-                        <Image
-                          src={logo.url}
-                          alt={logo.name}
-                          width={120}
-                          height={60}
-                          unoptimized
-                          className="w-full h-full object-contain"
-                        />
-                      </Box>
-                    ))}
-                  </Box>
+                <Box mb="12" width="full">
+                  <LogoTicker slides={companyLogos} />
                 </Box>
               </FadeInStaggerItem>
             </VStack>

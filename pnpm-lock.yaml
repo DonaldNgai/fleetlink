@@ -89,6 +89,12 @@ importers:
       drizzle-orm:
         specifier: ^0.43.1
         version: 0.43.1(gel@2.1.0)(postgres@3.4.7)
+      embla-carousel:
+        specifier: ^8.6.0
+        version: 8.6.0
+      embla-carousel-auto-scroll:
+        specifier: ^8.6.0
+        version: 8.6.0(embla-carousel@8.6.0)
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.1.0)
@@ -115,7 +121,7 @@ importers:
         version: link:../packages/next-utils
       nextutils:
         specifier: file:./packages/next-utils
-        version: '@repo/next-utils@file:packages/next-utils(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.4)(immer@10.1.3)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))'
+        version: link:packages/next-utils
       postcss:
         specifier: ^8.5.6
         version: 8.5.6
@@ -201,6 +207,9 @@ importers:
       auth0:
         specifier: ^4.8.0
         version: 4.37.0
+      bcryptjs:
+        specifier: ^3.0.2
+        version: 3.0.2
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -217,6 +226,9 @@ importers:
         specifier: ^5.0.8
         version: 5.0.8(@types/react@19.1.4)(immer@10.1.3)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
     devDependencies:
+      '@types/bcryptjs':
+        specifier: ^2.4.6
+        version: 2.4.6
       '@types/node':
         specifier: ^22.18.12
         version: 22.18.12
@@ -1930,13 +1942,6 @@ packages:
       react-redux:
         optional: true
 
-  '@repo/next-utils@file:packages/next-utils':
-    resolution: {directory: packages/next-utils, type: directory}
-    peerDependencies:
-      '@auth0/nextjs-auth0': ^4.13.2
-      '@tanstack/react-table': ^8.21.3
-      react: ^19.1.0
-
   '@rollup/rollup-android-arm-eabi@4.53.5':
     resolution: {integrity: sha512-iDGS/h7D8t7tvZ1t6+WPK04KD0MwzLZrG0se1hzBjSi5fyxlsiggoJHwh18PCFNn7tG43OWb6pdZ6Y+rMlmyNQ==}
     cpu: [arm]
@@ -2157,6 +2162,9 @@ packages:
   '@tanstack/table-core@8.21.3':
     resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
     engines: {node: '>=12'}
+
+  '@types/bcryptjs@2.4.6':
+    resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
 
   '@types/d3-array@3.2.2':
     resolution: {integrity: sha512-hOLWVbm7uRza0BYXpIIW5pxfrKe0W+D5lrFiAEYR+pb6w3N2SwSMaJbXdUfSEv+dT4MfHBLtn5js0LAWaO6otw==}
@@ -2738,6 +2746,11 @@ packages:
 
   electron-to-chromium@1.5.240:
     resolution: {integrity: sha512-OBwbZjWgrCOH+g6uJsA2/7Twpas2OlepS9uvByJjR2datRDuKGYeD+nP8lBBks2qnB7bGJNHDUx7c/YLaT3QMQ==}
+
+  embla-carousel-auto-scroll@8.6.0:
+    resolution: {integrity: sha512-WT9fWhNXFpbQ6kP+aS07oF5IHYLZ1Dx4DkwgCY8Hv2ZyYd2KMCPfMV1q/cA3wFGuLO7GMgKiySLX90/pQkcOdQ==}
+    peerDependencies:
+      embla-carousel: 8.6.0
 
   embla-carousel-react@8.6.0:
     resolution: {integrity: sha512-0/PjqU7geVmo6F734pmPqpyHqiM99olvyecY7zdweCw+6tKEXnrE90pBiBbMMU8s5tICemzpQ3hi5EpxzGW+JA==}
@@ -5060,21 +5073,6 @@ snapshots:
       react: 19.1.0
       react-redux: 9.2.0(@types/react@19.1.4)(react@19.1.0)(redux@5.0.1)
 
-  '@repo/next-utils@file:packages/next-utils(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.4)(immer@10.1.3)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))':
-    dependencies:
-      '@auth0/nextjs-auth0': 4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/react-table': 8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      auth0: 4.37.0
-      clsx: 2.1.1
-      react: 19.1.0
-      server-only: 0.0.1
-      tailwind-merge: 3.3.1
-      zustand: 5.0.8(@types/react@19.1.4)(immer@10.1.3)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-      - use-sync-external-store
-
   '@rollup/rollup-android-arm-eabi@4.53.5':
     optional: true
 
@@ -5232,6 +5230,8 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
 
   '@tanstack/table-core@8.21.3': {}
+
+  '@types/bcryptjs@2.4.6': {}
 
   '@types/d3-array@3.2.2': {}
 
@@ -6053,6 +6053,10 @@ snapshots:
       gopd: 1.2.0
 
   electron-to-chromium@1.5.240: {}
+
+  embla-carousel-auto-scroll@8.6.0(embla-carousel@8.6.0):
+    dependencies:
+      embla-carousel: 8.6.0
 
   embla-carousel-react@8.6.0(react@19.1.0):
     dependencies:
