@@ -93,17 +93,7 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
               <div className="flex items-center gap-2">
                 {/* <LayoutControls {...layoutPreferences} /> */}
                 {/* <ThemeSwitcher /> */}
-                <AccountSwitcher 
-                  users={user ? [{
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.app_metadata?.role as string | undefined || null,
-                  }] : []}
-                  loginRedirectPath={loginRedirectPath}
-                  adminRedirectPath={adminRedirectPath}
-                  logoutRedirectPath={logoutRedirectPath}
-                />
+                
               </div>
             </div>
           </header>

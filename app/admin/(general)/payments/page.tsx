@@ -34,6 +34,9 @@ function formatCurrency(amount: number, currency: string = 'usd'): string {
 }
 
 function formatDate(timestamp: number): string {
+  if (!timestamp || isNaN(timestamp)) {
+    return 'Invalid date';
+  }
   return new Date(timestamp).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -70,6 +73,29 @@ export default async function PaymentsPage() {
           <CardHeader>
             <HStack justify="space-between" align="center">
               <CardTitle>Saved Payment Methods</CardTitle>
+              {paymentMethods.length > 0 && (
+                subscription?.paymentMethodUpdateLink ? (
+                  <Button 
+                    asChild
+                    size="sm" 
+                    variant="outline"
+                  >
+                    <a 
+                      href={subscription.paymentMethodUpdateLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      Manage Payment Methods
+                    </a>
+                  </Button>
+                ) : (
+                  <form action={customerPortalAction}>
+                    <Button type="submit" size="sm" variant="outline">
+                      Manage Payment Methods
+                    </Button>
+                  </form>
+                )
+              )}
             </HStack>
           </CardHeader>
           <CardContent>
@@ -109,7 +135,31 @@ export default async function PaymentsPage() {
                 ))}
               </VStack>
             ) : (
-              <Text color="gray.500">No saved payment methods found.</Text>
+              <VStack align="stretch" gap={4}>
+                <Text color="gray.500">No saved payment methods found.</Text>
+                {subscription?.paymentMethodUpdateLink ? (
+                  <Button 
+                    asChild
+                    size="sm" 
+                    variant="outline" 
+                    alignSelf="start"
+                  >
+                    <a 
+                      href={subscription.paymentMethodUpdateLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      Add Payment Method
+                    </a>
+                  </Button>
+                ) : (
+                  <form action={customerPortalAction}>
+                    <Button type="submit" size="sm" variant="outline" alignSelf="start">
+                      Add Payment Method
+                    </Button>
+                  </form>
+                )}
+              </VStack>
             )}
           </CardContent>
         </Card>
@@ -120,28 +170,44 @@ export default async function PaymentsPage() {
             <HStack justify="space-between" align="center">
               <CardTitle>Current Subscription</CardTitle>
               {subscription && (
-                <form action={customerPortalAction}>
-                  <Button type="submit" size="sm" variant="outline">
-                    Manage Subscription
+                subscription.subscriptionManagementLink ? (
+                  <Button 
+                    asChild
+                    size="sm" 
+                    variant="outline"
+                  >
+                    <a 
+                      href={subscription.subscriptionManagementLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      Manage Subscription
+                    </a>
                   </Button>
-                </form>
+                ) : (
+                  <form action={customerPortalAction}>
+                    <Button type="submit" size="sm" variant="outline">
+                      Manage Subscription
+                    </Button>
+                  </form>
+                )
               )}
             </HStack>
           </CardHeader>
           <CardContent>
             {subscription ? (
-              <VStack align="stretch" gap={4}>
-                <HStack justify="space-between" align="start">
+              <VStack align="stretch" gap={6}>
+                {/* Plan Name and Status */}
+                <HStack justify="space-between" align="center">
                   <VStack align="start" gap={1}>
-                    <Text fontSize="sm" color="gray.500">
-                      Plan
-                    </Text>
-                    <Text fontWeight="semibold" fontSize="lg">
+    
+                    <Heading size="lg" fontWeight="semibold">
                       {subscription.planName}
-                    </Text>
+                    </Heading>
                   </VStack>
                   <Badge
-                    colorScheme={
+                    size="lg"
+                    colorPalette={
                       subscription.status === 'active'
                         ? 'green'
                         : subscription.status === 'trialing'
@@ -153,55 +219,67 @@ export default async function PaymentsPage() {
                   </Badge>
                 </HStack>
 
-                <HStack justify="space-between" align="start" gap={6}>
-                  <VStack align="start" gap={1} flex={1}>
+                {/* Amount and Next Payment */}
+                <HStack justify="space-between" align="start" gap={8}>
+                  <VStack align="start" gap={2} flex={1}>
                     <HStack gap={2}>
-                      <DollarSign className="h-4 w-4 text-gray-500" />
-                      <Text fontSize="sm" color="gray.500">
+                      <DollarSign className="h-5 w-5" color="var(--chakra-colors-fg-muted)" />
+                      <Text fontSize="sm" color="fg.muted" fontWeight="medium">
                         Amount
                       </Text>
                     </HStack>
-                    <Text fontWeight="medium">
-                      {formatCurrency(subscription.amount, subscription.currency)} / {subscription.interval}
+                    <Text fontSize="xl" fontWeight="bold">
+                      {formatCurrency(subscription.amount, subscription.currency)}
+                    </Text>
+                    <Text fontSize="sm" color="fg.muted">
+                      per {subscription.interval}
                     </Text>
                   </VStack>
 
-                  <VStack align="start" gap={1} flex={1}>
+                  <VStack align="start" gap={2} flex={1}>
                     <HStack gap={2}>
-                      <Calendar className="h-4 w-4 text-gray-500" />
-                      <Text fontSize="sm" color="gray.500">
-                        Current Period
+                      <Calendar className="h-5 w-5" color="var(--chakra-colors-fg-muted)" />
+                      <Text fontSize="sm" color="fg.muted" fontWeight="medium">
+                        Next Payment
                       </Text>
                     </HStack>
-                    <Text fontWeight="medium">
-                      {formatDate(subscription.currentPeriodStart)} - {formatDate(subscription.currentPeriodEnd)}
+                    <Text fontSize="xl" fontWeight="bold">
+                      {formatDate(subscription.nextPaymentDate)}
+                    </Text>
+                    <Text fontSize="sm" color="fg.muted">
+                      {subscription.cancelAtPeriodEnd ? 'Cancels after payment' : 'Auto-renews'}
                     </Text>
                   </VStack>
                 </HStack>
 
+                {/* Alerts */}
                 {subscription.cancelAtPeriodEnd && (
                   <Box
-                    p={3}
+                    p={4}
                     bg="orange.50"
+                    _dark={{ bg: 'orange.900/20' }}
                     borderColor="orange.200"
+                    _dark={{ borderColor: 'orange.800' }}
                     borderWidth="1px"
                     borderRadius="md"
                   >
-                    <Text fontSize="sm" color="orange.800">
-                      Your subscription will cancel at the end of the current billing period.
+                    <Text fontSize="sm" color="orange.800" _dark={{ color: 'orange.200' }}>
+                      Your subscription will cancel at the end of the current billing period on {formatDate(subscription.nextPaymentDate)}.
                     </Text>
                   </Box>
                 )}
 
-                {subscription.trialEnd && subscription.trialEnd > Date.now() / 1000 && (
+                {subscription.trialEnd && subscription.trialEnd * 1000 > Date.now() && (
                   <Box
-                    p={3}
+                    p={4}
                     bg="blue.50"
+                    _dark={{ bg: 'blue.900/20' }}
                     borderColor="blue.200"
+                    _dark={{ borderColor: 'blue.800' }}
                     borderWidth="1px"
                     borderRadius="md"
                   >
-                    <Text fontSize="sm" color="blue.800">
+                    <Text fontSize="sm" color="blue.800" _dark={{ color: 'blue.200' }}>
                       Trial ends on {formatDate(subscription.trialEnd * 1000)}
                     </Text>
                   </Box>
@@ -209,8 +287,8 @@ export default async function PaymentsPage() {
               </VStack>
             ) : (
               <VStack align="stretch" gap={4}>
-                <Text color="gray.500">No active subscription found.</Text>
-                <Button asChild colorScheme="orange">
+                <Text color="fg.muted">No active subscription found.</Text>
+                <Button asChild colorPalette="orange">
                   <a href="/pricing">View Plans</a>
                 </Button>
               </VStack>
