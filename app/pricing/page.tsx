@@ -120,12 +120,17 @@ export default async function PricingPage() {
 
           {/* Pricing Cards */}
           <SimpleGrid
-            columns={{ base: 1, lg: 2 }}
+            columns={{ base: 1, lg: 3 }}
             gap="8"
-            maxW="5xl"
+            maxW="6xl"
             mx="auto"
             width="full"
           >
+            <PricingCard
+              price={0}
+              interval="month"
+              features="Basic equipment listings;Limited search capabilities;Community support;Up to 5 active listings"
+            />
             <PricingCard
               name={basePlan?.name || 'Base'}
               price={basePrice?.unitAmount}

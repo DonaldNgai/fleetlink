@@ -219,8 +219,8 @@ export default async function PaymentsPage() {
                   </Badge>
                 </HStack>
 
-                {/* Amount and Next Payment - Only show if subscription is not cancelled */}
-                {subscription.status !== 'canceled' && subscription.status !== 'cancelled' ? (
+                {/* Amount and Next Payment - Only show if subscription is active/trialing */}
+                {subscription.status !== 'free' && subscription.status !== 'canceled' && subscription.status !== 'cancelled' ? (
                   <HStack justify="space-between" align="start" gap={8}>
                     <VStack align="start" gap={2} flex={1}>
                       <HStack gap={2}>
@@ -252,6 +252,13 @@ export default async function PaymentsPage() {
                       </Text>
                     </VStack>
                   </HStack>
+                ) : subscription.status === 'free' ? (
+                  <VStack align="stretch" gap={4}>
+                    <Text color="fg.muted">You're currently on the free tier.</Text>
+                    <Button asChild colorPalette="blue">
+                      <a href="/pricing">View Plans</a>
+                    </Button>
+                  </VStack>
                 ) : (
                   <VStack align="stretch" gap={4}>
                     <Text color="fg.muted">Your subscription has been cancelled.</Text>
@@ -294,9 +301,9 @@ export default async function PaymentsPage() {
               </VStack>
             ) : (
               <VStack align="stretch" gap={4}>
-                <Text color="fg.muted">No active subscription found.</Text>
-                <Button asChild colorPalette="orange">
-                  <a href="/pricing">View Plans</a>
+                <Text color="fg.muted">No subscription found. You're on the free tier.</Text>
+                <Button asChild colorPalette="blue">
+                  <a href="/pricing">Upgrade Plan</a>
                 </Button>
               </VStack>
             )}
