@@ -14,6 +14,8 @@ import {
   Grid,
   GridItem
 } from '@chakra-ui/react';
+
+const MotionBox = motion(Box);
 import { 
   CardRoot as Card, 
   CardBody as CardContent, 
@@ -47,8 +49,8 @@ function LogoTicker({ slides }: { slides: typeof companyLogos }) {
       width="full"
       className="ticker-fade"
     >
-      <motion.div
-        className="flex"
+      <MotionBox
+        display="flex"
         animate={{
           x: [0, -setWidth],
         }}
@@ -61,7 +63,6 @@ function LogoTicker({ slides }: { slides: typeof companyLogos }) {
           },
         }}
         style={{
-          display: 'flex',
           width: 'fit-content',
         }}
       >
@@ -91,7 +92,7 @@ function LogoTicker({ slides }: { slides: typeof companyLogos }) {
             />
           </Box>
         ))}
-      </motion.div>
+      </MotionBox>
     </Box>
   );
 }
