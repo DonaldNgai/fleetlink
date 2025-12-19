@@ -4,7 +4,18 @@ import { getAuth0Client } from '@utils/auth/getAuth0Client';
 
 export async function middleware(request: NextRequest) {
     const client = await getAuth0Client();
-    return client.middleware(request);
+    const response = await client.middleware(request);
+    
+    // Add custom headers with the current URL for server components to use
+    if (response instanceof NextResponse) {
+      const url = request.nextUrl.clone();
+      const currentUrl = `${url.pathname}${url.search}`;
+      response.headers.set('x-url', currentUrl);
+      response.headers.set('x-pathname', url.pathname);
+      response.headers.set('x-search-params', url.search);
+    }
+    
+    return response;
   }
 
 export const config = {

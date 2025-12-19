@@ -27,13 +27,6 @@ export default async function PricingPage() {
   const basePrice = prices.find((price) => price.productId === basePlan?.id);
   const plusPrice = prices.find((price) => price.productId === plusPlan?.id);
 
-  console.log('Prices:', prices);
-  console.log('Products:', products);
-  console.log('Base plan:', basePlan);
-  console.log('Plus plan:', plusPlan);
-  console.log('Base price:', basePrice);
-  console.log('Plus price:', plusPrice);  
-
   const features = [
     { icon: Wrench, text: 'Unlimited Equipment Listings' },
     { icon: Zap, text: 'Fast Payment Processing' },
