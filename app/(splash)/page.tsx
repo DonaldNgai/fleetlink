@@ -27,14 +27,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const companyLogos = [
-  { name: 'CAT', url: 'https://logo.clearbit.com/caterpillar.com' },
-  { name: 'Volvo', url: 'https://logo.clearbit.com/volvo.com' },
-  { name: 'JCB', url: 'https://logo.clearbit.com/jcb.com' },
-  { name: 'Komatsu', url: 'https://logo.clearbit.com/komatsu.com' },
-  { name: 'Hitachi', url: 'https://logo.clearbit.com/hitachi.com' },
-  { name: 'John Deere', url: 'https://logo.clearbit.com/deere.com' },
-  { name: 'Case', url: 'https://logo.clearbit.com/casece.com' },
-  { name: 'Bobcat', url: 'https://logo.clearbit.com/bobcat.com' },
+  { name: 'CAT', url: 'https://cdn.simpleicons.org/caterpillar' },
+  { name: 'Volvo', url: 'https://cdn.simpleicons.org/volvo' },
+  { name: 'JCB', url: 'https://cdn.simpleicons.org/jcb' },
+  { name: 'Komatsu', url: 'https://cdn.simpleicons.org/komatsu' },
+  { name: 'Hitachi', url: 'https://cdn.simpleicons.org/hitachi' },
+  { name: 'John Deere', url: 'https://cdn.simpleicons.org/johndeere' },
+  { name: 'Case', url: 'https://cdn.simpleicons.org/caseih' },
+  { name: 'Bobcat', url: 'https://cdn.simpleicons.org/bobcat' },
 ];
 
 export default function HomePage() {

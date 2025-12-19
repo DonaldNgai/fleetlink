@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'logo.clearbit.com',
+        hostname: 'cdn.simpleicons.org',
         port: '',
         pathname: '/**',
       },
