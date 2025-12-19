@@ -1,5 +1,4 @@
-import Stripe from 'stripe';
-import { handleSubscriptionChange, stripe } from '@repo/next-utils/payments/stripe';
+import { handleStripeWebhook } from '@repo/next-utils/payments/stripe';
 import { NextRequest, NextResponse } from 'next/server';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -8,26 +7,20 @@ export async function POST(request: NextRequest) {
   const payload = await request.text();
   const signature = request.headers.get('stripe-signature') as string;
 
-  let event: Stripe.Event;
-
-  try {
-    event = stripe.webhooks.constructEvent(payload, signature, webhookSecret);
-  } catch (err) {
-    console.error('Webhook signature verification failed.', err);
+  if (!signature) {
     return NextResponse.json(
-      { error: 'Webhook signature verification failed.' },
+      { error: 'Missing stripe-signature header' },
       { status: 400 }
     );
   }
 
-  switch (event.type) {
-    case 'customer.subscription.updated':
-    case 'customer.subscription.deleted':
-      const subscription = event.data.object as Stripe.Subscription;
-      await handleSubscriptionChange(subscription);
-      break;
-    default:
-      console.log(`Unhandled event type ${event.type}`);
+  const result = await handleStripeWebhook(payload, signature, webhookSecret);
+
+  if (!result.success) {
+    return NextResponse.json(
+      { error: result.error || 'Webhook processing failed' },
+      { status: 400 }
+    );
   }
 
   return NextResponse.json({ received: true });

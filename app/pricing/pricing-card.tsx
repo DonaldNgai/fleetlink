@@ -1,6 +1,6 @@
 'use client';
 
-import { checkoutAction } from '@repo/next-utils/payments/actions';
+import { checkoutAction } from '@ui';
 import { Check, ArrowRight, Loader2 } from 'lucide-react';
 import { Button } from '@chakra-ui/react';
 import { useFormStatus } from 'react-dom';

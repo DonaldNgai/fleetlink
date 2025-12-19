@@ -81,7 +81,7 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
               'data-[navbar-style=sticky]:bg-background/50 data-[navbar-style=sticky]:sticky data-[navbar-style=sticky]:top-0 data-[navbar-style=sticky]:z-50 data-[navbar-style=sticky]:overflow-hidden data-[navbar-style=sticky]:rounded-t-[inherit] data-[navbar-style=sticky]:backdrop-blur-md'
             )}
           >
-            <div className="flex w-full items-center justify-between px-4 lg:px-6">
+            <div className="flex w-full items-center justify-between pl-4 pr-2 lg:pl-6 lg:pr-4">
               <div className="flex items-center gap-1 lg:gap-2">
                 <SidebarTrigger className="-ml-1" />
                 <Separator

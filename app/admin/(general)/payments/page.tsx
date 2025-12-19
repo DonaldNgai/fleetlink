@@ -14,16 +14,10 @@ import {
   Badge,
   Skeleton,
   Table,
-  TableContainer,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
 } from '@chakra-ui/react';
 import { CreditCard, Calendar, DollarSign, ExternalLink } from 'lucide-react';
 import useSWR from 'swr';
-import { customerPortalAction } from '@repo/next-utils/payments/actions';
+import { customerPortalAction } from '@ui';
 
 interface SubscriptionDetails {
   id: string;
@@ -245,8 +239,8 @@ export default function SubscriptionPage() {
             ) : (
               <VStack align="stretch" gap={4}>
                 <Text color="gray.500">No active subscription found.</Text>
-                <Button as="a" href="/pricing" colorScheme="orange">
-                  View Plans
+                <Button asChild colorScheme="orange">
+                  <a href="/pricing">View Plans</a>
                 </Button>
               </VStack>
             )}
@@ -260,55 +254,53 @@ export default function SubscriptionPage() {
           </CardHeader>
           <CardContent>
             {paymentHistory.length > 0 ? (
-              <TableContainer>
-                <Table variant="simple">
-                  <Thead>
-                    <Tr>
-                      <Th>Date</Th>
-                      <Th>Description</Th>
-                      <Th>Amount</Th>
-                      <Th>Status</Th>
-                      <Th>Invoice</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
+              <div className="overflow-x-auto">
+                <Table.Root>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColumnHeader>Date</Table.ColumnHeader>
+                      <Table.ColumnHeader>Description</Table.ColumnHeader>
+                      <Table.ColumnHeader>Amount</Table.ColumnHeader>
+                      <Table.ColumnHeader>Status</Table.ColumnHeader>
+                      <Table.ColumnHeader>Invoice</Table.ColumnHeader>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
                     {paymentHistory.map((payment) => (
-                      <Tr key={payment.id}>
-                        <Td>{formatDate(payment.date)}</Td>
-                        <Td>{payment.description}</Td>
-                        <Td fontWeight="medium">
+                      <Table.Row key={payment.id}>
+                        <Table.Cell>{formatDate(payment.date)}</Table.Cell>
+                        <Table.Cell>{payment.description}</Table.Cell>
+                        <Table.Cell className="font-medium">
                           {formatCurrency(payment.amount, payment.currency)}
-                        </Td>
-                        <Td>
+                        </Table.Cell>
+                        <Table.Cell>
                           <Badge
                             colorScheme={payment.status === 'paid' ? 'green' : 'gray'}
                           >
                             {payment.status}
                           </Badge>
-                        </Td>
-                        <Td>
+                        </Table.Cell>
+                        <Table.Cell>
                           {payment.invoiceUrl ? (
-                            <Button
-                              as="a"
+                            <a
                               href={payment.invoiceUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              size="sm"
-                              variant="ghost"
+                              className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 px-2"
                             >
                               <ExternalLink className="h-4 w-4" />
-                            </Button>
+                            </a>
                           ) : (
                             <Text fontSize="sm" color="gray.400">
                               -
                             </Text>
                           )}
-                        </Td>
-                      </Tr>
+                        </Table.Cell>
+                      </Table.Row>
                     ))}
-                  </Tbody>
-                </Table>
-              </TableContainer>
+                  </Table.Body>
+                </Table.Root>
+              </div>
             ) : (
               <Text color="gray.500">No payment history found.</Text>
             )}
