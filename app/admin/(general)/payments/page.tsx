@@ -219,49 +219,57 @@ export default async function PaymentsPage() {
                   </Badge>
                 </HStack>
 
-                {/* Amount and Next Payment */}
-                <HStack justify="space-between" align="start" gap={8}>
-                  <VStack align="start" gap={2} flex={1}>
-                    <HStack gap={2}>
-                      <DollarSign className="h-5 w-5" color="var(--chakra-colors-fg-muted)" />
-                      <Text fontSize="sm" color="fg.muted" fontWeight="medium">
-                        Amount
+                {/* Amount and Next Payment - Only show if subscription is not cancelled */}
+                {subscription.status !== 'canceled' && subscription.status !== 'cancelled' ? (
+                  <HStack justify="space-between" align="start" gap={8}>
+                    <VStack align="start" gap={2} flex={1}>
+                      <HStack gap={2}>
+                        <DollarSign className="h-5 w-5" color="var(--chakra-colors-fg-muted)" />
+                        <Text fontSize="sm" color="fg.muted" fontWeight="medium">
+                          Amount
+                        </Text>
+                      </HStack>
+                      <Text fontSize="xl" fontWeight="bold">
+                        {formatCurrency(subscription.amount, subscription.currency)}
                       </Text>
-                    </HStack>
-                    <Text fontSize="xl" fontWeight="bold">
-                      {formatCurrency(subscription.amount, subscription.currency)}
-                    </Text>
-                    <Text fontSize="sm" color="fg.muted">
-                      per {subscription.interval}
-                    </Text>
-                  </VStack>
+                      <Text fontSize="sm" color="fg.muted">
+                        per {subscription.interval}
+                      </Text>
+                    </VStack>
 
-                  <VStack align="start" gap={2} flex={1}>
-                    <HStack gap={2}>
-                      <Calendar className="h-5 w-5" color="var(--chakra-colors-fg-muted)" />
-                      <Text fontSize="sm" color="fg.muted" fontWeight="medium">
-                        Next Payment
+                    <VStack align="start" gap={2} flex={1}>
+                      <HStack gap={2}>
+                        <Calendar className="h-5 w-5" color="var(--chakra-colors-fg-muted)" />
+                        <Text fontSize="sm" color="fg.muted" fontWeight="medium">
+                          Next Payment
+                        </Text>
+                      </HStack>
+                      <Text fontSize="xl" fontWeight="bold">
+                        {formatDate(subscription.nextPaymentDate)}
                       </Text>
-                    </HStack>
-                    <Text fontSize="xl" fontWeight="bold">
-                      {formatDate(subscription.nextPaymentDate)}
-                    </Text>
-                    <Text fontSize="sm" color="fg.muted">
-                      {subscription.cancelAtPeriodEnd ? 'Cancels after payment' : 'Auto-renews'}
-                    </Text>
+                      <Text fontSize="sm" color="fg.muted">
+                        {subscription.cancelAtPeriodEnd ? 'Cancels after payment' : 'Auto-renews'}
+                      </Text>
+                    </VStack>
+                  </HStack>
+                ) : (
+                  <VStack align="stretch" gap={4}>
+                    <Text color="fg.muted">Your subscription has been cancelled.</Text>
+                    <Button asChild colorPalette="orange">
+                      <a href="/pricing">View Plans</a>
+                    </Button>
                   </VStack>
-                </HStack>
+                )}
 
                 {/* Alerts */}
-                {subscription.cancelAtPeriodEnd && (
+                {subscription.cancelAtPeriodEnd && subscription.status !== 'canceled' && subscription.status !== 'cancelled' && (
                   <Box
                     p={4}
                     bg="orange.50"
-                    _dark={{ bg: 'orange.900/20' }}
                     borderColor="orange.200"
-                    _dark={{ borderColor: 'orange.800' }}
                     borderWidth="1px"
                     borderRadius="md"
+                    _dark={{ bg: 'orange.900/20', borderColor: 'orange.800' }}
                   >
                     <Text fontSize="sm" color="orange.800" _dark={{ color: 'orange.200' }}>
                       Your subscription will cancel at the end of the current billing period on {formatDate(subscription.nextPaymentDate)}.
@@ -273,11 +281,10 @@ export default async function PaymentsPage() {
                   <Box
                     p={4}
                     bg="blue.50"
-                    _dark={{ bg: 'blue.900/20' }}
                     borderColor="blue.200"
-                    _dark={{ borderColor: 'blue.800' }}
                     borderWidth="1px"
                     borderRadius="md"
+                    _dark={{ bg: 'blue.900/20', borderColor: 'blue.800' }}
                   >
                     <Text fontSize="sm" color="blue.800" _dark={{ color: 'blue.200' }}>
                       Trial ends on {formatDate(subscription.trialEnd * 1000)}
