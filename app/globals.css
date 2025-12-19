@@ -1,3 +1,6 @@
+/* Define layer order - MUST include 'reset' to control Chakra's reset layer */
+@layer theme, reset, base, components, utilities;
+
 @import 'tailwindcss';
 /*
   ---break---
