@@ -1,5 +1,3 @@
-'use client';
-
 import {
   CardRoot as Card,
   CardBody as CardContent,
@@ -15,39 +13,18 @@ import {
   Skeleton,
   Table,
 } from '@chakra-ui/react';
-import { CreditCard, Calendar, DollarSign, ExternalLink } from 'lucide-react';
-import useSWR from 'swr';
+import { CreditCard, Calendar, DollarSign, ExternalLink, Clock } from 'lucide-react';
+import {
+  getSubscriptionDetails,
+  getPaymentHistory,
+  getPaymentMethods,
+  getUpcomingPayments,
+  type SubscriptionDetails,
+  type PaymentHistoryItem,
+  type PaymentMethod,
+  type UpcomingPayment,
+} from '@repo/next-utils/payments/subscription';
 import { customerPortalAction } from '@ui';
-
-interface SubscriptionDetails {
-  id: string;
-  status: string;
-  currentPeriodStart: number;
-  currentPeriodEnd: number;
-  cancelAtPeriodEnd: boolean;
-  planName: string;
-  amount: number;
-  currency: string;
-  interval: string;
-  trialEnd?: number;
-}
-
-interface PaymentHistoryItem {
-  id: string;
-  amount: number;
-  currency: string;
-  status: string;
-  date: number;
-  description: string;
-  invoiceUrl?: string;
-}
-
-interface SubscriptionData {
-  subscription: SubscriptionDetails | null;
-  paymentHistory: PaymentHistoryItem[];
-}
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function formatCurrency(amount: number, currency: string = 'usd'): string {
   return new Intl.NumberFormat('en-US', {
@@ -64,85 +41,79 @@ function formatDate(timestamp: number): string {
   });
 }
 
-function SubscriptionSkeleton() {
-  return (
-    <Card>
-      <CardHeader>
-        <Skeleton height="24px" width="200px" />
-      </CardHeader>
-      <CardContent>
-        <VStack align="stretch" gap={4}>
-          <Skeleton height="60px" />
-          <Skeleton height="60px" />
-          <Skeleton height="60px" />
-        </VStack>
-      </CardContent>
-    </Card>
-  );
+function getCardBrandIcon(brand: string): string {
+  const brandLower = brand.toLowerCase();
+  if (brandLower.includes('visa')) return 'Visa';
+  if (brandLower.includes('mastercard') || brandLower.includes('master')) return 'Mastercard';
+  if (brandLower.includes('amex') || brandLower.includes('american')) return 'Amex';
+  if (brandLower.includes('discover')) return 'Discover';
+  return brand;
 }
 
-function PaymentHistorySkeleton() {
-  return (
-    <Card>
-      <CardHeader>
-        <Skeleton height="24px" width="200px" />
-      </CardHeader>
-      <CardContent>
-        <VStack align="stretch" gap={4}>
-          <Skeleton height="40px" />
-          <Skeleton height="40px" />
-          <Skeleton height="40px" />
-          <Skeleton height="40px" />
-        </VStack>
-      </CardContent>
-    </Card>
-  );
-}
-
-export default function SubscriptionPage() {
-  const { data, error, isLoading } = useSWR<SubscriptionData>(
-    '/api/subscription',
-    fetcher
-  );
-
-  if (isLoading) {
-    return (
-      <Box flex="1" maxW="6xl" w="full">
-        <Heading as="h1" size={{ base: 'lg', lg: 'xl' }} fontWeight="medium" mb={6}>
-          Subscription
-        </Heading>
-        <VStack align="stretch" gap={6}>
-          <SubscriptionSkeleton />
-          <PaymentHistorySkeleton />
-        </VStack>
-      </Box>
-    );
-  }
-
-  if (error || !data) {
-    return (
-      <Box flex="1" maxW="6xl" w="full">
-        <Heading as="h1" size={{ base: 'lg', lg: 'xl' }} fontWeight="medium" mb={6}>
-          Subscription
-        </Heading>
-        <Card>
-          <CardContent>
-            <Text color="red.500">Failed to load subscription data. Please try again later.</Text>
-          </CardContent>
-        </Card>
-      </Box>
-    );
-  }
-
-  const { subscription, paymentHistory } = data;
+export default async function PaymentsPage() {
+  const [subscription, paymentHistory, paymentMethods, upcomingPayments] = await Promise.all([
+    getSubscriptionDetails(),
+    getPaymentHistory(20),
+    getPaymentMethods(),
+    getUpcomingPayments(),
+  ]);
 
   return (
     <Box flex="1" maxW="6xl" w="full">
       <Heading as="h1" size={{ base: 'lg', lg: 'xl' }} fontWeight="medium" mb={6}>
-        Subscription
+        Payments
       </Heading>
 
       <VStack align="stretch" gap={6}>
+        {/* Saved Payment Methods */}
+        <Card>
+          <CardHeader>
+            <HStack justify="space-between" align="center">
+              <CardTitle>Saved Payment Methods</CardTitle>
+            </HStack>
+          </CardHeader>
+          <CardContent>
+            {paymentMethods.length > 0 ? (
+              <VStack align="stretch" gap={4}>
+                {paymentMethods.map((method) => (
+                  <HStack
+                    key={method.id}
+                    justify="space-between"
+                    align="center"
+                    p={4}
+                    borderWidth="1px"
+                    borderRadius="md"
+                    borderColor="gray.200"
+                  >
+                    <HStack gap={4}>
+                      <CreditCard className="h-6 w-6 text-gray-500" />
+                      <VStack align="start" gap={0}>
+                        {method.card && (
+                          <>
+                            <Text fontWeight="medium">
+                              {getCardBrandIcon(method.card.brand)} •••• {method.card.last4}
+                            </Text>
+                            <Text fontSize="sm" color="gray.500">
+                              Expires {String(method.card.expMonth).padStart(2, '0')}/{method.card.expYear}
+                            </Text>
+                          </>
+                        )}
+                        {method.isDefault && (
+                          <Badge colorScheme="blue" size="sm" mt={1}>
+                            Default
+                          </Badge>
+                        )}
+                      </VStack>
+                    </HStack>
+                  </HStack>
+                ))}
+              </VStack>
+            ) : (
+              <Text color="gray.500">No saved payment methods found.</Text>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Subscription Details */}
         <Card>
           <CardHeader>
@@ -246,6 +217,55 @@ export default function SubscriptionPage() {
             )}
           </CardContent>
         </Card>
+
+        {/* Upcoming Payments */}
+        {upcomingPayments.length > 0 && (
+          <Card>
+            <CardHeader>
+              <HStack gap={2}>
+                <Clock className="h-5 w-5" />
+                <CardTitle>Upcoming Payments</CardTitle>
+              </HStack>
+            </CardHeader>
+            <CardContent>
+              <VStack align="stretch" gap={3}>
+                {upcomingPayments.map((payment) => (
+                  <HStack
+                    key={payment.id}
+                    justify="space-between"
+                    align="center"
+                    p={3}
+                    borderWidth="1px"
+                    borderRadius="md"
+                    borderColor="gray.200"
+                  >
+                    <VStack align="start" gap={1}>
+                      <Text fontWeight="medium">{payment.description}</Text>
+                      <Text fontSize="sm" color="gray.500">
+                        Due {formatDate(payment.dueDate)}
+                      </Text>
+                    </VStack>
+                    <HStack gap={4}>
+                      <Text fontWeight="semibold">
+                        {formatCurrency(payment.amount, payment.currency)}
+                      </Text>
+                      {payment.invoiceUrl && (
+                        <a
+                          href={payment.invoiceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 px-2"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      )}
+                    </HStack>
+                  </HStack>
+                ))}
+              </VStack>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Payment History */}
         <Card>

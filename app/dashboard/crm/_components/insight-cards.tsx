@@ -38,79 +38,76 @@ export function InsightCards() {
           <CardTitle>Equipment Rentals by Type</CardTitle>
         </CardHeader>
         <CardContent className="min-h-48 px-4">
-          <ChartContainer config={leadsBySourceChartConfig} className="size-full">
-            <PieChart
-              className="m-0"
-              margin={{
-                top: 0,
-                right: 140,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-              <Pie
-                data={leadsBySourceChartData}
-                dataKey="leads"
-                nameKey="source"
-                innerRadius={65}
-                outerRadius={90}
-                paddingAngle={2}
-                cornerRadius={4}
+          <div className="flex items-center gap-4">
+            <ChartContainer config={leadsBySourceChartConfig} className="h-48 w-48 flex-shrink-0">
+              <PieChart
+                className="m-0"
+                margin={{
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                }}
               >
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                      return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
-                          <tspan
+                <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                <Pie
+                  data={leadsBySourceChartData}
+                  dataKey="leads"
+                  nameKey="source"
+                  innerRadius={65}
+                  outerRadius={90}
+                  paddingAngle={2}
+                  cornerRadius={4}
+                >
+                  <Label
+                    content={({ viewBox }) => {
+                      if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                        return (
+                          <text
                             x={viewBox.cx}
                             y={viewBox.cy}
-                            className="fill-foreground text-3xl font-bold tabular-nums"
+                            textAnchor="middle"
+                            dominantBaseline="middle"
                           >
-                            {totalLeads.toLocaleString()}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy ?? 0) + 24}
-                            className="fill-muted-foreground"
-                          >
-                            Rentals
-                          </tspan>
-                        </text>
-                      );
-                    }
-                  }}
-                />
-              </Pie>
-              <ChartLegend
-                layout="vertical"
-                verticalAlign="middle"
-                align="right"
-                content={() => (
-                  <ul className="ml-4 flex flex-col gap-2.5">
-                    {leadsBySourceChartData.map(item => (
-                      <li key={item.source} className="flex w-32 items-center justify-between">
-                        <span className="flex items-center gap-2 text-sm capitalize">
-                          <span
-                            className="size-2.5 rounded-full shrink-0"
-                            style={{ background: item.fill }}
-                          />
-                          {leadsBySourceChartConfig[item.source].label}
-                        </span>
-                        <span className="tabular-nums text-sm font-medium">{item.leads}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              />
-            </PieChart>
-          </ChartContainer>
+                            <tspan
+                              x={viewBox.cx}
+                              y={viewBox.cy}
+                              className="fill-foreground text-3xl font-bold tabular-nums"
+                            >
+                              {totalLeads.toLocaleString()}
+                            </tspan>
+                            <tspan
+                              x={viewBox.cx}
+                              y={(viewBox.cy ?? 0) + 24}
+                              className="fill-muted-foreground"
+                            >
+                              Rentals
+                            </tspan>
+                          </text>
+                        );
+                      }
+                    }}
+                  />
+                </Pie>
+              </PieChart>
+            </ChartContainer>
+            <div>
+              <ul className="flex flex-col gap-2.5">
+                {leadsBySourceChartData.map(item => (
+                  <li key={item.source} className="flex items-center justify-between gap-3">
+                    <span className="flex items-center gap-2 text-sm">
+                      <span
+                        className="size-2.5 rounded-full shrink-0"
+                        style={{ backgroundColor: leadsBySourceChartConfig[item.source]?.color || item.fill }}
+                      />
+                      {leadsBySourceChartConfig[item.source].label}
+                    </span>
+                    <span className="tabular-nums text-sm font-medium">{item.leads}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </CardContent>
         {/* <CardFooter className="gap-2">
           <Button size="sm" variant="outline" className="basis-1/2">
