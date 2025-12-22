@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { ArrowLeft, ArrowRight, Check, Calendar, Clock, Package, Trash2, Edit } from 'lucide-react';
@@ -74,6 +74,9 @@ export default function ConfirmRentalPage() {
   const [markerInstance, setMarkerInstance] = useState<any>(null);
   const [autocompleteInstance, setAutocompleteInstance] = useState<any>(null);
   const [addressInputValue, setAddressInputValue] = useState('');
+  const mapInstanceRef = useRef<any>(null);
+  const markerInstanceRef = useRef<any>(null);
+  const autocompleteInstanceRef = useRef<any>(null);
 
   // Form data
   const [formData, setFormData] = useState({
@@ -118,8 +121,9 @@ export default function ConfirmRentalPage() {
 
   const steps: { id: Step; title: string; description: string; icon: React.ReactNode }[] = [
     { id: 'details', title: 'Rental Details', description: 'Provide information about your rental needs', icon: <Package className="h-5 w-5" /> },
-    { id: 'location', title: 'Location', description: 'Where should the equipment be delivered?', icon: <Calendar className="h-5 w-5" /> },
     { id: 'contact', title: 'Contact Info', description: 'Who should we contact about this rental?', icon: <Clock className="h-5 w-5" /> },
+
+    { id: 'location', title: 'Location', description: 'Where should the equipment be delivered?', icon: <Calendar className="h-5 w-5" /> },
     { id: 'review', title: 'Review', description: 'Please review all information before submitting', icon: <Check className="h-5 w-5" /> },
   ];
 
@@ -133,13 +137,17 @@ export default function ConfirmRentalPage() {
     } else {
       const nextStepId = steps[currentStepIndex + 1].id;
       setCurrentStep(nextStepId);
-      // Smooth scroll to the next accordion after a brief delay to allow it to open
-      setTimeout(() => {
-        const nextElement = document.getElementById(`step-${nextStepId}`);
-        if (nextElement) {
-          nextElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
+      // On mobile, scroll to top; on desktop, scroll to accordion
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        setTimeout(() => {
+          const nextElement = document.getElementById(`step-${nextStepId}`);
+          if (nextElement) {
+            nextElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      }
     }
   };
 
@@ -176,7 +184,40 @@ export default function ConfirmRentalPage() {
 
   // Initialize Google Maps
   useEffect(() => {
-    if (currentStep !== 'location') return;
+    if (currentStep !== 'location') {
+      // Cleanup map when not on location step
+      if (markerInstanceRef.current) {
+        markerInstanceRef.current.setMap(null);
+        markerInstanceRef.current = null;
+        setMarkerInstance(null);
+      }
+      if (autocompleteInstanceRef.current) {
+        autocompleteInstanceRef.current = null;
+        setAutocompleteInstance(null);
+      }
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current = null;
+        setMapInstance(null);
+      }
+      // Clean up map element and overlays
+      const mapElement = document.getElementById('map');
+      if (mapElement) {
+        mapElement.innerHTML = '';
+      }
+      // Remove Google Maps overlay panes that might be covering other elements
+      setTimeout(() => {
+        const overlays = document.querySelectorAll('[class*="gm-"]');
+        overlays.forEach((overlay) => {
+          const el = overlay as HTMLElement;
+          if (!mapElement || !mapElement.contains(el)) {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.style.pointerEvents = 'none';
+          }
+        });
+      }, 100);
+      return;
+    }
 
     const updateAddressFromPlace = (place: any, setInput = false) => {
       let address = '';
@@ -284,10 +325,13 @@ export default function ConfirmRentalPage() {
         });
 
         setAutocompleteInstance(autocomplete);
+        autocompleteInstanceRef.current = autocomplete;
       }
 
       setMapInstance(map);
       setMarkerInstance(marker);
+      mapInstanceRef.current = map;
+      markerInstanceRef.current = marker;
 
       // If we have existing address, geocode it
       if (formData.address) {
@@ -351,9 +395,36 @@ export default function ConfirmRentalPage() {
     }
 
     return () => {
-      // Cleanup
-      if (markerInstance) {
-        markerInstance.setMap(null);
+      // Cleanup when leaving location step
+      // Clear marker if it exists
+      if (markerInstanceRef.current) {
+        markerInstanceRef.current.setMap(null);
+        markerInstanceRef.current = null;
+        setMarkerInstance(null);
+      }
+      // Clear autocomplete instance
+      if (autocompleteInstanceRef.current) {
+        setAutocompleteInstance(null);
+        autocompleteInstanceRef.current = null;
+      }
+      // Clear map instance
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current = null;
+        setMapInstance(null);
+      }
+      // Clear the map element and remove Google Maps overlays
+      const mapElement = document.getElementById('map');
+      if (mapElement) {
+        // Clear all Google Maps overlays and children
+        mapElement.innerHTML = '';
+        // Remove any Google Maps overlay panes that might be appended to body
+        const overlays = document.querySelectorAll('[class*="gm-"]');
+        overlays.forEach((overlay) => {
+          // Only remove overlays that are not part of the current map (if it still exists)
+          if (!mapElement.contains(overlay)) {
+            (overlay as HTMLElement).style.display = 'none';
+          }
+        });
       }
     };
   }, [currentStep]);
@@ -634,10 +705,21 @@ export default function ConfirmRentalPage() {
 
   const renderStepContent = (stepId?: Step) => {
     const step = stepId || currentStep;
+    const currentStepData = steps.find((s) => s.id === step);
     switch (step) {
       case 'details':
         return (
           <VStack align="stretch" gap={6}>
+            {isMobile && currentStepData && (
+              <VStack align="start" gap={2} mb={2}>
+                <Heading as="h2" size="lg" fontWeight="semibold">
+                  {currentStepData.title}
+                </Heading>
+                <Text fontSize="sm" color="gray.600">
+                  {currentStepData.description}
+                </Text>
+              </VStack>
+            )}
 
             <VStack align="stretch" gap={3}>
               {selectedEquipment.length > 0 ? (
@@ -720,6 +802,16 @@ export default function ConfirmRentalPage() {
       case 'location':
         return (
           <VStack align="stretch" gap={6}>
+            {isMobile && currentStepData && (
+              <VStack align="start" gap={2} mb={2}>
+                <Heading as="h2" size="lg" fontWeight="semibold" p={0} m={0}>
+                  {currentStepData.title}
+                </Heading>
+                <Text fontSize="sm" color="gray.600" p={0} m={0}>
+                  {currentStepData.description}
+                </Text>
+              </VStack>
+            )}
             <VStack align="stretch" gap={4}>
               <Box>
                 <label htmlFor="address-autocomplete">
@@ -751,8 +843,16 @@ export default function ConfirmRentalPage() {
       case 'contact':
         return (
           <VStack align="stretch" gap={6}>
-
-
+            {isMobile && currentStepData && (
+              <VStack align="start" gap={2} mb={2}>
+                <Heading as="h2" size="lg" fontWeight="semibold">
+                  {currentStepData.title}
+                </Heading>
+                <Text fontSize="sm" color="gray.600">
+                  {currentStepData.description}
+                </Text>
+              </VStack>
+            )}
             <VStack align="stretch" gap={4}>
               <Box>
                 <label htmlFor="contactName">
@@ -807,15 +907,127 @@ export default function ConfirmRentalPage() {
         
         return (
           <VStack align="stretch" gap={6}>
-            <VStack align="start" gap={2}>
-              <Heading as="h2" size="lg" fontWeight="semibold">
-                Price Breakdown
-              </Heading>
-            </VStack>
+            {isMobile && currentStepData && (
+              <VStack align="start" gap={2} mb={2}>
+                <Heading as="h2" size="lg" fontWeight="semibold">
+                  {currentStepData.title}
+                </Heading>
+                <Text fontSize="sm" color="gray.600">
+                  {currentStepData.description}
+                </Text>
+              </VStack>
+            )}
 
+            {/* Mobile-only: Additional Information */}
+            {isMobile && (
+              <VStack align="stretch" gap={4}>
+                {/* Equipment Summary */}
+                {selectedEquipment.length > 0 && (
+                  <Card>
+                    <CardContent>
+                      <VStack align="stretch" gap={3}>
+                        <Heading as="h3" size="md" fontWeight="semibold">
+                          Equipment
+                        </Heading>
+                        <VStack align="stretch" gap={2}>
+                          {selectedEquipment.map((id) => {
+                            const equipment = equipmentMap[id];
+                            const quantity = equipmentQuantities[id] || 1;
+                            return equipment ? (
+                              <HStack key={id} justify="space-between">
+                                <Text fontWeight="medium">{equipment.name}</Text>
+                                <Text color="gray.600">× {quantity}</Text>
+                              </HStack>
+                            ) : null;
+                          })}
+                        </VStack>
+                      </VStack>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Rental Period */}
+                <Card>
+                  <CardContent>
+                    <VStack align="stretch" gap={3}>
+                      <Heading as="h3" size="md" fontWeight="semibold">
+                        Rental Period
+                      </Heading>
+                      <VStack align="start" gap={2}>
+                        <Box>
+                          <Text fontSize="sm" fontWeight="medium" color="gray.600">Start Date & Time</Text>
+                          <Text>{rentalDates.startDate || 'Not set'} {rentalDates.startTime && `at ${rentalDates.startTime}`}</Text>
+                        </Box>
+                        <Box>
+                          <Text fontSize="sm" fontWeight="medium" color="gray.600">End Date & Time</Text>
+                          <Text>{rentalDates.endDate || 'Not set'} {rentalDates.endTime && `at ${rentalDates.endTime}`}</Text>
+                        </Box>
+                      </VStack>
+                    </VStack>
+                  </CardContent>
+                </Card>
+
+                {/* Location */}
+                {formData.address && (
+                  <Card>
+                    <CardContent>
+                      <VStack align="stretch" gap={3}>
+                        <Heading as="h3" size="md" fontWeight="semibold">
+                          Delivery Location
+                        </Heading>
+                        <Text>
+                          {formData.address}
+                          {formData.city && `, ${formData.city}`}
+                          {formData.state && `, ${formData.state}`}
+                          {formData.zipCode && ` ${formData.zipCode}`}
+                        </Text>
+                      </VStack>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Contact Information */}
+                {(formData.contactName || formData.contactPhone || formData.contactEmail) && (
+                  <Card>
+                    <CardContent>
+                      <VStack align="stretch" gap={3}>
+                        <Heading as="h3" size="md" fontWeight="semibold">
+                          Contact Information
+                        </Heading>
+                        <VStack align="start" gap={2}>
+                          {formData.contactName && (
+                            <Box>
+                              <Text fontSize="sm" fontWeight="medium" color="gray.600">Name</Text>
+                              <Text>{formData.contactName}</Text>
+                            </Box>
+                          )}
+                          {formData.contactPhone && (
+                            <Box>
+                              <Text fontSize="sm" fontWeight="medium" color="gray.600">Phone</Text>
+                              <Text>{formData.contactPhone}</Text>
+                            </Box>
+                          )}
+                          {formData.contactEmail && (
+                            <Box>
+                              <Text fontSize="sm" fontWeight="medium" color="gray.600">Email</Text>
+                              <Text>{formData.contactEmail}</Text>
+                            </Box>
+                          )}
+                        </VStack>
+                      </VStack>
+                    </CardContent>
+                  </Card>
+                )}
+              </VStack>
+            )}
+
+            {/* Price Breakdown */}
             <Card>
               <CardContent>
                 <VStack align="stretch" gap={4}>
+                  <Heading as="h3" size="md" fontWeight="semibold">
+                    Price Breakdown
+                  </Heading>
                   {/* Equipment line items */}
                   {selectedEquipment.map((id) => {
                     const equipment = equipmentMap[id];
@@ -891,13 +1103,13 @@ export default function ConfirmRentalPage() {
           <VStack align="stretch" gap={8}>
             {/* Progress Steps */}
             <Box width="full">
-              <HStack justify="space-between">
+              <HStack justify="space-between" align="flex-start" width="100%">
                 {steps.map((step, index) => {
                   const isActive = step.id === currentStep;
                   const isCompleted = steps.findIndex((s) => s.id === currentStep) > index;
                   return (
-                    <Box key={step.id} display="flex" flex={1} alignItems="center">
-                      <VStack align="center" gap={0} mt={0} pt={0}>
+                    <React.Fragment key={step.id}>
+                      <Box flex={1} display="flex" flexDirection="column" alignItems="center" minW={0}>
                         <Box
                           display="flex"
                           height="12"
@@ -913,32 +1125,35 @@ export default function ConfirmRentalPage() {
                           bg={isActive || isCompleted ? 'orange.500' : 'white'}
                           color={isActive || isCompleted ? 'white' : 'gray.400'}
                           className="dark:border-gray-600 dark:bg-gray-800"
-                          mb={0}
+                          flexShrink={0}
+                          mb={2}
                         >
                           {isCompleted ? <Check className="h-6 w-6" /> : step.icon}
                         </Box>
                         <Text
-                          mt={0}
-                          mb={0}
                           fontSize="xs"
                           fontWeight="medium"
                           color={
                             isActive || isCompleted ? 'orange.500' : 'gray.500'
                           }
+                          textAlign="center"
+                          lineHeight="1.2"
+                          px={1}
                         >
                           {step.title}
                         </Text>
-                      </VStack>
+                      </Box>
                       {index < steps.length - 1 && (
                         <Box
-                          mx={2}
                           height="0.5"
                           flex={1}
                           bg={isCompleted ? 'orange.500' : 'gray.300'}
                           className="dark:bg-gray-600"
+                          mt={6}
+                          flexShrink={1}
                         />
                       )}
-                    </Box>
+                    </React.Fragment>
                   );
                 })}
               </HStack>
@@ -950,11 +1165,18 @@ export default function ConfirmRentalPage() {
             </Card>
 
             {/* Navigation Buttons */}
-            <HStack justify="space-between">
-              <Button onClick={handleBack} variant="outline">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                {isFirstStep ? 'Back to Selection' : 'Previous'}
-              </Button>
+            <VStack align="stretch" gap={2} width="full">
+              {!isFirstStep && (
+                <Button 
+                  onClick={handleBack} 
+                  variant="ghost"
+                  size="sm"
+                  width="full"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Previous
+                </Button>
+              )}
               {isLastStep ? (
                 <OutlineButton 
                   onClick={handleNext} 
@@ -969,13 +1191,15 @@ export default function ConfirmRentalPage() {
                 <Button 
                   onClick={handleNext} 
                   colorScheme="orange"
+                  size="lg"
                   width="full"
+                  fontWeight="semibold"
                 >
                   Next
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               )}
-            </HStack>
+            </VStack>
           </VStack>
         ) : (
           // Desktop: Accordion layout with summary card
