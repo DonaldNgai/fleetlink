@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("POSTGRES_URL")
+  relationMode = "prisma"
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Customers {
+  id                 BigInt   @id @default(autoincrement())
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  company_name       String
+  contact_first_name String
+  contact_last_name  String?
+  phone              String
+  email              String
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Equipment_Bookings {
+  id                      BigInt   @id @unique @default(autoincrement())
+  created_at              DateTime @default(now()) @db.Timestamptz(6)
+  booking_date            DateTime @db.Timestamptz(6)
+  customer                String
+  supplier                String?
+  supplier_id             BigInt
+  location                String
+  location_longitude      Float?
+  location_latitude       Float?
+  number_equipment        Int
+  customer_rate           Float    @db.Real
+  hours                   Float?   @db.Real
+  supplier_rate           Float    @db.Real
+  sourcer_rate            Float    @db.Real
+  customer_id             BigInt?
+  operator_first_name     String
+  operator_last_name      String?
+  booking_group_id        String
+  supplier_status         String   @default("active")
+  cancellation_reason     String?
+  customer_status         String   @default("active")
+  equipment               String?
+  total_customer_charges  Decimal? @default(dbgenerated("((COALESCE(customer_rate, (0)::real) * COALESCE(hours, (0)::real)) * (COALESCE(number_equipment, 0))::double precision)")) @db.Decimal
+  sourcer_total_earnings  Decimal? @default(dbgenerated("((COALESCE(sourcer_rate, (0)::real) * COALESCE(hours, (0)::real)) * (COALESCE(number_equipment, 0))::double precision)")) @db.Decimal
+  total_supplier_earnings Decimal? @default(dbgenerated("((COALESCE(supplier_rate, (0)::real) * COALESCE(hours, (0)::real)) * (COALESCE(number_equipment, 0))::double precision)")) @db.Decimal
+
+  @@map("Equipment Bookings")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Equipment_Supply {
+  id              BigInt    @id @default(autoincrement())
+  created_at      DateTime  @default(now()) @db.Timestamptz(6)
+  submission_id   String    @unique
+  status          String    @default("Listed")
+  company         String
+  phone_number    String?
+  email           String?
+  distance_radius Int
+  first_name      String
+  last_name       String?
+  location        String
+  listing_price   Int
+  minimum_price   Int
+  quantity        Int       @db.SmallInt
+  availability    String
+  category        String
+  from_datetime   DateTime? @db.Timestamptz(6)
+  to_datetime     DateTime? @db.Timestamptz(6)
+  geocode_id      BigInt?
+  geocode_lon     Float?
+  geocode_lat     Float?
+
+  @@map("Equipment Supply")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model activity_logs {
+  id         Int      @id @default(autoincrement())
+  team_id    Int
+  user_id    Int?
+  action     String
+  timestamp  DateTime @default(now()) @db.Timestamp(6)
+  ip_address String?  @db.VarChar(45)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model invitations {
+  id         Int      @id @default(autoincrement())
+  team_id    Int
+  email      String   @db.VarChar(255)
+  role       String   @db.VarChar(50)
+  invited_by Int
+  invited_at DateTime @default(now()) @db.Timestamp(6)
+  status     String   @default("pending") @db.VarChar(20)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model team_members {
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  team_id   Int
+  role      String   @db.VarChar(50)
+  joined_at DateTime @default(now()) @db.Timestamp(6)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model teams {
+  id                     Int      @id @default(autoincrement())
+  name                   String   @db.VarChar(100)
+  created_at             DateTime @default(now()) @db.Timestamp(6)
+  updated_at             DateTime @default(now()) @db.Timestamp(6)
+  stripe_customer_id     String?  @unique(map: "teams_stripe_customer_id_unique")
+  stripe_subscription_id String?  @unique(map: "teams_stripe_subscription_id_unique")
+  stripe_product_id      String?
+  plan_name              String?  @db.VarChar(50)
+  subscription_status    String?  @db.VarChar(20)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model users {
+  id            Int       @id @default(autoincrement())
+  name          String?   @db.VarChar(100)
+  email         String    @unique(map: "users_email_unique") @db.VarChar(255)
+  password_hash String
+  role          String    @default("member") @db.VarChar(20)
+  created_at    DateTime  @default(now()) @db.Timestamp(6)
+  updated_at    DateTime  @default(now()) @db.Timestamp(6)
+  deleted_at    DateTime? @db.Timestamp(6)
+}
