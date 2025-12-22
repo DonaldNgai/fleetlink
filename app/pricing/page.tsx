@@ -28,10 +28,10 @@ export default async function PricingPage() {
   const plusPrice = prices.find((price) => price.productId === plusPlan?.id);
 
   const features = [
-    { icon: Wrench, text: 'Unlimited Equipment Listings' },
-    { icon: Zap, text: 'Fast Payment Processing' },
-    { icon: Shield, text: 'Secure Transactions' },
-    { icon: Clock, text: '24/7 Support' },
+    { icon: Wrench, text: 'Free Equipment Rentals' },
+    { icon: Zap, text: 'Free Equipment Listings' },
+    { icon: Shield, text: 'Market-Rate Pricing' },
+    { icon: Clock, text: 'Bulk Booking Benefits' },
   ];
 
   return (
@@ -65,16 +65,59 @@ export default async function PricingPage() {
         <VStack align="stretch" gap="16">
           {/* Header Section */}
           <VStack align="center" gap="6" textAlign="center" maxW="3xl" mx="auto">
-            <Badge variant="subtle" colorPalette="blue" size="lg" px="4" py="1.5">
-              Pricing Plans
+            <Badge variant="solid" colorPalette="green" size="lg" px="4" py="1.5" fontSize="sm" fontWeight="bold">
+              🎉 100% Free to Start
             </Badge>
             <Heading size="4xl" fontWeight="bold" lineHeight="1.2">
-              Built for Construction Teams
+              Rent & List Equipment - Completely Free
             </Heading>
             <Text fontSize="xl" color="fg.muted" maxW="2xl" lineHeight="relaxed">
-              Choose the plan that fits your fleet management needs. Scale up as your business grows.
+              Start renting equipment or listing your fleet today at no cost. We match or beat market rates by building costs into renter fees, providing bulk bookings that offset expenses. As a renter, it's a no-brainer.
             </Text>
           </VStack>
+
+          {/* Value Proposition Callout */}
+          <Box
+            maxW="4xl"
+            mx="auto"
+            width="full"
+            p="6"
+            borderRadius="xl"
+            bg="green.50"
+            borderWidth="2px"
+            borderColor="green.200"
+            _dark={{ bg: 'green.900/20', borderColor: 'green.800' }}
+          >
+            <VStack align="stretch" gap="4">
+              <HStack gap="3" align="start">
+                <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                <VStack align="start" gap="2" flex="1">
+                  <Heading size="lg" fontWeight="bold" color="green.900" _dark={{ color: 'green.100' }}>
+                    Free for Everyone
+                  </Heading>
+                  <Text fontSize="md" color="green.800" _dark={{ color: 'green.200' }} lineHeight="relaxed">
+                    <strong>Renters:</strong> Browse and rent equipment completely free. We match or beat market rates because we build costs into rental fees and provide consistent bulk bookings to equipment owners.
+                  </Text>
+                  <Text fontSize="md" color="green.800" _dark={{ color: 'green.200' }} lineHeight="relaxed">
+                    <strong>Equipment Owners:</strong> List your equipment for free and get access to bulk, consistent bookings that help offset platform costs. No upfront fees, no hidden charges.
+                  </Text>
+                </VStack>
+              </HStack>
+              <Box
+                mt="2"
+                p="4"
+                borderRadius="lg"
+                bg="white"
+                borderWidth="1px"
+                borderColor="green.200"
+                _dark={{ bg: 'gray.800', borderColor: 'green.800' }}
+              >
+                <Text fontSize="sm" fontWeight="medium" color="fg.muted" textAlign="center">
+                  💡 <strong>Subscriptions are optional</strong> - Only needed if you want advanced tracking, analytics, and detailed reporting for your rentals or equipment fleet.
+                </Text>
+              </Box>
+            </VStack>
+          </Box>
 
           {/* Key Features */}
           <SimpleGrid
@@ -127,15 +170,16 @@ export default async function PricingPage() {
             width="full"
           >
             <PricingCard
+              name="Free"
               price={0}
               interval="month"
-              features="Basic equipment listings;Limited search capabilities;Community support;Up to 5 active listings"
+              features="Rent equipment completely free;List your equipment for free;Access to all rental bookings;Match or beat market rates;No subscription required;Perfect for getting started"
             />
             <PricingCard
               name={basePlan?.name || 'Base'}
               price={basePrice?.unitAmount}
               interval={basePrice?.interval || 'month'}
-              features={basePlan?.description || ''}
+              features="Advanced rental tracking;Detailed equipment analytics;Booking history reports;Revenue insights;Performance metrics;Email support"
               priceId={basePrice?.id}
             />
             <PricingCard
@@ -143,7 +187,7 @@ export default async function PricingPage() {
               price={plusPrice?.unitAmount}
               interval={plusPrice?.interval || 'month'}
               trialDays={plusPrice?.trialPeriodDays || 7}
-              features={plusPlan?.description || ''}
+              features="Everything in Base;Real-time fleet tracking;Custom reporting dashboards;API access for integrations;Priority support;Advanced forecasting;Multi-location management"
               priceId={plusPrice?.id}
               popular
             />
