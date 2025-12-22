@@ -55,10 +55,16 @@ const equipmentTypes = [
 export default function RentPage() {
   const router = useRouter();
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+  
+  // Set default dates: today and 1 week from today
+  const today = new Date();
+  const oneWeekFromToday = new Date();
+  oneWeekFromToday.setDate(today.getDate() + 7);
+  
+  const [startDate, setStartDate] = useState<Date | null>(today);
+  const [endDate, setEndDate] = useState<Date | null>(oneWeekFromToday);
+  const [startTime, setStartTime] = useState('08:00'); // 8am
+  const [endTime, setEndTime] = useState('16:00'); // 4pm
 
   const toggleEquipment = (id: string) => {
     setSelectedEquipment(prev =>

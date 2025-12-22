@@ -16,6 +16,8 @@ import {
   CardHeader,
   CardBody as CardContent,
 } from '@chakra-ui/react';
+
+const CardTitle = Heading;
 import { cn } from '@utils';
 
 interface EquipmentType {
@@ -142,9 +144,9 @@ export default function ConfirmRentalPage() {
                   {selectedEquipment.map((id) => {
                     const equipment = equipmentMap[id];
                     return equipment ? (
-                      <Box key={id} className="rounded-lg border p-3">
+                      <Box key={id} borderRadius="lg" borderWidth="1px" p={3}>
                         <Text fontWeight="medium">{equipment.name}</Text>
-                        <Text className="text-sm text-gray-600 dark:text-gray-400">{equipment.description}</Text>
+                        <Text fontSize="sm" color="gray.600" className="dark:text-gray-400">{equipment.description}</Text>
                       </Box>
                     ) : null;
                   })}
@@ -153,10 +155,10 @@ export default function ConfirmRentalPage() {
             </Card>
 
             <VStack align="stretch" gap={4}>
-              <div>
-                <label htmlFor="quantity" className="mb-2 block text-sm font-medium">
+              <Box>
+                <Text as="label" htmlFor="quantity" display="block" mb={2} fontSize="sm" fontWeight="medium">
                   Number of Units
-                </label>
+                </Text>
                 <Input
                   id="quantity"
                   type="number"
@@ -165,12 +167,12 @@ export default function ConfirmRentalPage() {
                   onChange={(e) => updateFormData('quantity', e.target.value)}
                   placeholder="Enter number of units"
                 />
-              </div>
+              </Box>
 
-              <div>
-                <label htmlFor="hours" className="mb-2 block text-sm font-medium">
+              <Box>
+                <Text as="label" htmlFor="hours" display="block" mb={2} fontSize="sm" fontWeight="medium">
                   Estimated Hours
-                </label>
+                </Text>
                 <Input
                   id="hours"
                   type="number"
@@ -179,12 +181,12 @@ export default function ConfirmRentalPage() {
                   onChange={(e) => updateFormData('hours', e.target.value)}
                   placeholder="Enter estimated hours"
                 />
-              </div>
+              </Box>
 
-              <div>
-                <label htmlFor="specialInstructions" className="mb-2 block text-sm font-medium">
+              <Box>
+                <Text as="label" htmlFor="specialInstructions" display="block" mb={2} fontSize="sm" fontWeight="medium">
                   Special Instructions
-                </label>
+                </Text>
                 <Textarea
                   id="specialInstructions"
                   value={formData.specialInstructions}
@@ -192,7 +194,7 @@ export default function ConfirmRentalPage() {
                   placeholder="Any special requirements or instructions..."
                   rows={4}
                 />
-              </div>
+              </Box>
             </VStack>
           </VStack>
         );
@@ -210,55 +212,55 @@ export default function ConfirmRentalPage() {
             </VStack>
 
             <VStack align="stretch" gap={4}>
-              <div>
-                <label htmlFor="address" className="mb-2 block text-sm font-medium">
+              <Box>
+                <Text as="label" htmlFor="address" display="block" mb={2} fontSize="sm" fontWeight="medium">
                   Street Address
-                </label>
+                </Text>
                 <Input
                   id="address"
                   value={formData.address}
                   onChange={(e) => updateFormData('address', e.target.value)}
                   placeholder="123 Main Street"
                 />
-              </div>
+              </Box>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="city" className="mb-2 block text-sm font-medium">
+              <HStack gap={4}>
+                <Box flex={1}>
+                  <Text as="label" htmlFor="city" display="block" mb={2} fontSize="sm" fontWeight="medium">
                     City
-                  </label>
+                  </Text>
                   <Input
                     id="city"
                     value={formData.city}
                     onChange={(e) => updateFormData('city', e.target.value)}
                     placeholder="City"
                   />
-                </div>
+                </Box>
 
-                <div>
-                  <label htmlFor="state" className="mb-2 block text-sm font-medium">
+                <Box flex={1}>
+                  <Text as="label" htmlFor="state" display="block" mb={2} fontSize="sm" fontWeight="medium">
                     State
-                  </label>
+                  </Text>
                   <Input
                     id="state"
                     value={formData.state}
                     onChange={(e) => updateFormData('state', e.target.value)}
                     placeholder="State"
                   />
-                </div>
-              </div>
+                </Box>
+              </HStack>
 
-              <div>
-                <label htmlFor="zipCode" className="mb-2 block text-sm font-medium">
+              <Box>
+                <Text as="label" htmlFor="zipCode" display="block" mb={2} fontSize="sm" fontWeight="medium">
                   ZIP Code
-                </label>
+                </Text>
                 <Input
                   id="zipCode"
                   value={formData.zipCode}
                   onChange={(e) => updateFormData('zipCode', e.target.value)}
                   placeholder="12345"
                 />
-              </div>
+              </Box>
             </VStack>
           </VStack>
         );
@@ -276,22 +278,22 @@ export default function ConfirmRentalPage() {
             </VStack>
 
             <VStack align="stretch" gap={4}>
-              <div>
-                <label htmlFor="contactName" className="mb-2 block text-sm font-medium">
+              <Box>
+                <Text as="label" htmlFor="contactName" display="block" mb={2} fontSize="sm" fontWeight="medium">
                   Contact Name
-                </label>
+                </Text>
                 <Input
                   id="contactName"
                   value={formData.contactName}
                   onChange={(e) => updateFormData('contactName', e.target.value)}
                   placeholder="John Doe"
                 />
-              </div>
+              </Box>
 
-              <div>
-                <label htmlFor="contactPhone" className="mb-2 block text-sm font-medium">
+              <Box>
+                <Text as="label" htmlFor="contactPhone" display="block" mb={2} fontSize="sm" fontWeight="medium">
                   Phone Number
-                </label>
+                </Text>
                 <Input
                   id="contactPhone"
                   type="tel"
@@ -299,12 +301,12 @@ export default function ConfirmRentalPage() {
                   onChange={(e) => updateFormData('contactPhone', e.target.value)}
                   placeholder="(555) 123-4567"
                 />
-              </div>
+              </Box>
 
-              <div>
-                <label htmlFor="contactEmail" className="mb-2 block text-sm font-medium">
+              <Box>
+                <Text as="label" htmlFor="contactEmail" display="block" mb={2} fontSize="sm" fontWeight="medium">
                   Email Address
-                </label>
+                </Text>
                 <Input
                   id="contactEmail"
                   type="email"
@@ -312,7 +314,7 @@ export default function ConfirmRentalPage() {
                   onChange={(e) => updateFormData('contactEmail', e.target.value)}
                   placeholder="john@example.com"
                 />
-              </div>
+              </Box>
             </VStack>
           </VStack>
         );
@@ -338,7 +340,7 @@ export default function ConfirmRentalPage() {
                   {selectedEquipment.map((id) => {
                     const equipment = equipmentMap[id];
                     return equipment ? (
-                      <Box key={id} className="rounded-lg border p-3">
+                      <Box key={id} borderRadius="lg" borderWidth="1px" p={3}>
                         <Text fontWeight="medium">{equipment.name}</Text>
                       </Box>
                     ) : null;
@@ -425,56 +427,65 @@ export default function ConfirmRentalPage() {
   };
 
   return (
-    <Box className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Box className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+    <Box minH="100vh" bg="gray.50" className="dark:bg-gray-900">
+      <Box mx="auto" maxW="4xl" px={{ base: 4, sm: 6, lg: 8 }} py={8}>
         <VStack align="stretch" gap={8}>
           {/* Progress Steps */}
-          <Box className="w-full">
-            <div className="flex items-center justify-between">
+          <Box width="full">
+            <HStack justify="space-between">
               {steps.map((step, index) => {
                 const isActive = step.id === currentStep;
                 const isCompleted = steps.findIndex((s) => s.id === currentStep) > index;
                 return (
-                  <div key={step.id} className="flex flex-1 items-center">
-                    <div className="flex flex-col items-center">
-                      <div
-                        className={cn(
-                          'flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all',
-                          isActive
-                            ? 'border-primary bg-primary text-white'
-                            : isCompleted
-                            ? 'border-primary bg-primary text-white'
-                            : 'border-gray-300 bg-white text-gray-400 dark:border-gray-600 dark:bg-gray-800'
-                        )}
+                  <Box key={step.id} display="flex" flex={1} alignItems="center">
+                    <VStack align="center">
+                      <Box
+                        display="flex"
+                        height="12"
+                        width="12"
+                        alignItems="center"
+                        justifyContent="center"
+                        borderRadius="full"
+                        borderWidth="2px"
+                        transition="all"
+                        borderColor={
+                          isActive || isCompleted ? 'orange.500' : 'gray.300'
+                        }
+                        bg={isActive || isCompleted ? 'orange.500' : 'white'}
+                        color={isActive || isCompleted ? 'white' : 'gray.400'}
+                        className="dark:border-gray-600 dark:bg-gray-800"
                       >
                         {isCompleted ? <Check className="h-6 w-6" /> : step.icon}
-                      </div>
+                      </Box>
                       <Text
-                        className={cn(
-                          'mt-2 text-xs font-medium',
-                          isActive ? 'text-primary' : isCompleted ? 'text-primary' : 'text-gray-500'
-                        )}
+                        mt={2}
+                        fontSize="xs"
+                        fontWeight="medium"
+                        color={
+                          isActive || isCompleted ? 'orange.500' : 'gray.500'
+                        }
                       >
                         {step.title}
                       </Text>
-                    </div>
+                    </VStack>
                     {index < steps.length - 1 && (
-                      <div
-                        className={cn(
-                          'mx-2 h-0.5 flex-1',
-                          isCompleted ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'
-                        )}
+                      <Box
+                        mx={2}
+                        height="0.5"
+                        flex={1}
+                        bg={isCompleted ? 'orange.500' : 'gray.300'}
+                        className="dark:bg-gray-600"
                       />
                     )}
-                  </div>
+                  </Box>
                 );
               })}
-            </div>
+            </HStack>
           </Box>
 
           {/* Step Content */}
           <Card>
-            <CardContent className="p-8">{renderStepContent()}</CardContent>
+            <CardContent p={8}>{renderStepContent()}</CardContent>
           </Card>
 
           {/* Navigation Buttons */}
