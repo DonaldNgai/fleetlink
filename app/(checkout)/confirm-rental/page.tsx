@@ -19,7 +19,7 @@ import {
   useDisclosure,
   useBreakpointValue,
 } from '@chakra-ui/react';
-
+import Link from 'next/link';
 const CardTitle = Heading;
 import { cn } from '@utils';
 import { OutlineButton } from '@ui';
@@ -449,7 +449,9 @@ export default function ConfirmRentalPage() {
       >
         <CardHeader flexShrink={0}>
           <VStack align="start" gap={3} mb={2}>
-            <Image src="/logo.png" alt="FleetLink" width={120} height={48} style={{ height: 'auto' }} />
+            <Link href="/" passHref>
+                <Image src="/logo.png" alt="FleetLink" width={120} height={48} style={{ height: 'auto' }} />
+            </Link>
             <CardTitle mb={0}>Rental Summary</CardTitle>
           </VStack>
         </CardHeader>
@@ -895,7 +897,7 @@ export default function ConfirmRentalPage() {
                   const isCompleted = steps.findIndex((s) => s.id === currentStep) > index;
                   return (
                     <Box key={step.id} display="flex" flex={1} alignItems="center">
-                      <VStack align="center">
+                      <VStack align="center" gap={0} mt={0} pt={0}>
                         <Box
                           display="flex"
                           height="12"
@@ -911,11 +913,13 @@ export default function ConfirmRentalPage() {
                           bg={isActive || isCompleted ? 'orange.500' : 'white'}
                           color={isActive || isCompleted ? 'white' : 'gray.400'}
                           className="dark:border-gray-600 dark:bg-gray-800"
+                          mb={0}
                         >
                           {isCompleted ? <Check className="h-6 w-6" /> : step.icon}
                         </Box>
                         <Text
-                          mt={2}
+                          mt={0}
+                          mb={0}
                           fontSize="xs"
                           fontWeight="medium"
                           color={
@@ -985,7 +989,7 @@ export default function ConfirmRentalPage() {
                   const isCompleted = steps.findIndex((s) => s.id === currentStep) > steps.findIndex((s) => s.id === step.id);
 
                   return (
-                    <Card key={step.id} id={`step-${step.id}`}>
+                    <Card key={step.id} id={`step-${step.id}`} py={4}>
                       <CardHeader pt={0} pb={0} mb={0}>
                         <HStack justify="space-between" align="center" m={0}>
                           <HStack gap={4} flex={1} m={0}>
@@ -1005,8 +1009,8 @@ export default function ConfirmRentalPage() {
                             >
                               {isCompleted ? <Check className="h-5 w-5" /> : step.icon}
                             </Box>
-                            <VStack align="start" gap={1} flex={1} m={0}>
-                              <Heading as="h3" size="md" fontWeight="semibold" mb={0} pb={0}>
+                            <VStack align="start" gap={1} flex={1} m={0.5}>
+                              <Heading as="h3" size="md" fontWeight="semibold" my={0} pb={0}>
                                 {step.title}
                               </Heading>
                               <Text
