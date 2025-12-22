@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 import { ArrowLeft, ArrowRight, Check, Calendar, Clock, Package, Trash2, Edit } from 'lucide-react';
 import {
   Box,
@@ -21,6 +22,14 @@ import {
 
 const CardTitle = Heading;
 import { cn } from '@utils';
+import { OutlineButton } from '@ui';
+
+// Google Maps type declarations
+declare global {
+  interface Window {
+    google: any;
+  }
+}
 
 interface EquipmentType {
   id: string;
@@ -60,6 +69,11 @@ export default function ConfirmRentalPage() {
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
   const [equipmentQuantities, setEquipmentQuantities] = useState<Record<string, number>>({});
   const [rentalDates, setRentalDates] = useState({ startDate: '', endDate: '', startTime: '', endTime: '' });
+  const [mapLocation, setMapLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [mapInstance, setMapInstance] = useState<any>(null);
+  const [markerInstance, setMarkerInstance] = useState<any>(null);
+  const [autocompleteInstance, setAutocompleteInstance] = useState<any>(null);
+  const [addressInputValue, setAddressInputValue] = useState('');
 
   // Form data
   const [formData, setFormData] = useState({
@@ -160,6 +174,190 @@ export default function ConfirmRentalPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Initialize Google Maps
+  useEffect(() => {
+    if (currentStep !== 'location') return;
+
+    const updateAddressFromPlace = (place: any, setInput = false) => {
+      let address = '';
+      let city = '';
+      let state = '';
+      let zipCode = '';
+
+      if (place.address_components) {
+        place.address_components.forEach((component: any) => {
+          const types = component.types;
+          
+          if (types.includes('street_number')) {
+            address = component.long_name + ' ';
+          }
+          if (types.includes('route')) {
+            address += component.long_name;
+          }
+          if (types.includes('locality')) {
+            city = component.long_name;
+          }
+          if (types.includes('administrative_area_level_1')) {
+            state = component.short_name;
+          }
+          if (types.includes('postal_code')) {
+            zipCode = component.long_name;
+          }
+        });
+
+        const fullAddress = 'formatted_address' in place ? (place.formatted_address || address) : address;
+        if (setInput || !addressInputValue) {
+          setAddressInputValue(fullAddress);
+        }
+        updateFormData('address', address.trim() || fullAddress);
+        updateFormData('city', city);
+        updateFormData('state', state);
+        updateFormData('zipCode', zipCode);
+      }
+    };
+
+    const reverseGeocode = (location: { lat: number; lng: number }) => {
+      if (typeof window === 'undefined' || !window.google) return;
+
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode({ location }, (results: any, status: string) => {
+        if (status === 'OK' && results && results[0]) {
+          updateAddressFromPlace(results[0], true);
+        }
+      });
+    };
+
+    const createMap = (location: { lat: number; lng: number }) => {
+      if (typeof window === 'undefined' || !window.google) return;
+
+      const mapElement = document.getElementById('map');
+      if (!mapElement) return;
+
+      const map = new window.google.maps.Map(mapElement, {
+        center: location,
+        zoom: 15,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
+      });
+
+      const marker = new window.google.maps.Marker({
+        position: location,
+        map: map,
+        draggable: true,
+        title: 'Delivery Location',
+      });
+
+      // Handle marker drag end
+      marker.addListener('dragend', () => {
+        const position = marker.getPosition();
+        if (position) {
+          const newLocation = {
+            lat: position.lat(),
+            lng: position.lng(),
+          };
+          setMapLocation(newLocation);
+          reverseGeocode(newLocation);
+        }
+      });
+
+      // Initialize autocomplete
+      const input = document.getElementById('address-autocomplete') as HTMLInputElement;
+      if (input) {
+        const autocomplete = new window.google.maps.places.Autocomplete(input, {
+          types: ['address'],
+          componentRestrictions: { country: ['ca', 'us'] },
+        });
+
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          if (place.geometry && place.geometry.location) {
+            const newLocation = {
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+            };
+            map.setCenter(newLocation);
+            marker.setPosition(newLocation);
+            setMapLocation(newLocation);
+            updateAddressFromPlace(place, true);
+          }
+        });
+
+        setAutocompleteInstance(autocomplete);
+      }
+
+      setMapInstance(map);
+      setMarkerInstance(marker);
+
+      // If we have existing address, geocode it
+      if (formData.address) {
+        setAddressInputValue(formData.address);
+      }
+    };
+
+    const initializeMap = () => {
+      if (typeof window === 'undefined' || !window.google) return;
+
+      // Get user's current location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const location = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            setMapLocation(location);
+            createMap(location);
+            // Auto-fill address from current location
+            setTimeout(() => {
+              reverseGeocode(location);
+            }, 500);
+          },
+          () => {
+            // Default to a center location if geolocation fails
+            const defaultLocation = { lat: 43.6532, lng: -79.3832 }; // Toronto
+            setMapLocation(defaultLocation);
+            createMap(defaultLocation);
+          }
+        );
+      } else {
+        const defaultLocation = { lat: 43.6532, lng: -79.3832 };
+        setMapLocation(defaultLocation);
+        createMap(defaultLocation);
+      }
+    };
+
+    if (typeof window === 'undefined') return;
+
+    if (!window.google || !window.google.maps) {
+      // Load Google Maps script
+      const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
+      if (existingScript) {
+        existingScript.addEventListener('load', initializeMap);
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+      
+      script.onload = () => {
+        initializeMap();
+      };
+    } else {
+      initializeMap();
+    }
+
+    return () => {
+      // Cleanup
+      if (markerInstance) {
+        markerInstance.setMap(null);
+      }
+    };
+  }, [currentStep]);
+
   // Responsive check - show accordion on desktop, progress bar on mobile
   const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -238,23 +436,36 @@ export default function ConfirmRentalPage() {
     const hasValidPricing = ourTotal > 0;
 
     return (
-      <Card position="sticky" top={8} height="fit-content" maxH="calc(100vh - 4rem)" overflowY="auto">
-        <CardHeader>
-          <CardTitle>Rental Summary</CardTitle>
+      <Card 
+        position="fixed" 
+        top={4}
+        right={{ base: 4, md: 8 }}
+        height="auto" 
+        maxH="calc(100vh - 2rem)" 
+        display="flex"
+        flexDirection="column"
+        width={{ base: "calc(100% - 2rem)", md: "400px" }}
+        zIndex={10}
+      >
+        <CardHeader flexShrink={0}>
+          <VStack align="start" gap={3} mb={2}>
+            <Image src="/logo.png" alt="FleetLink" width={120} height={48} style={{ height: 'auto' }} />
+            <CardTitle mb={0}>Rental Summary</CardTitle>
+          </VStack>
         </CardHeader>
-        <CardContent>
-          <VStack align="stretch" gap={4}>
+        <CardContent overflowY="auto" flex={1} minH={0} display="flex" flexDirection="column">
+          <VStack align="stretch" gap={3} flex={1}>
             {selectedEquipment.length > 0 && (
-              <Box>
-                <Text fontSize="sm" fontWeight="medium" color="gray.600" mb={2}>
+              <Box >
+                <Text fontSize="sm" fontWeight="medium" color="gray.600" mb={1}>
                   Equipment Quantities
                 </Text>
-                <VStack align="start" gap={1}>
+                <VStack align="start" gap={0}>
                   {selectedEquipment.map((id) => {
                     const equipment = equipmentMap[id];
                     const quantity = equipmentQuantities[id] || 1;
                     return equipment ? (
-                      <Text key={id} fontSize="sm">
+                      <Text key={id} fontSize="sm" p={0} m={0}>
                         <strong>{equipment.name}:</strong> {quantity}
                       </Text>
                     ) : null;
@@ -264,14 +475,14 @@ export default function ConfirmRentalPage() {
             )}
 
             <Box>
-              <Text fontSize="sm" fontWeight="medium" color="gray.600" mb={2}>
+              <Text fontSize="sm" fontWeight="medium" color="gray.600" mb={1}>
                 Rental Period
               </Text>
-              <VStack align="start" gap={1}>
-                <Text fontSize="sm">
+              <VStack align="start" gap={0.5}>
+                <Text fontSize="sm" m={0} p={0}>
                   <strong>Start:</strong> {rentalDates.startDate || 'Not set'} {rentalDates.startTime && `at ${rentalDates.startTime}`}
                 </Text>
-                <Text fontSize="sm">
+                <Text fontSize="sm" m={0} p={0}>
                   <strong>End:</strong> {rentalDates.endDate || 'Not set'} {rentalDates.endTime && `at ${rentalDates.endTime}`}
                 </Text>
               </VStack>
@@ -279,10 +490,10 @@ export default function ConfirmRentalPage() {
 
             {formData.hours && (
               <Box>
-                <Text fontSize="sm" fontWeight="medium" color="gray.600" mb={2}>
+                <Text fontSize="sm" fontWeight="medium" color="gray.600" mb={1}>
                   Details
                 </Text>
-                <VStack align="start" gap={1}>
+                <VStack align="start" gap={0.5}>
                   <Text fontSize="sm">
                     <strong>Hours:</strong> {formData.hours}
                   </Text>
@@ -292,7 +503,7 @@ export default function ConfirmRentalPage() {
 
             {formData.address && (
               <Box>
-                <Text fontSize="sm" fontWeight="medium" color="gray.600" mb={2}>
+                <Text fontSize="sm" fontWeight="medium" color="gray.600" mb={1}>
                   Location
                 </Text>
                 <Text fontSize="sm">
@@ -306,10 +517,10 @@ export default function ConfirmRentalPage() {
 
             {(formData.contactName || formData.contactPhone || formData.contactEmail) && (
               <Box>
-                <Text fontSize="sm" fontWeight="medium" color="gray.600" mb={2}>
+                <Text fontSize="sm" fontWeight="medium" color="gray.600" mb={1}>
                   Contact
                 </Text>
-                <VStack align="start" gap={1}>
+                <VStack align="start" gap={0.5}>
                   {formData.contactName && (
                     <Text fontSize="sm">
                       <strong>Name:</strong> {formData.contactName}
@@ -332,10 +543,10 @@ export default function ConfirmRentalPage() {
             {/* Pricing Section */}
             {hasValidPricing && (
               <>
-                <Box borderTopWidth="1px" pt={4}>
-                  <VStack align="stretch" gap={3}>
+                <Box borderTopWidth="1px" pt={2}>
+                  <VStack align="stretch" gap={2}>
                     <Box>
-                      <HStack justify="space-between" mb={1}>
+                      <HStack justify="space-between" mb={0.5}>
                         <Text fontSize="sm" color="gray.600">
                           Market Rate
                         </Text>
@@ -375,27 +586,46 @@ export default function ConfirmRentalPage() {
               </>
             )}
 
-            {/* Navigation Buttons */}
-            <Box borderTopWidth="1px" pt={4} mt={2}>
-              <VStack align="stretch" gap={2}>
-                {!isFirstStep && (
-                  <Button 
-                    onClick={handleBack} 
-                    variant="outline" 
-                    width="full"
-                  >
-                    <ArrowLeft className="h-4 w-4 mr-2" />
-                    Previous
-                  </Button>
-                )}
-                <Button onClick={handleNext} colorScheme="orange" width="full">
-                  {isLastStep ? 'Submit Request' : 'Next'}
-                  {isLastStep ? <Check className="h-4 w-4 ml-2" /> : <ArrowRight className="h-4 w-4 ml-2" />}
-                </Button>
-              </VStack>
-            </Box>
           </VStack>
         </CardContent>
+        {/* Navigation Buttons - Fixed at bottom */}
+        <Box borderTopWidth="1px" pt={2} pb={2} px={4} flexShrink={0} bg="white">
+          <VStack align="stretch" gap={2}>
+            {!isFirstStep && (
+              <Button 
+                onClick={handleBack} 
+                variant="ghost" 
+                size="sm"
+                width="full"
+              >
+                <ArrowLeft className="h-3 w-3 mr-1" />
+                Previous
+              </Button>
+            )}
+            {isLastStep ? (
+              <OutlineButton 
+                onClick={handleNext} 
+                width="full"
+                size="lg"
+                fontWeight="bold"
+              >
+                Submit Request
+                <Check className="h-5 w-5 ml-2" />
+              </OutlineButton>
+            ) : (
+              <Button 
+                onClick={handleNext} 
+                colorScheme="orange" 
+                width="full"
+                size="md"
+                fontWeight="medium"
+              >
+                Next
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            )}
+          </VStack>
+        </Box>
       </Card>
     );
   };
@@ -406,11 +636,6 @@ export default function ConfirmRentalPage() {
       case 'details':
         return (
           <VStack align="stretch" gap={6}>
-            <VStack align="start" gap={2}>
-              <Heading as="h2" size="lg" fontWeight="semibold">
-                Selected Equipment
-              </Heading>
-            </VStack>
 
             <VStack align="stretch" gap={3}>
               {selectedEquipment.length > 0 ? (
@@ -493,73 +718,30 @@ export default function ConfirmRentalPage() {
       case 'location':
         return (
           <VStack align="stretch" gap={6}>
-            <VStack align="start" gap={2}>
-              <Heading as="h2" size="lg" fontWeight="semibold">
-                Delivery Location
-              </Heading>
-              <Text color="gray.600" className="dark:text-gray-400">
-                Where should the equipment be delivered?
-              </Text>
-            </VStack>
-
             <VStack align="stretch" gap={4}>
               <Box>
-                <label htmlFor="address">
+                <label htmlFor="address-autocomplete">
                   <Text display="block" mb={2} fontSize="sm" fontWeight="medium">
-                    Street Address
+                    Delivery Address
                   </Text>
                 </label>
                 <Input
-                  id="address"
-                  value={formData.address}
-                  onChange={(e) => updateFormData('address', e.target.value)}
-                  placeholder="123 Main Street"
+                  id="address-autocomplete"
+                  value={addressInputValue}
+                  onChange={(e) => setAddressInputValue(e.target.value)}
+                  placeholder="Type an address or drag the pin on the map"
                 />
               </Box>
 
-              <HStack gap={4}>
-                <Box flex={1}>
-                  <label htmlFor="city">
-                    <Text display="block" mb={2} fontSize="sm" fontWeight="medium">
-                      City
-                    </Text>
-                  </label>
-                  <Input
-                    id="city"
-                    value={formData.city}
-                    onChange={(e) => updateFormData('city', e.target.value)}
-                    placeholder="City"
-                  />
-                </Box>
-
-                <Box flex={1}>
-                  <label htmlFor="state">
-                    <Text display="block" mb={2} fontSize="sm" fontWeight="medium">
-                      State
-                    </Text>
-                  </label>
-                  <Input
-                    id="state"
-                    value={formData.state}
-                    onChange={(e) => updateFormData('state', e.target.value)}
-                    placeholder="State"
-                  />
-                </Box>
-              </HStack>
-
-              <Box>
-                <label htmlFor="zipCode">
-                  <Text display="block" mb={2} fontSize="sm" fontWeight="medium">
-                    ZIP Code
-                  </Text>
-                </label>
-                <Input
-                  id="zipCode"
-                  value={formData.zipCode}
-                  onChange={(e) => updateFormData('zipCode', e.target.value)}
-                  placeholder="12345"
-                />
-              </Box>
+              <Box 
+                id="map" 
+                height="400px" 
+                width="100%" 
+                borderRadius="lg" 
+                overflow="hidden"
+                borderWidth="1px"
+                borderColor="gray.200"
+              />
             </VStack>
           </VStack>
         );
@@ -567,14 +749,7 @@ export default function ConfirmRentalPage() {
       case 'contact':
         return (
           <VStack align="stretch" gap={6}>
-            <VStack align="start" gap={2}>
-              <Heading as="h2" size="lg" fontWeight="semibold">
-                Contact Information
-              </Heading>
-              <Text color="gray.600" className="dark:text-gray-400">
-                Who should we contact about this rental?
-              </Text>
-            </VStack>
+
 
             <VStack align="stretch" gap={4}>
               <Box>
@@ -776,28 +951,44 @@ export default function ConfirmRentalPage() {
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 {isFirstStep ? 'Back to Selection' : 'Previous'}
               </Button>
-              <Button onClick={handleNext} colorScheme="orange">
-                {isLastStep ? 'Submit Request' : 'Next'}
-                {isLastStep ? <Check className="h-4 w-4 ml-2" /> : <ArrowRight className="h-4 w-4 ml-2" />}
-              </Button>
+              {isLastStep ? (
+                <OutlineButton 
+                  onClick={handleNext} 
+                  width="full"
+                  size="lg"
+                  fontWeight="bold"
+                >
+                  Submit Request
+                  <Check className="h-5 w-5 ml-2" />
+                </OutlineButton>
+              ) : (
+                <Button 
+                  onClick={handleNext} 
+                  colorScheme="orange"
+                  width="full"
+                >
+                  Next
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              )}
             </HStack>
           </VStack>
         ) : (
           // Desktop: Accordion layout with summary card
           <HStack align="start" gap={6}>
             {/* Left: Accordion Steps */}
-            <Box flex={2}>
+            <Box flex={1} minW={0}>
               <VStack align="stretch" gap={4}>
                 {steps.map((step) => {
                   const disclosure = getStepDisclosure(step.id);
                   const isActive = step.id === currentStep;
                   const isCompleted = steps.findIndex((s) => s.id === currentStep) > steps.findIndex((s) => s.id === step.id);
-                  
+
                   return (
                     <Card key={step.id} id={`step-${step.id}`}>
-                      <CardHeader>
-                        <HStack justify="space-between" align="center">
-                          <HStack gap={4} flex={1}>
+                      <CardHeader pt={0} pb={0} mb={0}>
+                        <HStack justify="space-between" align="center" m={0}>
+                          <HStack gap={4} flex={1} m={0}>
                             <Box
                               display="flex"
                               height="10"
@@ -810,14 +1001,22 @@ export default function ConfirmRentalPage() {
                               bg={isActive || isCompleted ? 'orange.500' : 'white'}
                               color={isActive || isCompleted ? 'white' : 'gray.400'}
                               flexShrink={0}
+                              m={0}
                             >
                               {isCompleted ? <Check className="h-5 w-5" /> : step.icon}
                             </Box>
-                            <VStack align="start" gap={1} flex={1}>
-                              <Heading as="h3" size="md" fontWeight="semibold">
+                            <VStack align="start" gap={1} flex={1} m={0}>
+                              <Heading as="h3" size="md" fontWeight="semibold" mb={0} pb={0}>
                                 {step.title}
                               </Heading>
-                              <Text fontSize="sm" color="gray.600" className="dark:text-gray-400">
+                              <Text
+                                fontSize="sm"
+                                color="gray.600"
+                                className="dark:text-gray-400"
+                                mt={0}
+                                pt={0}
+                                mb={0}
+                              >
                                 {step.description}
                               </Text>
                             </VStack>
@@ -842,8 +1041,11 @@ export default function ConfirmRentalPage() {
               </VStack>
             </Box>
 
-            {/* Right: Summary Card */}
-            <Box flex={1} display={{ base: "none", md: "block" }}>
+            {/* Right: Summary Card - Fixed position (rendered outside flow) */}
+            <Box flexShrink={0} width={{ md: "400px" }} display={{ base: "none", md: "block" }} alignSelf="flex-start" position="relative">
+              {/* Spacer to maintain layout flow */}
+              <Box width={{ md: "400px" }} />
+              {/* Fixed card rendered outside of flow */}
               {renderSummaryCard()}
             </Box>
           </HStack>
