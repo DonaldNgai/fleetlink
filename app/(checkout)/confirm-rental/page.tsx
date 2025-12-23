@@ -3,7 +3,10 @@
  import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight, Check, Calendar, Clock, Package, Trash2, Edit } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Calendar, Clock, Package, Trash2, Edit, AlertCircle } from 'lucide-react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import {
   Box,
   Button,
@@ -24,6 +27,7 @@ const CardTitle = Heading;
 import { cn } from '@utils';
 import { OutlineButton } from '@ui';
 import { createRentalBooking } from '@/app/actions/rental';
+import { z } from 'zod';
 
 // Google Maps type declarations
 declare global {
@@ -63,9 +67,77 @@ const equipmentPricing: Record<string, { ourRate: number; marketRate: number }> 
 
 type Step = 'details' | 'location' | 'contact' | 'review';
 
+// Validation schemas for each step
+const detailsStepSchema = z.object({
+  selectedEquipment: z.array(z.string()).min(1, 'At least one equipment must be selected'),
+  rentalDates: z.object({
+    startDate: z.string().min(1, 'Start date is required'),
+    endDate: z.string().min(1, 'End date is required'),
+    startTime: z.string().min(1, 'Start time is required'),
+    endTime: z.string().min(1, 'End time is required'),
+  }).refine((data) => {
+    if (!data.startDate || !data.startTime || !data.endDate || !data.endTime) return true;
+    try {
+      const startDateTime = new Date(`${data.startDate}T${data.startTime}`);
+      const endDateTime = new Date(`${data.endDate}T${data.endTime}`);
+      if (isNaN(startDateTime.getTime()) || isNaN(endDateTime.getTime())) return true;
+      return endDateTime > startDateTime;
+    } catch {
+      return true; // Let the required field validation handle invalid dates
+    }
+  }, {
+    message: 'End date/time must be after start date/time',
+    path: ['endTime'],
+  }),
+});
+
+const locationStepSchema = z.object({
+  address: z.string().optional(),
+  city: z.string().optional(),
+  location: z.string().optional(),
+  mapLocation: z.object({
+    lat: z.number(),
+    lng: z.number(),
+  }).nullable().optional(),
+}).refine((data) => {
+  return !!(data.address || data.city || data.location);
+}, {
+  message: 'Location information is required (address, city, or location)',
+  path: ['address'],
+});
+
+// Contact form schema with real-time validation
+const contactFormSchema = z.object({
+  contactName: z.string().min(1, 'Contact name is required'),
+  contactPhone: z.string()
+    .min(1, 'Phone number is required')
+    .regex(/^[0-9]+$/, 'Phone number must contain only numbers')
+    .min(10, 'Phone number must be at least 10 digits')
+    .max(15, 'Phone number must be at most 15 digits'),
+  contactEmail: z.string()
+    .min(1, 'Email address is required')
+    .email('Invalid email address'),
+});
+
+type ContactFormData = z.infer<typeof contactFormSchema>;
+
+// Contact step validation schema (for step validation, not form)
+const contactStepSchema = z.object({
+  contactName: z.string().min(1, 'Contact name is required'),
+  contactPhone: z.string()
+    .min(1, 'Phone number is required')
+    .regex(/^[0-9]+$/, 'Phone number must contain only numbers')
+    .min(10, 'Phone number must be at least 10 digits')
+    .max(15, 'Phone number must be at most 15 digits'),
+  contactEmail: z.string()
+    .min(1, 'Email address is required')
+    .email('Invalid email address'),
+});
+
 export default function ConfirmRentalPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user: auth0User, isLoading: isLoadingUser } = useUser();
   const [currentStep, setCurrentStep] = useState<Step>('details');
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
   const [equipmentQuantities, setEquipmentQuantities] = useState<Record<string, number>>({});
@@ -80,6 +152,13 @@ export default function ConfirmRentalPage() {
   const autocompleteInstanceRef = useRef<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [stepErrors, setStepErrors] = useState<Record<Step, string[]>>({
+    details: [],
+    location: [],
+    contact: [],
+    review: [],
+  });
+  const [hasAutoFilled, setHasAutoFilled] = useState(false);
 
   // Form data
   const [formData, setFormData] = useState({
@@ -95,6 +174,79 @@ export default function ConfirmRentalPage() {
     contactEmail: '',
     specialInstructions: '',
   });
+
+  // React Hook Form for contact step with validation on blur
+  const contactForm = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    mode: 'onBlur', // Validate when user moves away from input
+    defaultValues: {
+      contactName: formData.contactName,
+      contactPhone: formData.contactPhone,
+      contactEmail: formData.contactEmail,
+    },
+  });
+
+  // Auto-fill contact info from Auth0 user data (only once on mount if user is available)
+  useEffect(() => {
+    if (!isLoadingUser && auth0User && !hasAutoFilled) {
+      const userEmail = auth0User.email || '';
+      const userName = auth0User.name || auth0User.nickname || '';
+      // Check both user_metadata and direct property for phone
+      const userPhone = (auth0User as any).user_metadata?.phone_number || (auth0User as any).phone_number || '';
+
+      // Only auto-fill if fields are currently empty in formData
+      const newContactName = !formData.contactName && userName ? userName : formData.contactName;
+      const newContactEmail = !formData.contactEmail && userEmail ? userEmail : formData.contactEmail;
+      let newContactPhone = formData.contactPhone;
+      if (!formData.contactPhone && userPhone) {
+        // Clean phone number (remove non-numeric characters)
+        const cleanPhone = userPhone.replace(/[^0-9]/g, '');
+        if (cleanPhone.length >= 10 && cleanPhone.length <= 15) {
+          newContactPhone = cleanPhone;
+        }
+      }
+
+      // Only update if we actually have new data to fill
+      const hasNewData = (newContactName !== formData.contactName) || 
+                         (newContactEmail !== formData.contactEmail) || 
+                         (newContactPhone !== formData.contactPhone);
+
+      if (hasNewData) {
+        setFormData((prev) => ({
+          ...prev,
+          contactName: newContactName,
+          contactEmail: newContactEmail,
+          contactPhone: newContactPhone,
+        }));
+
+        contactForm.reset({
+          contactName: newContactName,
+          contactPhone: newContactPhone,
+          contactEmail: newContactEmail,
+        });
+
+        setHasAutoFilled(true);
+      } else {
+        // Mark as filled even if no data to avoid re-checking
+        setHasAutoFilled(true);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth0User, isLoadingUser, hasAutoFilled]);
+
+  // Update formData when contact form values change
+  useEffect(() => {
+    const subscription = contactForm.watch((value) => {
+      setFormData((prev) => ({
+        ...prev,
+        contactName: value.contactName || '',
+        contactPhone: value.contactPhone || '',
+        contactEmail: value.contactEmail || '',
+      }));
+    });
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contactForm]);
 
   useEffect(() => {
     // Load data from URL params
@@ -134,12 +286,122 @@ export default function ConfirmRentalPage() {
   const isLastStep = currentStepIndex === steps.length - 1;
   const isFirstStep = currentStepIndex === 0;
 
+  // Validation functions for each step
+  const validateStep = (step: Step): string[] => {
+    const errors: string[] = [];
+
+    try {
+      switch (step) {
+        case 'details':
+          const detailsResult = detailsStepSchema.safeParse({
+            selectedEquipment,
+            rentalDates,
+          });
+          if (!detailsResult.success) {
+            detailsResult.error.issues.forEach((err: z.ZodIssue) => {
+              if (err.path.length > 0) {
+                const field = err.path[err.path.length - 1];
+                if (typeof field === 'string') {
+                  errors.push(`${field === 'selectedEquipment' ? 'Equipment selection' : err.path.join('.')}: ${err.message}`);
+                } else {
+                  errors.push(err.message);
+                }
+              } else {
+                errors.push(err.message);
+              }
+            });
+          }
+          break;
+
+        case 'location':
+          const locationResult = locationStepSchema.safeParse({
+            address: formData.address,
+            city: formData.city,
+            location: formData.location,
+            mapLocation,
+          });
+          if (!locationResult.success) {
+            locationResult.error.issues.forEach((err: z.ZodIssue) => {
+              errors.push(err.message);
+            });
+          }
+          break;
+
+        case 'contact':
+          // Use react-hook-form's validation state for contact step
+          // Errors are already shown inline, so we don't need to add them here
+          // But we still check if the form is valid
+          if (!contactForm.formState.isValid) {
+            // Get errors from react-hook-form
+            const formErrors = contactForm.formState.errors;
+            if (formErrors.contactName) {
+              errors.push(`Contact name: ${formErrors.contactName.message}`);
+            }
+            if (formErrors.contactPhone) {
+              errors.push(`Phone number: ${formErrors.contactPhone.message}`);
+            }
+            if (formErrors.contactEmail) {
+              errors.push(`Email: ${formErrors.contactEmail.message}`);
+            }
+          }
+          break;
+
+        case 'review':
+          // Review step doesn't block navigation, validation happens on submit
+          return [];
+      }
+    } catch (error) {
+      errors.push('Validation error occurred');
+    }
+
+    return errors;
+  };
+
+  const isStepValid = (step: Step): boolean => {
+    // Review step always allows navigation (validation happens on submit)
+    if (step === 'review') return true;
+    // For contact step, use react-hook-form's validation state
+    if (step === 'contact') {
+      return contactForm.formState.isValid;
+    }
+    return validateStep(step).length === 0;
+  };
+
   const handleNext = () => {
+    // For contact step, trigger react-hook-form validation
+    if (currentStep === 'contact') {
+      contactForm.trigger().then((isValid) => {
+        if (!isValid) {
+          // Scroll to first error
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+        proceedToNextStep();
+      });
+      return;
+    }
+
+    // Validate current step before proceeding
+    const errors = validateStep(currentStep);
+    setStepErrors((prev) => ({ ...prev, [currentStep]: errors }));
+
+    if (errors.length > 0) {
+      // Scroll to top to show errors
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    proceedToNextStep();
+  };
+
+  const proceedToNextStep = () => {
     if (isLastStep) {
       handleSubmit();
     } else {
       const nextStepId = steps[currentStepIndex + 1].id;
       setCurrentStep(nextStepId);
+      // Clear errors for the step we're leaving
+      setStepErrors((prev) => ({ ...prev, [currentStep]: [] }));
       // On mobile, scroll to top; on desktop, scroll to accordion
       if (isMobile) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -171,6 +433,22 @@ export default function ConfirmRentalPage() {
   };
 
   const handleSubmit = async () => {
+    // Validate all steps before submitting
+    const allErrors: string[] = [];
+    const stepsToValidate: Step[] = ['details', 'location', 'contact'];
+    
+    stepsToValidate.forEach((step) => {
+      const errors = validateStep(step);
+      allErrors.push(...errors);
+      setStepErrors((prev) => ({ ...prev, [step]: errors }));
+    });
+
+    if (allErrors.length > 0) {
+      setSubmitError('Please fix all errors before submitting');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
 
@@ -200,6 +478,36 @@ export default function ConfirmRentalPage() {
 
   const updateFormData = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    // Clear errors for the current step when user starts typing
+    if (stepErrors[currentStep].length > 0) {
+      setStepErrors((prev) => ({ ...prev, [currentStep]: [] }));
+    }
+  };
+
+  // Helper to render error messages for a step
+  const renderStepErrors = (step: Step) => {
+    const errors = stepErrors[step];
+    if (errors.length === 0) return null;
+
+    return (
+      <Box bg="red.50" borderColor="red.200" borderWidth="1px" borderRadius="md" p={3} mb={4}>
+        <VStack align="start" gap={2}>
+          <HStack>
+            <AlertCircle className="h-4 w-4 text-red-600" />
+            <Text fontSize="sm" fontWeight="semibold" color="red.700">
+              Please fix the following errors:
+            </Text>
+          </HStack>
+          <VStack align="start" gap={1} pl={6}>
+            {errors.map((error, index) => (
+              <Text key={index} fontSize="sm" color="red.600">
+                • {error}
+              </Text>
+            ))}
+          </VStack>
+        </VStack>
+      </Box>
+    );
   };
 
   // Initialize Google Maps
@@ -487,6 +795,10 @@ export default function ConfirmRentalPage() {
         delete newQuantities[equipmentId];
         return newQuantities;
       });
+      // Clear errors for details step when equipment changes
+      if (currentStep === 'details' && stepErrors.details.length > 0) {
+        setStepErrors((prev) => ({ ...prev, details: [] }));
+      }
     }
   };
 
@@ -496,6 +808,10 @@ export default function ConfirmRentalPage() {
       ...prev,
       [equipmentId]: quantity,
     }));
+    // Clear errors for details step when quantity changes
+    if (currentStep === 'details' && stepErrors.details.length > 0) {
+      setStepErrors((prev) => ({ ...prev, details: [] }));
+    }
   };
 
   const calculatePricing = () => {
@@ -708,7 +1024,6 @@ export default function ConfirmRentalPage() {
                   size="lg"
                   fontWeight="bold"
                   disabled={isSubmitting}
-                  isLoading={isSubmitting}
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit Request'}
                   {!isSubmitting && <Check className="h-5 w-5 ml-2" />}
@@ -721,6 +1036,7 @@ export default function ConfirmRentalPage() {
                 width="full"
                 size="md"
                 fontWeight="medium"
+                disabled={!isStepValid(currentStep)}
               >
                 Next
                 <ArrowRight className="h-4 w-4 ml-2" />
@@ -749,6 +1065,7 @@ export default function ConfirmRentalPage() {
                 </Text>
               </VStack>
             )}
+            {step === 'details' && renderStepErrors('details')}
 
             <VStack align="stretch" gap={3}>
               {selectedEquipment.length > 0 ? (
@@ -841,6 +1158,7 @@ export default function ConfirmRentalPage() {
                 </Text>
               </VStack>
             )}
+            {step === 'location' && renderStepErrors('location')}
             <VStack align="stretch" gap={4}>
               <Box>
                 <label htmlFor="address-autocomplete">
@@ -886,44 +1204,93 @@ export default function ConfirmRentalPage() {
               <Box>
                 <label htmlFor="contactName">
                   <Text display="block" mb={2} fontSize="sm" fontWeight="medium">
-                    Contact Name
+                    Contact Name <Text as="span" color="red.500">*</Text>
                   </Text>
                 </label>
-                <Input
-                  id="contactName"
-                  value={formData.contactName}
-                  onChange={(e) => updateFormData('contactName', e.target.value)}
-                  placeholder="John Doe"
+                <Controller
+                  name="contactName"
+                  control={contactForm.control}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <Input
+                        {...field}
+                        id="contactName"
+                        placeholder="John Doe"
+                        _invalid={{ borderColor: 'red.300' }}
+                        borderColor={fieldState.error ? 'red.300' : undefined}
+                      />
+                      {fieldState.error && (
+                        <Text fontSize="sm" color="red.500" mt={1}>
+                          {fieldState.error.message}
+                        </Text>
+                      )}
+                    </>
+                  )}
                 />
               </Box>
 
               <Box>
                 <label htmlFor="contactPhone">
                   <Text display="block" mb={2} fontSize="sm" fontWeight="medium">
-                    Phone Number
+                    Phone Number <Text as="span" color="red.500">*</Text>
                   </Text>
                 </label>
-                <Input
-                  id="contactPhone"
-                  type="tel"
-                  value={formData.contactPhone}
-                  onChange={(e) => updateFormData('contactPhone', e.target.value)}
-                  placeholder="(555) 123-4567"
+                <Controller
+                  name="contactPhone"
+                  control={contactForm.control}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <Input
+                        {...field}
+                        id="contactPhone"
+                        type="tel"
+                        inputMode="numeric"
+                        placeholder="1234567890 (10-15 digits)"
+                        maxLength={15}
+                        _invalid={{ borderColor: 'red.300' }}
+                        borderColor={fieldState.error ? 'red.300' : undefined}
+                        onChange={(e) => {
+                          // Only allow numbers, max 15 digits
+                          const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 15);
+                          field.onChange(value);
+                        }}
+                      />
+                      {fieldState.error && (
+                        <Text fontSize="sm" color="red.500" mt={1}>
+                          {fieldState.error.message}
+                        </Text>
+                      )}
+                    </>
+                  )}
                 />
               </Box>
 
               <Box>
                 <label htmlFor="contactEmail">
                   <Text display="block" mb={2} fontSize="sm" fontWeight="medium">
-                    Email Address
+                    Email Address <Text as="span" color="red.500">*</Text>
                   </Text>
                 </label>
-                <Input
-                  id="contactEmail"
-                  type="email"
-                  value={formData.contactEmail}
-                  onChange={(e) => updateFormData('contactEmail', e.target.value)}
-                  placeholder="john@example.com"
+                <Controller
+                  name="contactEmail"
+                  control={contactForm.control}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <Input
+                        {...field}
+                        id="contactEmail"
+                        type="email"
+                        placeholder="john@example.com"
+                        _invalid={{ borderColor: 'red.300' }}
+                        borderColor={fieldState.error ? 'red.300' : undefined}
+                      />
+                      {fieldState.error && (
+                        <Text fontSize="sm" color="red.500" mt={1}>
+                          {fieldState.error.message}
+                        </Text>
+                      )}
+                    </>
+                  )}
                 />
               </Box>
             </VStack>
@@ -1219,7 +1586,6 @@ export default function ConfirmRentalPage() {
                     size="lg"
                     fontWeight="bold"
                     disabled={isSubmitting}
-                    isLoading={isSubmitting}
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit Request'}
                     {!isSubmitting && <Check className="h-5 w-5 ml-2" />}
@@ -1232,6 +1598,7 @@ export default function ConfirmRentalPage() {
                   size="lg"
                   width="full"
                   fontWeight="semibold"
+                  disabled={!isStepValid(currentStep)}
                 >
                   Next
                   <ArrowRight className="h-4 w-4 ml-2" />

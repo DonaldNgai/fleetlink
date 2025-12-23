@@ -23,6 +23,10 @@ import {
   CardHeader, 
   Heading as CardTitle 
 } from '@chakra-ui/react';
+
+import { useRouter } from 'next/navigation';
+import { OutlineButton } from '@ui';
+
 import { FadeIn, FadeInStagger, FadeInStaggerItem, WordDivider } from '@ui';
 import { ArrowRight, FileText, Zap, Clock, Star } from 'lucide-react';
 import Link from 'next/link';
@@ -98,6 +102,7 @@ function LogoTicker({ slides }: { slides: typeof companyLogos }) {
 }
 
 export default function HomePage() {
+  const router = useRouter();
 
   return (
     <Box as="main" minH="100vh" position="relative" bg="bg.canvas">
@@ -463,12 +468,15 @@ export default function HomePage() {
                 Get matched with a verified operator within 24 hours
               </Text>
               <VStack gap="4" width="full">
-                <Link href="/request" style={{ width: '100%' }}>
-                  <Button size="lg" width="full" fontSize="lg">
-                    Book Equipment Now
-                    <ArrowRight className="ml-2" size={20} />
-                  </Button>
-                </Link>
+                <OutlineButton
+                  onClick={() => router.push('/rent')}
+                  width="full"
+                  size="lg"
+                  fontWeight="bold"
+                >
+                  Book Equipment Now
+                  <ArrowRight className="ml-2" size={20} />
+                  </OutlineButton>
                 <WordDivider word="or" />
                 <Link href="/submit" style={{ width: '100%' }}>
                   <Button size="lg" variant="outline" width="full" fontSize="lg">
