@@ -23,7 +23,7 @@ function Header() {
                 size="lg"
                 fontWeight="bold"
                 >Book Now</OutlineButton>
-          <Link href="/pricing" className="text-sm font-medium text-gray-700 hover:text-gray-900">
+          <Link href="/pricing" className="text-base font-semibold text-gray-700 hover:text-gray-900">
             Pricing
           </Link>
           <Suspense fallback={<div className="h-9 w-9" />}>
