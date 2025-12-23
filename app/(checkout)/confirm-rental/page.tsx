@@ -23,6 +23,7 @@ import Link from 'next/link';
 const CardTitle = Heading;
 import { cn } from '@utils';
 import { OutlineButton } from '@ui';
+import { createRentalBooking } from '@/app/actions/rental';
 
 // Google Maps type declarations
 declare global {
@@ -77,6 +78,8 @@ export default function ConfirmRentalPage() {
   const mapInstanceRef = useRef<any>(null);
   const markerInstanceRef = useRef<any>(null);
   const autocompleteInstanceRef = useRef<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Form data
   const [formData, setFormData] = useState({
@@ -167,15 +170,32 @@ export default function ConfirmRentalPage() {
     }
   };
 
-  const handleSubmit = () => {
-    // Here you would submit the form data to your API
-    console.log('Submitting rental request:', {
-      equipment: selectedEquipment,
-      dates: rentalDates,
-      formData,
-    });
-    // Redirect to success page or dashboard
-    router.push('/dashboard?success=rental-requested');
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const result = await createRentalBooking({
+        selectedEquipment,
+        equipmentQuantities,
+        rentalDates,
+        formData,
+        mapLocation,
+      });
+
+      if (result.error) {
+        setSubmitError(result.error);
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Redirect to success page
+      router.push(`/confirm-rental/success?bookingId=${result.bookingId || 'success'}`);
+    } catch (error) {
+      console.error('Error submitting rental:', error);
+      setSubmitError(error instanceof Error ? error.message : 'Failed to submit rental');
+      setIsSubmitting(false);
+    }
   };
 
   const updateFormData = (field: string, value: string) => {
@@ -676,15 +696,24 @@ export default function ConfirmRentalPage() {
               </Button>
             )}
             {isLastStep ? (
-              <OutlineButton 
-                onClick={handleNext} 
-                width="full"
-                size="lg"
-                fontWeight="bold"
-              >
-                Submit Request
-                <Check className="h-5 w-5 ml-2" />
-              </OutlineButton>
+              <>
+                {submitError && (
+                  <Box bg="red.50" borderColor="red.200" borderWidth="1px" borderRadius="md" p={3} mb={2}>
+                    <Text fontSize="sm" color="red.700">{submitError}</Text>
+                  </Box>
+                )}
+                <OutlineButton 
+                  onClick={handleNext} 
+                  width="full"
+                  size="lg"
+                  fontWeight="bold"
+                  disabled={isSubmitting}
+                  isLoading={isSubmitting}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                  {!isSubmitting && <Check className="h-5 w-5 ml-2" />}
+                </OutlineButton>
+              </>
             ) : (
               <Button 
                 onClick={handleNext} 
@@ -1178,15 +1207,24 @@ export default function ConfirmRentalPage() {
                 </Button>
               )}
               {isLastStep ? (
-                <OutlineButton 
-                  onClick={handleNext} 
-                  width="full"
-                  size="lg"
-                  fontWeight="bold"
-                >
-                  Submit Request
-                  <Check className="h-5 w-5 ml-2" />
-                </OutlineButton>
+                <>
+                  {submitError && (
+                    <Box bg="red.50" borderColor="red.200" borderWidth="1px" borderRadius="md" p={3}>
+                      <Text fontSize="sm" color="red.700">{submitError}</Text>
+                    </Box>
+                  )}
+                  <OutlineButton 
+                    onClick={handleNext} 
+                    width="full"
+                    size="lg"
+                    fontWeight="bold"
+                    disabled={isSubmitting}
+                    isLoading={isSubmitting}
+                  >
+                    {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                    {!isSubmitting && <Check className="h-5 w-5 ml-2" />}
+                  </OutlineButton>
+                </>
               ) : (
                 <Button 
                   onClick={handleNext} 

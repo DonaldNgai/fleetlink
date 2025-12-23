@@ -27,7 +27,7 @@ model Equipment_Bookings {
   booking_date            DateTime @db.Timestamptz(6)
   customer                String
   supplier                String?
-  supplier_id             BigInt
+  supplier_id             BigInt?
   location                String
   location_longitude      Float?
   location_latitude       Float?

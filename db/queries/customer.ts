@@ -10,7 +10,7 @@ export async function getCustomerForCurrentUser() {
     return null;
   }
 
-  return await prisma.customer.findFirst({
+  return await prisma.customers.findFirst({
     where: { email: user.email },
   });
 }
@@ -19,7 +19,7 @@ export async function getCustomerForCurrentUser() {
  * Get customer by email
  */
 export async function getCustomerByEmail(email: string) {
-  return await prisma.customer.findFirst({
+  return await prisma.customers.findFirst({
     where: { email },
   });
 }
@@ -28,7 +28,7 @@ export async function getCustomerByEmail(email: string) {
  * Get a customer by ID
  */
 export async function getCustomerById(customerId: number) {
-  return await prisma.customer.findUnique({
+  return await prisma.customers.findUnique({
     where: { id: customerId },
   });
 }
@@ -37,8 +37,8 @@ export async function getCustomerById(customerId: number) {
  * Get all customers
  */
 export async function getAllCustomers() {
-  return await prisma.customer.findMany({
-    orderBy: { createdAt: 'desc' },
+  return await prisma.customers.findMany({
+    orderBy: { created_at: 'desc' },
   });
 }
 
@@ -46,13 +46,13 @@ export async function getAllCustomers() {
  * Search customers by company name
  */
 export async function searchCustomersByName(searchTerm: string) {
-  return await prisma.customer.findMany({
+  return await prisma.customers.findMany({
     where: {
-      companyName: {
+      company_name: {
         contains: searchTerm,
         mode: 'insensitive',
       },
     },
-    orderBy: { companyName: 'asc' },
+    orderBy: { company_name: 'asc' },
   });
 }
