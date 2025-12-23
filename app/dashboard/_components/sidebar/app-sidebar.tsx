@@ -45,7 +45,7 @@ const navigation: { label: string; items: NavItem[] }[] = [
   {
     label: 'Actions',
     items: [
-      { title: 'Request Equipment', url: '/dashboard/request-equipment', icon: Mail },
+      { title: 'Request Equipment', url: '/rent', icon: Mail },
       { title: 'Submit Equipment To Rent', url: '/dashboard/submit-equipment', icon: MessageSquare },
     ],
   },
