@@ -3,10 +3,13 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 import Image from 'next/image';
-import { Profile } from '@ui';
+import { useRouter } from 'next/navigation';
+import { Profile, OutlineButton } from '@ui';
 import { adminRedirectPath, loginRedirectPath, logoutRedirectPath } from '@/config/app-config';
 
 function Header() {
+  const router = useRouter();
+
   return (
     <header className="border-b border-gray-200 bg-background relative z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -14,6 +17,12 @@ function Header() {
           <Image src="/logo.png" alt="FleetLink" width={150} height={600} />
         </Link>
         <div className="flex items-center space-x-4">
+          <OutlineButton
+                onClick={() => router.push('/rent')}
+                width="full"
+                size="lg"
+                fontWeight="bold"
+                >Book Now</OutlineButton>
           <Link href="/pricing" className="text-sm font-medium text-gray-700 hover:text-gray-900">
             Pricing
           </Link>

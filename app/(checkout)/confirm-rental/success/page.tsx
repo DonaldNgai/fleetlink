@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { stripe } from '@repo/next-utils/payments/stripe';
+import { prisma } from '@/db/prisma';
 import { getCurrentUserFullDetails } from '@repo/next-utils/auth/users';
 import {
   Box,
@@ -13,28 +13,30 @@ import {
   CardBody as CardContent,
   Button,
 } from '@chakra-ui/react';
-import { CheckCircle2, UserPlus } from 'lucide-react';
+import { CheckCircle2, Package, Calendar, MapPin, Clock } from 'lucide-react';
 import Link from 'next/link';
 
 interface SuccessPageProps {
-  searchParams: Promise<{ session_id?: string }>;
+  searchParams: Promise<{ bookingId?: string }>;
 }
 
 export default async function RentalSuccessPage({ searchParams }: SuccessPageProps) {
   const params = await searchParams;
-  const sessionId = params.session_id;
+  const bookingId = params.bookingId;
 
-  if (!sessionId) {
+  if (!bookingId) {
     redirect('/');
   }
 
-  let session;
+  // Fetch bookings by booking_group_id
+  let bookings;
   try {
-    session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ['customer'],
+    bookings = await prisma.equipment_Bookings.findMany({
+      where: { booking_group_id: bookingId },
+      orderBy: { created_at: 'desc' },
     });
   } catch (error) {
-    console.error('Error retrieving checkout session:', error);
+    console.error('Error retrieving bookings:', error);
     return (
       <Box as="main" minH="100vh" bg="bg.canvas" py="12">
         <Container maxW="4xl">
@@ -44,7 +46,7 @@ export default async function RentalSuccessPage({ searchParams }: SuccessPagePro
             </CardHeader>
             <CardContent>
               <VStack align="stretch" gap="4">
-                <Text color="red.600">Unable to verify your booking. Please contact support if you were charged.</Text>
+                <Text color="red.600">Unable to retrieve your booking. Please contact support if you need assistance.</Text>
                 <Button asChild colorPalette="blue">
                   <Link href="/">Back to Home</Link>
                 </Button>
@@ -56,18 +58,17 @@ export default async function RentalSuccessPage({ searchParams }: SuccessPagePro
     );
   }
 
-  // Check if payment is complete
-  if (session.payment_status !== 'paid' && session.status !== 'complete') {
+  if (!bookings || bookings.length === 0) {
     return (
       <Box as="main" minH="100vh" bg="bg.canvas" py="12">
         <Container maxW="4xl">
           <Card>
             <CardHeader>
-              <Heading size="md">Payment Pending</Heading>
+              <Heading size="md">Booking Not Found</Heading>
             </CardHeader>
             <CardContent>
               <VStack align="stretch" gap="4">
-                <Text>Your payment is being processed. You will receive a confirmation email once it's complete.</Text>
+                <Text>We couldn't find your booking. Please check your booking ID or contact support.</Text>
                 <Button asChild colorPalette="blue">
                   <Link href="/">Back to Home</Link>
                 </Button>
@@ -79,19 +80,14 @@ export default async function RentalSuccessPage({ searchParams }: SuccessPagePro
     );
   }
 
-  // Extract booking details from metadata
-  const bookingData = {
-    equipment: session.metadata?.equipment || 'N/A',
-    quantity: session.metadata?.quantity || '1',
-    hours: session.metadata?.hours || 'N/A',
-    location: session.metadata?.location || 'N/A',
-    bookingDate: session.metadata?.bookingDate || 'N/A',
-    operatorFirstName: session.metadata?.operatorFirstName || 'N/A',
-    operatorLastName: session.metadata?.operatorLastName || '',
-    customerName: session.metadata?.customerName || session.customer_details?.name || 'N/A',
-    customerEmail: session.metadata?.customerEmail || session.customer_details?.email || session.customer_email || 'N/A',
-    customerPhone: session.metadata?.customerPhone || '',
-  };
+  // Use the first booking for main details
+  const mainBooking = bookings[0];
+  const totalEquipment = bookings.reduce((sum, b) => sum + b.number_equipment, 0);
+  const totalHours = mainBooking.hours || 0;
+  const totalCharges = bookings.reduce((sum, b) => {
+    const charges = b.total_customer_charges ? Number(b.total_customer_charges) : 0;
+    return sum + charges;
+  }, 0);
 
   const user = await getCurrentUserFullDetails();
   const isAuthenticated = !!user;
@@ -139,135 +135,113 @@ export default async function RentalSuccessPage({ searchParams }: SuccessPagePro
                   <Heading size="sm" mb="2">
                     Booking Details
                   </Heading>
+                  
+                  {/* Equipment List */}
+                  <VStack align="stretch" gap="2">
+                    <HStack gap="2">
+                      <Package className="h-4 w-4 text-fg-muted" />
+                      <Text fontSize="sm" color="fg.muted" fontWeight="medium">
+                        Equipment ({bookings.length} {bookings.length === 1 ? 'item' : 'items'})
+                      </Text>
+                    </HStack>
+                    {bookings.map((booking, index) => (
+                      <Box key={booking.id.toString()} pl="6" py="1">
+                        <Text fontSize="sm" fontWeight="medium">
+                          {booking.equipment || 'N/A'} × {booking.number_equipment}
+                        </Text>
+                      </Box>
+                    ))}
+                  </VStack>
+
+                  <Box borderTopWidth="1px" borderColor="border.emphasized" pt="3" />
+                  
                   <HStack justify="space-between">
-                    <Text fontSize="sm" color="fg.muted">
-                      Equipment
-                    </Text>
+                    <HStack gap="2">
+                      <Clock className="h-4 w-4 text-fg-muted" />
+                      <Text fontSize="sm" color="fg.muted">
+                        Duration
+                      </Text>
+                    </HStack>
                     <Text fontSize="sm" fontWeight="medium">
-                      {bookingData.equipment}
+                      {totalHours} hour{totalHours !== 1 ? 's' : ''}
                     </Text>
                   </HStack>
+
                   <HStack justify="space-between">
-                    <Text fontSize="sm" color="fg.muted">
-                      Quantity
-                    </Text>
+                    <HStack gap="2">
+                      <Calendar className="h-4 w-4 text-fg-muted" />
+                      <Text fontSize="sm" color="fg.muted">
+                        Booking Date
+                      </Text>
+                    </HStack>
                     <Text fontSize="sm" fontWeight="medium">
-                      {bookingData.quantity}
-                    </Text>
-                  </HStack>
-                  <HStack justify="space-between">
-                    <Text fontSize="sm" color="fg.muted">
-                      Duration
-                    </Text>
-                    <Text fontSize="sm" fontWeight="medium">
-                      {bookingData.hours} hour{bookingData.hours !== '1' ? 's' : ''}
-                    </Text>
-                  </HStack>
-                  <HStack justify="space-between">
-                    <Text fontSize="sm" color="fg.muted">
-                      Location
-                    </Text>
-                    <Text fontSize="sm" fontWeight="medium">
-                      {bookingData.location}
-                    </Text>
-                  </HStack>
-                  <HStack justify="space-between">
-                    <Text fontSize="sm" color="fg.muted">
-                      Booking Date
-                    </Text>
-                    <Text fontSize="sm" fontWeight="medium">
-                      {new Date(bookingData.bookingDate).toLocaleDateString('en-US', {
+                      {new Date(mainBooking.booking_date).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
                       })}
                     </Text>
                   </HStack>
+
                   <HStack justify="space-between">
-                    <Text fontSize="sm" color="fg.muted">
-                      Operator
-                    </Text>
-                    <Text fontSize="sm" fontWeight="medium">
-                      {bookingData.operatorFirstName}
-                      {bookingData.operatorLastName ? ` ${bookingData.operatorLastName}` : ''}
+                    <HStack gap="2">
+                      <MapPin className="h-4 w-4 text-fg-muted" />
+                      <Text fontSize="sm" color="fg.muted">
+                        Location
+                      </Text>
+                    </HStack>
+                    <Text fontSize="sm" fontWeight="medium" textAlign="right" maxW="60%">
+                      {mainBooking.location}
                     </Text>
                   </HStack>
+
+                  {mainBooking.operator_first_name && (
+                    <HStack justify="space-between">
+                      <Text fontSize="sm" color="fg.muted">
+                        Operator
+                      </Text>
+                      <Text fontSize="sm" fontWeight="medium">
+                        {mainBooking.operator_first_name}
+                        {mainBooking.operator_last_name ? ` ${mainBooking.operator_last_name}` : ''}
+                      </Text>
+                    </HStack>
+                  )}
+
                   <HStack justify="space-between">
                     <Text fontSize="sm" color="fg.muted">
                       Customer
                     </Text>
                     <Text fontSize="sm" fontWeight="medium">
-                      {bookingData.customerName}
+                      {mainBooking.customer}
                     </Text>
                   </HStack>
-                  <HStack justify="space-between">
-                    <Text fontSize="sm" color="fg.muted">
-                      Email
-                    </Text>
-                    <Text fontSize="sm" fontWeight="medium">
-                      {bookingData.customerEmail}
-                    </Text>
-                  </HStack>
-                  {bookingData.customerPhone && (
-                    <HStack justify="space-between">
-                      <Text fontSize="sm" color="fg.muted">
-                        Phone
+
+                  {totalCharges > 0 && (
+                    <HStack justify="space-between" pt="2" borderTopWidth="1px" borderColor="border.emphasized">
+                      <Text fontSize="sm" fontWeight="semibold">
+                        Total Charges
                       </Text>
-                      <Text fontSize="sm" fontWeight="medium">
-                        {bookingData.customerPhone}
+                      <Text fontSize="sm" fontWeight="bold" color="green.600" _dark={{ color: 'green.400' }}>
+                        ${totalCharges.toFixed(2)} CAD
                       </Text>
                     </HStack>
                   )}
                 </VStack>
               </Box>
 
-              {/* Account Creation Offer (if not authenticated) */}
-              {!isAuthenticated && (
-                <Box
-                  p="4"
-                  borderWidth="1px"
-                  borderRadius="md"
-                  borderColor="blue.200"
-                  bg="blue.50"
-                  _dark={{ bg: 'blue.900/20', borderColor: 'blue.800' }}
-                >
-                  <VStack align="stretch" gap="3">
-                    <HStack gap="2">
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        color="blue.600"
-                        _dark={{ color: 'blue.400' }}
-                      >
-                        <UserPlus className="h-5 w-5" />
-                      </Box>
-                      <Heading size="sm" color="blue.700" _dark={{ color: 'blue.300' }}>
-                        Create a Free Account
-                      </Heading>
-                    </HStack>
-                    <Text fontSize="sm" color="fg.muted">
-                      Create a free account to track all your rentals, view booking history, and manage your equipment needs in one place.
-                    </Text>
-                    <Button asChild colorPalette="blue" size="sm">
-                      <Link
-                        href={`/auth/login?screen_hint=signup&email=${encodeURIComponent(bookingData.customerEmail)}&returnTo=${encodeURIComponent('/dashboard')}`}
-                      >
-                        Create Free Account
-                      </Link>
-                    </Button>
-                  </VStack>
-                </Box>
-              )}
-
               {/* Action Buttons */}
               <VStack gap="3" mt="2">
+                <Button asChild colorPalette="blue" size="lg" w="full">
+                  <Link href="/rent">Book Another Rental</Link>
+                </Button>
                 {isAuthenticated ? (
-                  <Button asChild colorPalette="blue" size="lg" w="full">
+                  <Button asChild variant="outline" size="lg" w="full">
                     <Link href="/dashboard">Go to Dashboard</Link>
                   </Button>
                 ) : (
-                  <Button asChild colorPalette="blue" size="lg" w="full">
+                  <Button asChild variant="outline" size="lg" w="full">
                     <Link href="/">Back to Home</Link>
                   </Button>
                 )}
