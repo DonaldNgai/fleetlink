@@ -80,5 +80,10 @@
     "dotenv-cli": "^11.0.0",
     "prettier": "^3.6.2",
     "prisma": "^6.1.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@DonaldNgai/next-utils": "^1.0.2"
+    }
   }
 }
