@@ -1,10 +1,9 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getAuth0Client } from '@DonaldNgai/next-utils/auth';
+import { auth0 } from './lib/auth0';
 
 export async function middleware(request: NextRequest) {
-    const client = await getAuth0Client();
-    const response = await client.middleware(request);
+    const response = await auth0.middleware(request);
     
     // Add custom headers with the current URL for server components to use
     if (response instanceof NextResponse) {
