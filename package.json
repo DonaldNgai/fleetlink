@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@DonaldNgai/chakra-ui": "^1.0.3",
-    "@DonaldNgai/next-utils": "^1.0.2",
+    "@DonaldNgai/next-utils": "^1.0.3",
     "@auth0/auth0-react": "^2.11.0",
     "@auth0/auth0-spa-js": "^2.11.0",
     "@auth0/nextjs-auth0": "^4.14.0",
