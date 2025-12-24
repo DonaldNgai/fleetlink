@@ -9,8 +9,11 @@ importers:
   .:
     dependencies:
       '@DonaldNgai/chakra-ui':
-        specifier: file:./packages/ui
-        version: file:packages/ui(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chakra-ui/react@3.30.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.4.0)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react-is@16.13.1)(react@19.1.0)(redux@5.0.1)(swr@2.3.8(react@19.1.0))
+        specifier: ^1.0.0
+        version: 1.0.0(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chakra-ui/react@3.30.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.4.0)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react-is@16.13.1)(react@19.1.0)(redux@5.0.1)(swr@2.3.8(react@19.1.0))(use-sync-external-store@1.6.0(react@19.1.0))
+      '@DonaldNgai/next-utils':
+        specifier: ^1.0.1
+        version: 1.0.1(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
       '@auth0/auth0-react':
         specifier: ^2.11.0
         version: 2.11.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -368,14 +371,21 @@ importers:
 
 packages:
 
-  '@DonaldNgai/chakra-ui@file:packages/ui':
-    resolution: {directory: packages/ui, type: directory}
+  '@DonaldNgai/chakra-ui@1.0.0':
+    resolution: {integrity: sha512-SYjANNndegc64wVkY51+nfyN8QAaMnPz6Cg+8HlPiHp4daby9lXYNootaCnPt3wQfyerllz4uneQDkoCGJJWmg==, tarball: https://npm.pkg.github.com/download/@DonaldNgai/chakra-ui/1.0.0/62850f51014e48d0554adcc40e612d621c4474f2}
     peerDependencies:
       '@auth0/nextjs-auth0': ^4.13.2
       '@chakra-ui/react': ^3.30.0
       react: ^19.0.0
       react-dom: ^19.0.0
       swr: ^2.3.6
+
+  '@DonaldNgai/next-utils@1.0.1':
+    resolution: {integrity: sha512-aKK0fErSZ1NH+k99nhOzyG6yfZFX9NGNf6Dgyp5DY/YErWDG3skgsyel6nDzWI1Tg9Q0iLQl/JIeOpZaic4ihQ==, tarball: https://npm.pkg.github.com/download/@DonaldNgai/next-utils/1.0.1/8c06b9584a8310c941e06b8fc162d96657ef004d}
+    peerDependencies:
+      '@auth0/nextjs-auth0': ^4.13.2
+      '@tanstack/react-table': ^8.21.3
+      react: ^19.1.0
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -3249,9 +3259,9 @@ packages:
 
 snapshots:
 
-  '@DonaldNgai/chakra-ui@file:packages/ui(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chakra-ui/react@3.30.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.4.0)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react-is@16.13.1)(react@19.1.0)(redux@5.0.1)(swr@2.3.8(react@19.1.0))':
+  '@DonaldNgai/chakra-ui@1.0.0(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chakra-ui/react@3.30.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.4.0)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react-is@16.13.1)(react@19.1.0)(redux@5.0.1)(swr@2.3.8(react@19.1.0))(use-sync-external-store@1.6.0(react@19.1.0))':
     dependencies:
-      '@DonaldNgai/next-utils': link:packages/next-utils
+      '@DonaldNgai/next-utils': 1.0.1(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
       '@auth0/nextjs-auth0': 4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@chakra-ui/react': 3.30.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@dnd-kit/core': 6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -3289,9 +3299,30 @@ snapshots:
       - '@emotion/is-prop-valid'
       - '@types/react'
       - '@types/react-dom'
+      - immer
       - react-is
       - redux
       - supports-color
+      - use-sync-external-store
+
+  '@DonaldNgai/next-utils@1.0.1(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))':
+    dependencies:
+      '@auth0/auth0-react': 2.11.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@auth0/auth0-spa-js': 2.11.0
+      '@auth0/nextjs-auth0': 4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/react-table': 8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      auth0: 4.37.0
+      bcryptjs: 3.0.3
+      clsx: 2.1.1
+      react: 19.1.0
+      server-only: 0.0.1
+      tailwind-merge: 3.4.0
+      zustand: 5.0.9(@types/react@19.1.4)(immer@11.1.0)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+      - react-dom
+      - use-sync-external-store
 
   '@alloc/quick-lru@5.2.0': {}
 
