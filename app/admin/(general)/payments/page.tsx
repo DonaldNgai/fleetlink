@@ -24,7 +24,7 @@ import {
   type PaymentMethod,
   type UpcomingPayment,
 } from '@DonaldNgai/next-utils/payments/subscription';
-import { customerPortalAction } from '@DonaldNgai/chakra-ui';
+import { customerPortalAction } from '@DonaldNgai/chakra-ui/server';
 
 function formatCurrency(amount: number, currency: string = 'usd'): string {
   return new Intl.NumberFormat('en-US', {

@@ -26,24 +26,6 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "@ui": [
-        "./packages/ui/src/index.ts"
-      ],
-      "@ui/*": [
-        "./packages/ui/src/*"
-      ],
-      "@utils": [
-        "./packages/next-utils/src/index.ts"
-      ],
-      "@utils/*": [
-        "./packages/next-utils/src/*"
-      ],
-      "@DonaldNgai/next-utils": [
-        "./packages/next-utils/src/index.ts"
-      ],
-      "@DonaldNgai/next-utils/*": [
-        "./packages/next-utils/src/*"
       ]
     }
   },

@@ -1,5 +1,5 @@
 import { prisma } from '../prisma';
-import { getCurrentUserFullDetails } from '../../packages/next-utils/src/auth/users';
+import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 
 /**
  * Get equipment bookings for a specific user (by email match)

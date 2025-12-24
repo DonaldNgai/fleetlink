@@ -1,4 +1,4 @@
-import { stripe } from '../packages/next-utils/src/payments/stripe';
+import { stripe } from '@DonaldNgai/next-utils/payments/stripe';
 import { prisma } from './prisma';
 import { hashPassword } from '@DonaldNgai/next-utils/auth';
 

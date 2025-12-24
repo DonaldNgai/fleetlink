@@ -117,3 +117,9 @@ While this template is intentionally minimal and to be used as a learning resour
 - https://makerkit.dev
 - https://zerotoshipped.com
 - https://turbostarter.dev
+
+
+    "@DonaldNgai/chakra-ui": "file:./packages/ui",
+    "@DonaldNgai/next-utils": "file:./packages/next-utils",
+
+    to switch back to other package

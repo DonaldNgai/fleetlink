@@ -1,5 +1,5 @@
 import { prisma } from '../prisma';
-import { getCurrentUserFullDetails } from '../../packages/next-utils/src/auth/users';
+import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 
 export async function getActivityLogs() {
   const user = await getCurrentUserFullDetails();

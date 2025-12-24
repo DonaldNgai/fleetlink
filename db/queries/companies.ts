@@ -1,5 +1,5 @@
 import { prisma } from '../prisma';
-import { getCurrentUserFullDetails } from '../../packages/next-utils/src/auth/users';
+import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 
 /**
  * Get a company (customer) by ID
