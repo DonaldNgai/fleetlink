@@ -5,12 +5,12 @@ import { toast } from 'sonner';
 import { Badge, Button, Checkbox, Menu, Input } from '@chakra-ui/react';
 
 import { DataTableColumnHeader } from '@ui';
-import type { EquipmentBooking, EquipmentSupply } from '@/db/schema';
+import type { Equipment_Bookings, Equipment_Supply } from '@prisma/client';
 
 // Type for the joined data from queries
 type BookingWithSupply = {
-  booking: EquipmentBooking;
-  supply: EquipmentSupply | null;
+  booking: Equipment_Bookings;
+  supply: Equipment_Supply | null;
 };
 
 export const dashboardColumns: ColumnDef<BookingWithSupply>[] = [
@@ -18,7 +18,7 @@ export const dashboardColumns: ColumnDef<BookingWithSupply>[] = [
     accessorKey: 'booking.bookingDate',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Booking Date" />,
     cell: ({ row }) => {
-      const date = new Date(row.original.booking.bookingDate);
+      const date = new Date(row.original.booking.booking_date);
       return <div>{date.toLocaleDateString()}</div>;
     },
     enableSorting: true,
@@ -45,7 +45,7 @@ export const dashboardColumns: ColumnDef<BookingWithSupply>[] = [
     accessorKey: 'booking.customerStatus',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
     cell: ({ row }) => {
-      const status = row.original.booking.customerStatus;
+      const status = row.original.booking.customer_status;
 
       let icon = <Loader className="stroke-muted-foreground" />;
       let fillClass = '';
@@ -87,10 +87,10 @@ export const dashboardColumns: ColumnDef<BookingWithSupply>[] = [
       <DataTableColumnHeader className="w-full text-right" column={column} title="Total Cost" />
     ),
     cell: ({ row }) => {
-      const total = row.original.booking.totalCustomerCharges;
+      const total = row.original.booking.total_customer_charges;
       return (
         <div className="text-right font-medium">
-          {total ? `$${parseFloat(total).toFixed(2)}` : 'TBD'}
+          {total ? `$${parseFloat(total.toString()).toFixed(2)}` : 'TBD'}
         </div>
       );
     },

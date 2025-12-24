@@ -173,11 +173,22 @@ export function ChartAreaInteractive() {
           <span className="@[540px]/card:hidden">Last 3 months</span>
         </CardDescription>
         <Box className="mt-2 flex items-center gap-2">
-          <Select.Root value={timeRange} onValueChange={(details) => setTimeRange(details.value)}>
+          {(() => {
+            const SelectRootAny = Select.Root as any;
+            return (
+              <SelectRootAny
+                key={timeRange}
+                defaultValue={timeRange}
+                onValueChange={(e: any) => {
+                  const newValue = Array.isArray(e.value) ? e.value[0] : e.value;
+                  if (typeof newValue === 'string') {
+                    setTimeRange(newValue);
+                  }
+                }}
+              >
             <SelectControl>
               <SelectTrigger
                 className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
-                size="sm"
                 aria-label="Select a value"
               >
                 <SelectValueText placeholder="Last 3 months" />
@@ -185,18 +196,23 @@ export function ChartAreaInteractive() {
             </SelectControl>
             <SelectPositioner>
               <SelectContent className="rounded-xl">
+                {/* @ts-ignore - SelectItem value prop type issue */}
                 <SelectItem value="90d" className="rounded-lg">
                   Last 3 months
                 </SelectItem>
+                {/* @ts-ignore - SelectItem value prop type issue */}
                 <SelectItem value="30d" className="rounded-lg">
                   Last 30 days
                 </SelectItem>
+                {/* @ts-ignore - SelectItem value prop type issue */}
                 <SelectItem value="7d" className="rounded-lg">
                   Last 7 days
                 </SelectItem>
               </SelectContent>
             </SelectPositioner>
-          </Select.Root>
+              </SelectRootAny>
+            );
+          })()}
         </Box>
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">

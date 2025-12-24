@@ -317,8 +317,10 @@ export async function createRentalBooking(
     });
 
     // Send webhook notification (non-blocking)
+    // Use the first booking's ID as the bookingGroupId for the webhook
+    const firstBookingId = bookings[0]?.id || BigInt(0);
     const webhookPayload = await formatRentalBookingForWebhook({
-      bookingGroupId,
+      bookingGroupId: firstBookingId,
       bookingDate,
       hours,
       location: {
@@ -340,28 +342,28 @@ export async function createRentalBooking(
       },
       customer: customer
         ? {
-            id: Number(customer.id),
-            companyName: customer.company_name,
-            contactFirstName: customer.contact_first_name,
-            contactLastName: customer.contact_last_name || undefined,
+            id: customer.id,
+            company_name: customer.company_name,
+            contact_first_name: customer.contact_first_name,
+            contact_last_name: customer.contact_last_name ?? null,
             email: customer.email,
             phone: customer.phone,
           }
         : {
             // Fallback if customer fetch fails (shouldn't happen)
-            id: Number(customerRecord.id),
-            companyName: getCustomerName(data.formData.contactName, null, user),
-            contactFirstName: operatorFirstName,
-            contactLastName: operatorLastName || undefined,
+            id: customerRecord.id,
+            company_name: getCustomerName(data.formData.contactName, null, user),
+            contact_first_name: operatorFirstName,
+            contact_last_name: operatorLastName || null,
             email: data.formData.contactEmail || user.email || '',
             phone: data.formData.contactPhone || '',
           },
       user: {
-        id: Number.parseInt(user.id, 10) || 0,
-        name: user.name || undefined,
+        id: Number.parseInt(user.id as string, 10) || 0,
+        name: user.name ?? undefined,
         email: user.email ?? '',
       },
-      specialInstructions: data.formData.specialInstructions || undefined,
+      specialInstructions: data.formData.specialInstructions ?? undefined,
       rentalPeriod: data.rentalDates,
     });
 

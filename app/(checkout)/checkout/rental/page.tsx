@@ -254,7 +254,8 @@ export default function RentalCheckoutPage() {
                             placeholder="John"
                             value={formData.operatorFirstName}
                             onChange={(e) => updateFormData('operatorFirstName', e.target.value)}
-                            isInvalid={!!errors.operatorFirstName}
+                            borderColor={errors.operatorFirstName ? 'red.300' : undefined}
+                            _invalid={{ borderColor: 'red.300' }}
                           />
                           {errors.operatorFirstName && (
                             <Text fontSize="xs" color="red.500" mt="1">
@@ -287,7 +288,8 @@ export default function RentalCheckoutPage() {
                           placeholder="Jane Smith"
                           value={formData.customerName}
                           onChange={(e) => updateFormData('customerName', e.target.value)}
-                          isInvalid={!!errors.customerName}
+                          borderColor={errors.customerName ? 'red.300' : undefined}
+                          _invalid={{ borderColor: 'red.300' }}
                         />
                         {errors.customerName && (
                           <Text fontSize="xs" color="red.500" mt="1">
@@ -304,7 +306,8 @@ export default function RentalCheckoutPage() {
                           placeholder="jane@example.com"
                           value={formData.customerEmail}
                           onChange={(e) => updateFormData('customerEmail', e.target.value)}
-                          isInvalid={!!errors.customerEmail}
+                          borderColor={errors.customerEmail ? 'red.300' : undefined}
+                          _invalid={{ borderColor: 'red.300' }}
                         />
                         {errors.customerEmail && (
                           <Text fontSize="xs" color="red.500" mt="1">
@@ -389,9 +392,9 @@ export default function RentalCheckoutPage() {
                       stripe={stripePromise}
                       options={{
                         clientSecret,
-                        onComplete: async ({ sessionId: completedSessionId }) => {
-                          // Validate and handle successful payment
-                          setSessionId(completedSessionId);
+                        onComplete: async () => {
+                          // Handle successful payment
+                          // Note: sessionId is available via the clientSecret session
                           setPaymentSuccess(true);
                           setActiveStep('success');
                           // You can also call your API here to process the booking

@@ -23,14 +23,14 @@ export default async function Page() {
 
   // Add customer information if found
   if (customer) {
-    if (customer.companyName) {
-      urlParams['companyName'] = customer.companyName;
+    if (customer.company_name) {
+      urlParams['companyName'] = customer.company_name;
     }
-    if (customer.contactFirstName) {
-      urlParams['name105'] = customer.contactFirstName;
+    if (customer.contact_first_name) {
+      urlParams['name105'] = customer.contact_first_name;
     }
-    if (customer.contactLastName) {
-      urlParams['name105[last]'] = customer.contactLastName;
+    if (customer.contact_last_name) {
+      urlParams['name105[last]'] = customer.contact_last_name;
     }
     if (customer.email) {
       urlParams['email17'] = customer.email;

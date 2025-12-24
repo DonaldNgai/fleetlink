@@ -1,6 +1,6 @@
 'use server';
 
-import type { Customer, EquipmentBooking } from '@/db/schema';
+import type { Customers, Equipment_Bookings } from '@prisma/client';
 import type { Prisma } from '@prisma/client';
 
 /**
@@ -80,7 +80,7 @@ export async function callN8nWebhook<T = any>(
  */
 export interface RentalBookingWebhookPayload {
   // Booking information - using Prisma EquipmentBooking types
-  bookingGroupId: Pick<EquipmentBooking, 'bookingGroupId'>['bookingGroupId'];
+  bookingGroupId: Pick<Equipment_Bookings, 'id'>['id'];
   bookingDate: string;
   hours: NonNullable<Prisma.Equipment_BookingsCreateInput['hours']>;
   location: {
@@ -114,8 +114,8 @@ export interface RentalBookingWebhookPayload {
   
   // Customer information (if available) - using Prisma Customer type
   customer?: Pick<
-    Customer,
-    'id' | 'companyName' | 'contactFirstName' | 'contactLastName' | 'email' | 'phone'
+    Customers,
+    'id' | 'company_name' | 'contact_first_name' | 'contact_last_name' | 'email' | 'phone'
   >;
   
   // User information
@@ -146,7 +146,7 @@ export interface RentalBookingWebhookPayload {
  * Helper function to format rental booking data for n8n webhook
  */
 export async function formatRentalBookingForWebhook(data: {
-  bookingGroupId: Pick<EquipmentBooking, 'bookingGroupId'>['bookingGroupId'];
+  bookingGroupId: Pick<Equipment_Bookings, 'id'>['id'];
   bookingDate: Date;
   hours: NonNullable<Prisma.Equipment_BookingsCreateInput['hours']>;
   location: {
@@ -174,8 +174,8 @@ export async function formatRentalBookingForWebhook(data: {
     email?: string;
   };
   customer?: Pick<
-    Customer,
-    'id' | 'companyName' | 'contactFirstName' | 'contactLastName' | 'email' | 'phone'
+    Customers,
+    'id' | 'company_name' | 'contact_first_name' | 'contact_last_name' | 'email' | 'phone'
   >;
   user: {
     id: number;
@@ -189,7 +189,7 @@ export async function formatRentalBookingForWebhook(data: {
     startTime: string;
     endTime: string;
   };
-}): RentalBookingWebhookPayload {
+}): Promise<RentalBookingWebhookPayload> {
   // Calculate pricing totals
   const totalCustomerCharges = data.equipment.reduce(
     (sum, eq) => sum + eq.customerRate * eq.quantity * data.hours,

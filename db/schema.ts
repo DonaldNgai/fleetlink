@@ -1,19 +1,9 @@
-// Type exports from Prisma
-export type {
-  User,
-  Team,
-  TeamMember,
-  ActivityLog,
-  Invitation,
-  Customer,
-  EquipmentSupply,
-  EquipmentBooking,
-} from '@prisma/client';
-
 // Additional type helpers
-export type TeamDataWithMembers = Team & {
-  teamMembers: (TeamMember & {
-    user: Pick<User, 'id' | 'name' | 'email'>;
+import type { teams, team_members, users } from '@prisma/client';
+
+export type TeamDataWithMembers = teams & {
+  teamMembers: (team_members & {
+    user: Pick<users, 'id' | 'name' | 'email'>;
   })[];
 };
 

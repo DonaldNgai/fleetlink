@@ -2,6 +2,7 @@ import { ChartAreaInteractive } from './_components/chart-area-interactive';
 import { DataTable } from './_components/data-table';
 import data from './_components/data.json';
 import { QuickLinks } from './_components/quick-links';
+import { BookingWithSupply } from './_components/schema';
 import { SectionCards } from './_components/section-cards';
 
 const quickLinksData = [
@@ -50,7 +51,7 @@ export default function Page() {
       </div>
 
       {/* <ChartAreaInteractive /> */}
-      <DataTable data={transformedData} />
+      <DataTable data={transformedData as unknown as BookingWithSupply[]} />
     </div>
   );
 }

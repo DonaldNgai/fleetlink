@@ -19,7 +19,7 @@ import { recentLeadsData } from './crm.config';
 
 export function TableCards() {
   const table = useDataTableInstance<BookingWithSupply, unknown>({
-    data: recentLeadsData as BookingWithSupply[],
+    data: recentLeadsData as unknown as BookingWithSupply[],
     columns: recentLeadsColumns,
     getRowId: row => row.booking.id.toString(),
   });

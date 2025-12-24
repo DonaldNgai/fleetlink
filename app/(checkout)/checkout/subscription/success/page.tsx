@@ -148,7 +148,7 @@ export default async function SubscriptionSuccessPage({ searchParams }: SuccessP
                         {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
                       </Badge>
                     </HStack>
-                    {customer && (
+                    {customer && !customer.deleted && (
                       <HStack justify="space-between">
                         <Text fontSize="sm" color="fg.muted">
                           Customer Email

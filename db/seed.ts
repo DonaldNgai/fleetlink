@@ -43,26 +43,26 @@ async function seed() {
   const password = 'admin123';
   const passwordHash = await hashPassword(password);
 
-  const user = await prisma.user.create({
+  const user = await prisma.users.create({
     data: {
       email: email,
-      passwordHash: passwordHash,
+      password_hash: passwordHash,
       role: 'owner',
     },
   });
 
   console.log('Initial user created.');
 
-  const team = await prisma.team.create({
+  const team = await prisma.teams.create({
     data: {
       name: 'Test Team',
     },
   });
 
-  await prisma.teamMember.create({
+  await prisma.team_members.create({
     data: {
-      teamId: team.id,
-      userId: user.id,
+      team_id: team.id,
+      user_id: user.id,
       role: 'owner',
     },
   });

@@ -3,8 +3,21 @@
 import { Plus } from 'lucide-react';
 import { siApple, siPaypal, siOpenai, siVercel, siFigma } from 'simple-icons';
 
-// SimpleIcon removed;
 import { Button } from '@chakra-ui/react';
+
+// Helper component to render simple-icons as SVG
+function SimpleIcon({ icon, className }: { icon: { path: string; viewBox?: string }; className?: string }) {
+  return (
+    <svg
+      viewBox={icon.viewBox || '0 0 24 24'}
+      className={className}
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d={icon.path} />
+    </svg>
+  );
+}
 import {
   CardRoot as Card,
   Box as CardAction,
@@ -127,7 +140,7 @@ export function AccountOverview() {
           Your card summary, balance, and recent transactions in one view.
         </CardDescription>
         <CardAction>
-          <Button size="icon" variant="outline">
+          <Button variant="outline">
             <Plus className="size-4" />
           </Button>
         </CardAction>
@@ -200,7 +213,7 @@ export function AccountOverview() {
                   {recentPayments.map(transaction => (
                     <div key={transaction.id} className="flex items-center gap-2">
                       <div className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-full">
-                        <SimpleIcon icon={transaction.icon} className="size-5" />
+                        <SimpleIcon icon={transaction.icon as any} className="size-5" />
                       </div>
                       <div className="flex w-full items-end justify-between">
                         <div>

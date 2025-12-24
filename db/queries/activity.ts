@@ -7,19 +7,12 @@ export async function getActivityLogs() {
     throw new Error('User not authenticated');
   }
 
-  return await prisma.activityLog.findMany({
+  return await prisma.activity_logs.findMany({
     where: {
-      userId: user.id,
-    },
-    include: {
-      user: {
-        select: {
-          name: true,
-        },
-      },
+      user_id: Number.parseInt(user.id, 10),
     },
     orderBy: {
-      timestamp: 'desc',
+      id: 'desc',
     },
     take: 10,
   });

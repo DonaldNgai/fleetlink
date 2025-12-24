@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { RequireAuthLayout } from '@ui';
 
 /**
@@ -5,4 +6,6 @@ import { RequireAuthLayout } from '@ui';
  * Automatically redirects to login if user is not authenticated
  * Preserves the current URL for return after login
  */
-export default RequireAuthLayout;
+export default async function Layout({ children }: { children: ReactNode }) {
+  return <RequireAuthLayout fallbackUrl="/checkout/subscription">{children}</RequireAuthLayout>;
+}

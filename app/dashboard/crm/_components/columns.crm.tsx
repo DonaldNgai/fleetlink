@@ -6,12 +6,12 @@ import { Badge } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import { Checkbox } from '@chakra-ui/react';
 import { Menu } from '@chakra-ui/react';
-import type { EquipmentBooking, EquipmentSupply } from '@/db/schema';
+import type { Equipment_Bookings, Equipment_Supply } from '@prisma/client';
 
 // Type for the joined data from queries
 export type BookingWithSupply = {
-  booking: EquipmentBooking;
-  supply: EquipmentSupply | null;
+  booking: Equipment_Bookings;
+  supply: Equipment_Supply | null;
 };
 
 export const recentLeadsColumns: ColumnDef<BookingWithSupply>[] = [
@@ -49,7 +49,7 @@ export const recentLeadsColumns: ColumnDef<BookingWithSupply>[] = [
     accessorKey: 'booking.bookingDate',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Booking Date" />,
     cell: ({ row }) => {
-      const date = new Date(row.original.booking.bookingDate);
+      const date = new Date(row.original.booking.booking_date);
       return (
         <span className="text-muted-foreground tabular-nums">{date.toLocaleDateString()}</span>
       );
@@ -75,7 +75,7 @@ export const recentLeadsColumns: ColumnDef<BookingWithSupply>[] = [
   {
     accessorKey: 'booking.customerStatus',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
-    cell: ({ row }) => <Badge variant="secondary">{row.original.booking.customerStatus}</Badge>,
+    cell: ({ row }) => <Badge variant="subtle">{row.original.booking.customer_status}</Badge>,
     enableSorting: false,
   },
 
