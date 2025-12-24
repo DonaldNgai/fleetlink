@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { prisma } from '@/db/prisma';
 import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
+import type { Equipment_Bookings } from '@prisma/client';
 import {
   Box,
   Container,
@@ -29,13 +30,13 @@ export default async function RentalSuccessPage({ searchParams }: SuccessPagePro
   }
 
   // Fetch bookings by booking_group_id
-  let bookings;
+  let bookings: Equipment_Bookings[];
   try {
     bookings = await prisma.equipment_Bookings.findMany({
       where: { booking_group_id: bookingId },
       orderBy: { created_at: 'desc' },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error retrieving bookings:', error);
     return (
       <Box as="main" minH="100vh" bg="bg.canvas" py="12">
@@ -81,12 +82,10 @@ export default async function RentalSuccessPage({ searchParams }: SuccessPagePro
   }
 
   // Use the first booking for main details
-  type Booking = typeof bookings extends (infer U)[] ? U : never;
-
-  const mainBooking: Booking = bookings[0];
-  const totalEquipment = bookings.reduce((sum: number, b: Booking) => sum + (b.number_equipment || 0), 0);
+  const mainBooking = bookings[0];
+  const totalEquipment = bookings.reduce((sum: number, b: Equipment_Bookings) => sum + (b.number_equipment || 0), 0);
   const totalHours = mainBooking.hours || 0;
-  const totalCharges = bookings.reduce((sum: number, b: Booking) => {
+  const totalCharges = bookings.reduce((sum: number, b: Equipment_Bookings) => {
     const charges = b.total_customer_charges ? Number(b.total_customer_charges) : 0;
     return sum + charges;
   }, 0);
@@ -146,7 +145,7 @@ export default async function RentalSuccessPage({ searchParams }: SuccessPagePro
                         Equipment ({bookings.length} {bookings.length === 1 ? 'item' : 'items'})
                       </Text>
                     </HStack>
-                    {bookings.map((booking, index) => (
+                    {bookings.map((booking: Equipment_Bookings, index: number) => (
                       <Box key={booking.id.toString()} pl="6" py="1">
                         <Text fontSize="sm" fontWeight="medium">
                           {booking.equipment || 'N/A'} × {booking.number_equipment}

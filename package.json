@@ -5,6 +5,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
     "format": "prettier --write .",
     "db:setup": "npx tsx lib/db/setup.ts",
     "db:seed": "npx tsx db/seed.ts",
