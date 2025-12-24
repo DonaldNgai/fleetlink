@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@DonaldNgai/chakra-ui', '@DonaldNgai/next-utils'],
+  transpilePackages: ['@DonaldNgai/next-utils'],
   experimental: {
     clientSegmentCache: true,
   },
