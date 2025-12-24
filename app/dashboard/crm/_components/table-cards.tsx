@@ -2,8 +2,8 @@
 
 import { Download } from 'lucide-react';
 
-import { DataTable, DataTablePagination, DataTableViewOptions } from '@ui';
-import { useDataTableInstance } from '@utils';
+import { DataTable, DataTablePagination, DataTableViewOptions } from '@DonaldNgai/chakra-ui';
+import { useDataTableInstance } from '@DonaldNgai/next-utils';
 import { Button } from '@chakra-ui/react';
 import {
   CardRoot as Card,

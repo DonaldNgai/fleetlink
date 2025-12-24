@@ -4,10 +4,10 @@ import { ArrowDownLeft, ArrowUpRight, CalendarCheck } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 
 import { CardRoot as Card, Box as CardAction, CardBody as CardContent, Text as CardDescription, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@ui";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@DonaldNgai/chakra-ui";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValueText, SelectControl, SelectPositioner } from '@chakra-ui/react';
 import { Separator } from "@chakra-ui/react";
-import { formatCurrency } from '@utils';
+import { formatCurrency } from '@DonaldNgai/next-utils';
 
 const chartData = [
   { month: "Jan", scheduled: 2000, expenses: 4000, income: 9500 },

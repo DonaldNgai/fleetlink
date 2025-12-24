@@ -1,7 +1,7 @@
 'use client';
 
-import { SidebarProvider, SidebarInset, SidebarTrigger, Separator } from '@ui';
-import { AdminSidebar } from '@ui';
+import { SidebarProvider, SidebarInset, SidebarTrigger, Separator } from '@DonaldNgai/chakra-ui';
+import { AdminSidebar } from '@DonaldNgai/chakra-ui';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (

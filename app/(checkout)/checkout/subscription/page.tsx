@@ -17,7 +17,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { CheckCircle2 } from 'lucide-react';
-import { createEmbeddedSubscriptionCheckout, RequireAuth } from '@ui';
+import { createEmbeddedSubscriptionCheckout, RequireAuth } from '@DonaldNgai/chakra-ui';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 

@@ -29,8 +29,8 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
-import { createEmbeddedRentalCheckout } from '@ui';
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@ui';
+import { createEmbeddedRentalCheckout } from '@DonaldNgai/chakra-ui';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@DonaldNgai/chakra-ui';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 

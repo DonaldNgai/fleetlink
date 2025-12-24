@@ -14,16 +14,16 @@ import {
   SelectPositioner,
 } from '@chakra-ui/react';
 // TODO: These functions need to be implemented or removed
-// import { updateContentLayout, updateNavbarStyle, updateThemeMode, updateThemePreset } from '@ui';
-import { setValueToCookie } from '@utils';
-import { usePreferencesStore } from '@utils';
+// import { updateContentLayout, updateNavbarStyle, updateThemeMode, updateThemePreset } from '@DonaldNgai/chakra-ui';
+import { setValueToCookie } from '@DonaldNgai/next-utils';
+import { usePreferencesStore } from '@DonaldNgai/next-utils';
 import type {
   SidebarVariant,
   SidebarCollapsible,
   ContentLayout,
   NavbarStyle,
-} from '@utils';
-import { THEME_PRESET_OPTIONS, type ThemePreset, type ThemeMode } from '@utils';
+} from '@DonaldNgai/next-utils';
+import { THEME_PRESET_OPTIONS, type ThemePreset, type ThemeMode } from '@DonaldNgai/next-utils';
 
 type LayoutControlsProps = {
   readonly variant: SidebarVariant;

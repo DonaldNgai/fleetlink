@@ -18,10 +18,10 @@ import {
   AlertDescription,
 } from '@chakra-ui/react';
 import { Loader2, Lock } from 'lucide-react';
-import { User } from '@utils/auth/users';
+import { User } from '@DonaldNgai/next-utils/auth/users';
 import useSWR from 'swr';
 import { Suspense } from 'react';
-import { getCurrentUserFullDetails } from '@utils/auth/users';
+import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import { updateAccount, updatePassword } from '@/app/actions/auth';
 
 type ActionState = {

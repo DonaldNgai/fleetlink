@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 
 import { Badge, Button, Checkbox, Menu, Input } from '@chakra-ui/react';
 
-import { DataTableColumnHeader } from '@ui';
+import { DataTableColumnHeader } from '@DonaldNgai/chakra-ui';
 import type { Equipment_Bookings, Equipment_Supply } from '@prisma/client';
 
 // Type for the joined data from queries

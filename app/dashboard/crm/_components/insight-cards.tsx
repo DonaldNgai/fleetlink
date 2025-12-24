@@ -19,7 +19,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
-} from '@ui';
+} from '@DonaldNgai/chakra-ui';
 
 import {
   leadsBySourceChartData,

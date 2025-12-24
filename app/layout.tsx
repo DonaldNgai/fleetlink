@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 import { APP_CONFIG } from '@/config/app-config';
-import { ChakraUIProvider } from '@ui';
+import { ChakraUIProvider } from '@DonaldNgai/chakra-ui';
 
 export const metadata: Metadata = {
   title: APP_CONFIG.meta.title,

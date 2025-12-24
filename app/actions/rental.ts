@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/db/prisma';
-import { getCurrentUserFullDetails } from '@utils/auth/users';
+import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import { getCustomerForCurrentUser } from '@/db/queries/customer';
 import { callN8nWebhook, formatRentalBookingForWebhook } from './webhooks';
 import type { Prisma } from '@prisma/client';

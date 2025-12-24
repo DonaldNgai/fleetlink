@@ -1,5 +1,5 @@
-import { JotForm } from '@ui';
-import { getCurrentUserFullDetails } from '@utils/auth/users';
+import { JotForm } from '@DonaldNgai/chakra-ui';
+import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import { getCustomerForCurrentUser } from '@/db/queries/customer';
 
 export default async function Page() {

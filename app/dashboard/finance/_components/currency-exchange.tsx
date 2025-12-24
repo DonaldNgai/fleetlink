@@ -6,7 +6,7 @@ import { Button } from '@chakra-ui/react';
 import { CardRoot as Card, CardBody as CardContent, CardHeader, Heading as CardTitle } from '@chakra-ui/react';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValueText, SelectControl, SelectPositioner } from "@chakra-ui/react";
 import { Separator } from "@chakra-ui/react";
-import { formatCurrency } from '@utils';
+import { formatCurrency } from '@DonaldNgai/next-utils';
 
 function CurrencySelector(props: { defaultValue: string }) {
   return (

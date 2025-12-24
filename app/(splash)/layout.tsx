@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Profile, OutlineButton } from '@ui';
+import { Profile, OutlineButton } from '@DonaldNgai/chakra-ui';
 import { adminRedirectPath, loginRedirectPath, logoutRedirectPath } from '@/config/app-config';
 
 function Header() {

@@ -17,7 +17,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@ui';
+} from '@DonaldNgai/chakra-ui';
 import {
   Select,
   SelectContent,
@@ -28,7 +28,7 @@ import {
   SelectPositioner,
 } from '@chakra-ui/react';
 // ToggleGroup removed - use Chakra UI ButtonGroup or similar;
-import { useIsMobile } from '@utils';
+import { useIsMobile } from '@DonaldNgai/next-utils';
 
 export const description = 'An interactive area chart';
 

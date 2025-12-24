@@ -2,17 +2,17 @@ import { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 
 import { AppSidebar } from './_components/sidebar/app-sidebar';
-import { Separator, SidebarInset, SidebarProvider, SidebarTrigger } from '@ui';
-import { cn } from '@utils';
-import { getPreference } from '@utils/server/preferences';
-import { Toaster } from '@ui';
-import { PreferencesStoreProvider } from '@utils';
+import { Separator, SidebarInset, SidebarProvider, SidebarTrigger } from '@DonaldNgai/chakra-ui';
+import { cn } from '@DonaldNgai/next-utils';
+import { getPreference } from '@DonaldNgai/next-utils/server/preferences';
+import { Toaster } from '@DonaldNgai/chakra-ui';
+import { PreferencesStoreProvider } from '@DonaldNgai/next-utils';
 import {
   THEME_MODE_VALUES,
   THEME_PRESET_VALUES,
   type ThemeMode,
   type ThemePreset,
-} from '@utils';
+} from '@DonaldNgai/next-utils';
 import {
   SIDEBAR_VARIANT_VALUES,
   SIDEBAR_COLLAPSIBLE_VALUES,
@@ -22,12 +22,12 @@ import {
   type SidebarCollapsible,
   type ContentLayout,
   type NavbarStyle,
-} from '@utils';
+} from '@DonaldNgai/next-utils';
 
-import { AccountSwitcher, SearchDialog } from '@ui';
+import { AccountSwitcher, SearchDialog } from '@DonaldNgai/chakra-ui';
 import { LayoutControls } from './_components/sidebar/layout-controls';
 import { ThemeSwitcher } from './_components/sidebar/theme-switcher';
-import { getCurrentUserFullDetails } from '@utils/auth/users';
+import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import { adminRedirectPath, loginRedirectPath, logoutRedirectPath } from '@/config/app-config';
 
 

@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@ui";
+} from "@DonaldNgai/chakra-ui";
 
 export function NavDocuments({
   items,

@@ -1,4 +1,4 @@
-import { JotForm } from '@ui';
+import { JotForm } from '@DonaldNgai/chakra-ui';
 
 type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

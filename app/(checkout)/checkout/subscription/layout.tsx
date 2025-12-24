@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { RequireAuthLayout } from '@ui';
+import { RequireAuthLayout } from '@DonaldNgai/chakra-ui';
 
 /**
  * Layout that requires authentication for all checkout pages

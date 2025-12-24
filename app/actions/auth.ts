@@ -1,6 +1,6 @@
 'use server';
 
-import { upsertUserMetadata, updateUserPassword } from '@utils/auth/users';
+import { upsertUserMetadata, updateUserPassword } from '@DonaldNgai/next-utils/auth/users';
 
 type ActionState = {
   name?: string;

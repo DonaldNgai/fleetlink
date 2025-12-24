@@ -10,7 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@ui";
+} from "@DonaldNgai/chakra-ui";
 
 export function NavSecondary({
   items,

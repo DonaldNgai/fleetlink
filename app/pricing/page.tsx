@@ -1,5 +1,5 @@
 import { getStripePrices, getStripeProducts } from '@DonaldNgai/next-utils/payments/stripe';
-import { PricingCard } from '@ui';
+import { PricingCard } from '@DonaldNgai/chakra-ui';
 import {
   Box,
   Container,

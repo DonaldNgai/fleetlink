@@ -7,7 +7,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@ui';
+} from '@DonaldNgai/chakra-ui';
 import {
   Drawer,
   DrawerContent,
@@ -27,8 +27,8 @@ import {
   SelectControl,
   SelectPositioner,
 } from '@chakra-ui/react';
-import { Separator } from '@ui';
-import { useIsMobile } from '@utils';
+import { Separator } from '@DonaldNgai/chakra-ui';
+import { useIsMobile } from '@DonaldNgai/next-utils';
 
 import type { BookingWithSupply } from './schema';
 

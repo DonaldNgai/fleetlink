@@ -25,9 +25,9 @@ import {
 } from '@chakra-ui/react';
 
 import { useRouter } from 'next/navigation';
-import { OutlineButton } from '@ui';
+import { OutlineButton } from '@DonaldNgai/chakra-ui';
 
-import { FadeIn, FadeInStagger, FadeInStaggerItem, WordDivider } from '@ui';
+import { FadeIn, FadeInStagger, FadeInStaggerItem, WordDivider } from '@DonaldNgai/chakra-ui';
 import { ArrowRight, FileText, Zap, Clock, Star } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';

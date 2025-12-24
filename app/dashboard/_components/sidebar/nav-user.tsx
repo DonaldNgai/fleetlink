@@ -1,8 +1,8 @@
 'use client';
 
-import { SidebarMenu, SidebarMenuItem } from '@ui';
-import { User } from '@utils/auth/users';
-import { AccountSwitcher } from '@ui';
+import { SidebarMenu, SidebarMenuItem } from '@DonaldNgai/chakra-ui';
+import { User } from '@DonaldNgai/next-utils/auth/users';
+import { AccountSwitcher } from '@DonaldNgai/chakra-ui';
 
 export function NavUser({ users }: { readonly users: ReadonlyArray<User> }) {
   // Convert Auth0 User to format expected by AccountSwitcher

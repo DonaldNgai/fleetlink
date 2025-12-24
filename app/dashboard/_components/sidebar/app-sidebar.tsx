@@ -13,11 +13,11 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
-} from '@ui';
+} from '@DonaldNgai/chakra-ui';
 import { APP_CONFIG } from '@/config/app-config';
-import { User } from '@utils/auth/users';
+import { User } from '@DonaldNgai/next-utils/auth/users';
 import useSWR from 'swr';
-import { getCurrentUserFullDetails } from '@utils/auth/users';
+import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import { NavUser } from './nav-user';
 import {
   LayoutDashboard,
