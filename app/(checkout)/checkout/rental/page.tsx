@@ -29,7 +29,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
-import { createEmbeddedRentalCheckout } from '@DonaldNgai/chakra-ui';
+import { createEmbeddedRentalCheckout } from '@DonaldNgai/chakra-ui/server';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@DonaldNgai/chakra-ui';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);

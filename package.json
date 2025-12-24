@@ -16,7 +16,7 @@
     "db:reset": "prisma migrate reset"
   },
   "dependencies": {
-    "@DonaldNgai/chakra-ui": "^1.0.2",
+    "@DonaldNgai/chakra-ui": "^1.0.3",
     "@DonaldNgai/next-utils": "^1.0.2",
     "@auth0/auth0-react": "^2.11.0",
     "@auth0/auth0-spa-js": "^2.11.0",

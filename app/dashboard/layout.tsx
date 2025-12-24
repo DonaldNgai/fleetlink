@@ -30,6 +30,7 @@ import { ThemeSwitcher } from './_components/sidebar/theme-switcher';
 import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import { adminRedirectPath, loginRedirectPath, logoutRedirectPath } from '@/config/app-config';
 
+export const dynamic = 'force-dynamic';
 
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
   // Get user data server-side instead of using SWR

@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
-import { RequireAuthLayout } from '@DonaldNgai/chakra-ui';
+import { RequireAuthLayout } from '@DonaldNgai/chakra-ui/server';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * Layout that requires authentication for all checkout pages

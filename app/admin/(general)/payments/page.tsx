@@ -26,6 +26,8 @@ import {
 } from '@DonaldNgai/next-utils/payments/subscription';
 import { customerPortalAction } from '@DonaldNgai/chakra-ui/server';
 
+export const dynamic = 'force-dynamic';
+
 function formatCurrency(amount: number, currency: string = 'usd'): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
