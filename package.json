@@ -3,7 +3,6 @@
   "version": "2.0.0",
   "scripts": {
     "dev": "next dev --turbopack",
-    "prepare:vercel": "node scripts/prepare-vercel.js",
     "build": "pnpm prepare:vercel && next build",
     "start": "next start",
     "format": "prettier --write .",
