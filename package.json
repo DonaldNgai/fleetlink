@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "pnpm next build",
+    "build": "next build",
     "start": "next start",
     "format": "prettier --write .",
     "db:setup": "npx tsx lib/db/setup.ts",
@@ -16,8 +16,8 @@
     "db:reset": "prisma migrate reset"
   },
   "dependencies": {
-    "@DonaldNgai/chakra-ui": "file:./packages/ui",
-    "@DonaldNgai/next-utils": "file:./packages/next-utils",
+    "@DonaldNgai/chakra-ui": "^1.0.0",
+    "@DonaldNgai/next-utils": "^1.0.2",
     "@auth0/auth0-react": "^2.11.0",
     "@auth0/auth0-spa-js": "^2.11.0",
     "@auth0/nextjs-auth0": "^4.14.0",
