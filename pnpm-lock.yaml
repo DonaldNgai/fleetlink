@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@DonaldNgai/chakra-ui':
-        specifier: ^1.0.0
-        version: 1.0.0(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chakra-ui/react@3.30.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.4.0)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react-is@16.13.1)(react@19.1.0)(redux@5.0.1)(swr@2.3.8(react@19.1.0))(use-sync-external-store@1.6.0(react@19.1.0))
+        specifier: ^1.0.1
+        version: 1.0.1(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chakra-ui/react@3.30.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.4.0)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react-is@16.13.1)(react@19.1.0)(redux@5.0.1)(swr@2.3.8(react@19.1.0))(use-sync-external-store@1.6.0(react@19.1.0))
       '@DonaldNgai/next-utils':
         specifier: ^1.0.2
         version: 1.0.2(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
@@ -374,8 +374,8 @@ importers:
 
 packages:
 
-  '@DonaldNgai/chakra-ui@1.0.0':
-    resolution: {integrity: sha512-SYjANNndegc64wVkY51+nfyN8QAaMnPz6Cg+8HlPiHp4daby9lXYNootaCnPt3wQfyerllz4uneQDkoCGJJWmg==, tarball: https://npm.pkg.github.com/download/@DonaldNgai/chakra-ui/1.0.0/62850f51014e48d0554adcc40e612d621c4474f2}
+  '@DonaldNgai/chakra-ui@1.0.1':
+    resolution: {integrity: sha512-BuS2kr87sq1sLULE6bCe9Oq5jkcTyVxyFk+ZAZRD6X2YCzqUi/xMYl4ghR0Ke/kr8osKmDQGWd/tyP5iL4fflQ==, tarball: https://npm.pkg.github.com/download/@DonaldNgai/chakra-ui/1.0.1/91f50cc234e3af02a0576ebe26d7b331a4efcc99}
     peerDependencies:
       '@auth0/nextjs-auth0': ^4.13.2
       '@chakra-ui/react': ^3.30.0
@@ -3262,7 +3262,7 @@ packages:
 
 snapshots:
 
-  '@DonaldNgai/chakra-ui@1.0.0(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chakra-ui/react@3.30.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.4.0)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react-is@16.13.1)(react@19.1.0)(redux@5.0.1)(swr@2.3.8(react@19.1.0))(use-sync-external-store@1.6.0(react@19.1.0))':
+  '@DonaldNgai/chakra-ui@1.0.1(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chakra-ui/react@3.30.0(@emotion/react@11.14.0(@types/react@19.1.4)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.4.0)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react-is@16.13.1)(react@19.1.0)(redux@5.0.1)(swr@2.3.8(react@19.1.0))(use-sync-external-store@1.6.0(react@19.1.0))':
     dependencies:
       '@DonaldNgai/next-utils': 1.0.2(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
       '@auth0/nextjs-auth0': 4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
