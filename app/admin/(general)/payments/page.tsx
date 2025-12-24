@@ -23,7 +23,7 @@ import {
   type PaymentHistoryItem,
   type PaymentMethod,
   type UpcomingPayment,
-} from '@repo/next-utils/payments/subscription';
+} from '@DonaldNgai/next-utils/payments/subscription';
 import { customerPortalAction } from '@ui';
 
 function formatCurrency(amount: number, currency: string = 'usd'): string {

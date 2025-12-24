@@ -1,6 +1,6 @@
 import { stripe } from '../packages/next-utils/src/payments/stripe';
 import { prisma } from './prisma';
-import { hashPassword } from '@repo/next-utils/auth';
+import { hashPassword } from '@DonaldNgai/next-utils/auth';
 
 async function createStripeProducts() {
   console.log('Creating Stripe products and prices...');

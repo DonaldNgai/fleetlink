@@ -1,4 +1,4 @@
-import { handleStripeWebhook } from '@repo/next-utils/payments/stripe';
+import { handleStripeWebhook } from '@DonaldNgai/next-utils/payments/stripe';
 import { NextRequest, NextResponse } from 'next/server';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;

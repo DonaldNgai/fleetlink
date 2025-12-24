@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { prisma } from '@/db/prisma';
-import { getCurrentUserFullDetails } from '@repo/next-utils/auth/users';
+import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import {
   Box,
   Container,

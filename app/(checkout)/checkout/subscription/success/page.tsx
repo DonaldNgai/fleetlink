@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { stripe } from '@repo/next-utils/payments/stripe';
+import { stripe } from '@DonaldNgai/next-utils/payments/stripe';
 import {
   Box,
   Container,

@@ -1,4 +1,4 @@
-import { getStripePrices, getStripeProducts } from '@repo/next-utils/payments/stripe';
+import { getStripePrices, getStripeProducts } from '@DonaldNgai/next-utils/payments/stripe';
 import { PricingCard } from '@ui';
 import {
   Box,

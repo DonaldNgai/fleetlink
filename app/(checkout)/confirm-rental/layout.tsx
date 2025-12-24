@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { headers } from 'next/headers';
-import { requireAuthServer } from '@repo/next-utils';
+import { requireAuthServer } from '@DonaldNgai/next-utils';
 
 export default async function Layout({ children }: { children: ReactNode }) {
   // Get current URL from headers (set by middleware)

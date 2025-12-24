@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['chakraui', '@repo/next-utils'],
+  transpilePackages: ['chakraui', '@DonaldNgai/next-utils'],
   experimental: {
     clientSegmentCache: true,
   },
