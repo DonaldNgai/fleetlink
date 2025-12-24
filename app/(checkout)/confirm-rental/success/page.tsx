@@ -82,9 +82,9 @@ export default async function RentalSuccessPage({ searchParams }: SuccessPagePro
 
   // Use the first booking for main details
   const mainBooking = bookings[0];
-  const totalEquipment = bookings.reduce((sum, b) => sum + b.number_equipment, 0);
+  const totalEquipment = bookings.reduce((sum: number, b) => sum + (b.number_equipment || 0), 0);
   const totalHours = mainBooking.hours || 0;
-  const totalCharges = bookings.reduce((sum, b) => {
+  const totalCharges = bookings.reduce((sum: number, b) => {
     const charges = b.total_customer_charges ? Number(b.total_customer_charges) : 0;
     return sum + charges;
   }, 0);
