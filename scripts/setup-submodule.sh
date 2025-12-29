@@ -9,7 +9,7 @@ if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   echo "Not inside a valid Git working tree."
   exit 1
 fi
-
+ 
 # Function to setup a submodule
 setup_submodule() {
   local submodule_name=$1
@@ -33,11 +33,11 @@ setup_submodule() {
   git submodule add -f "$submodule_url" "$submodule_name"
 }
 
-# Setup NextUtils submodule
-setup_submodule "NextUtils" "git@github.com:DonaldNgai/NextUtils.git"
-
 # Setup ChakraUI submodule
-setup_submodule "ChakraUI" "git@github.com:DonaldNgai/ChakraUI.git"
+setup_submodule "ChakraUI" "https://DonaldNgai:${GITHUB_REPO_CLONE_TOKEN}@github.com/DonaldNgai/ChakraUI.git"
+
+# Setup NextUtils submodule
+setup_submodule "NextUtils" "https://DonaldNgai:${GITHUB_REPO_CLONE_TOKEN}@github.com/DonaldNgai/NextUtils.git"
  
 # Sync & init
 echo "Syncing and initializing all submodules..."
