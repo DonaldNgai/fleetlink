@@ -1,6 +1,7 @@
 'use server';
 
-import { upsertUserMetadata, updateUserPassword } from '@DonaldNgai/next-utils/auth/users';
+import { upsertUserMetadata, updateUserPassword, getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
+import { auth0 } from '@/lib/auth/auth0';
 
 type ActionState = {
   name?: string;
@@ -84,5 +85,18 @@ export async function updatePassword(prevState: PasswordState, formData: FormDat
     return {
       error: error instanceof Error ? error.message : 'Failed to update password',
     };
+  }
+}
+
+/**
+ * Server action to get the current user
+ * Directly calls getCurrentUserFullDetails with auth0
+ */
+export async function getCurrentUser() {
+  try {
+    return await getCurrentUserFullDetails(auth0);
+  } catch (error) {
+    console.error('Error fetching current user:', error);
+    return null;
   }
 }

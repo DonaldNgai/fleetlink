@@ -18,6 +18,7 @@ import { APP_CONFIG } from '@/config/app-config';
 import { User } from '@DonaldNgai/next-utils/auth/users';
 import useSWR from 'swr';
 import { NavUser } from './nav-user';
+import { getCurrentUser } from '@/app/actions/auth';
 import {
   LayoutDashboard,
   ChartBar,
@@ -50,19 +51,11 @@ const navigation: { label: string; items: NavItem[] }[] = [
   },
 ];
 
-async function fetchCurrentUser(): Promise<User | null> {
-  const response = await fetch('/api/user/current');
-  if (!response.ok) {
-    return null;
-  }
-  return response.json();
-}
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const { data: user } = useSWR<User | null>(
     'current-user',
-    fetchCurrentUser
+    getCurrentUser
   );
 
   const isActive = (url: string) => {
