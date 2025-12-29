@@ -28,7 +28,7 @@ import {
   SelectPositioner,
 } from '@chakra-ui/react';
 import { Separator } from '@DonaldNgai/chakra-ui';
-import { useIsMobile } from '@DonaldNgai/chakra-ui/hooks/use-mobile';
+import { useIsMobile } from '@DonaldNgai/chakra-ui/hooks';
 
 import type { BookingWithSupply } from './schema';
 

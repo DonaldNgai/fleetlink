@@ -17,7 +17,7 @@ import {
 import { Tabs } from '@chakra-ui/react';
 
 import { DataTable as DataTableNew, DataTablePagination, DataTableViewOptions, withDndColumn } from '@DonaldNgai/chakra-ui';
-import { useDataTableInstance } from '@DonaldNgai/chakra-ui/hooks/use-data-table-instance';
+import { useDataTableInstance } from '@DonaldNgai/chakra-ui/hooks';
 
 import { dashboardColumns } from './columns';
 import { BookingWithSupply } from './schema';

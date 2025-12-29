@@ -3,7 +3,7 @@
 import { Download } from 'lucide-react';
 
 import { DataTable, DataTablePagination, DataTableViewOptions } from '@DonaldNgai/chakra-ui';
-import { useDataTableInstance } from '@DonaldNgai/chakra-ui/hooks/use-data-table-instance';
+import { useDataTableInstance } from '@DonaldNgai/chakra-ui/hooks';
 import { Button } from '@chakra-ui/react';
 import {
   CardRoot as Card,
