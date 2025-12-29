@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "pnpm --filter @DonaldNgai/next-utils build && pnpm --filter @DonaldNgai/chakra-ui build && next build",
     "start": "next start",
     "postinstall": "prisma generate",
     "format": "prettier --write .",
@@ -21,8 +21,8 @@
     "db:reset": "prisma migrate reset"
   },
   "dependencies":{
-    "@DonaldNgai/chakra-ui": "^1.0.3",
-    "@DonaldNgai/next-utils": "^1.0.4",
+    "@DonaldNgai/chakra-ui": "file:./packages/ui",
+    "@DonaldNgai/next-utils": "file:./packages/next-utils",
     "@auth0/auth0-react": "^2.11.0",
     "@auth0/auth0-spa-js": "^2.11.0",
     "@auth0/nextjs-auth0": "^4.14.0",

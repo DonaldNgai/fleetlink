@@ -26,7 +26,9 @@
     "paths": {
       "@/*": [
         "./*"
-      ]
+      ],
+      "@DonaldNgai/next-utils/*": ["./packages/next-utils/src/*"],
+      "@DonaldNgai/chakra-ui/*": ["./packages/ui/src/*"]
     }
   },
   "include": [
