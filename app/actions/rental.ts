@@ -5,6 +5,7 @@ import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import { getCustomerForCurrentUser } from '@/db/queries/customer';
 import { callN8nWebhook, formatRentalBookingForWebhook } from './webhooks';
 import type { Prisma } from '@prisma/client';
+import { auth0 } from '@/lib/auth/auth0';
 
 // Constants
 const EQUIPMENT_PRICING: Record<
@@ -215,7 +216,7 @@ export async function createRentalBooking(
 ): Promise<CreateRentalBookingState> {
   try {
     // Get user and find or create customer
-    const user = await getCurrentUserFullDetails();
+    const user = await getCurrentUserFullDetails(auth0);
     if (!user) {
       return { error: 'User not authenticated' };
     }

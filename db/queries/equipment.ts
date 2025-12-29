@@ -1,5 +1,6 @@
 import { prisma } from '../prisma';
 import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
+import { auth0 } from '@/lib/auth/auth0';
 
 /**
  * Get equipment bookings for a specific user (by email match)
@@ -24,7 +25,7 @@ export async function getEquipmentBookingsForUser(userEmail: string) {
  * Get equipment bookings for the currently logged-in user
  */
 export async function getEquipmentBookingsForCurrentUser() {
-  const user = await getCurrentUserFullDetails();
+  const user = await getCurrentUserFullDetails(auth0);
   if (!user || !user.email) {
     return [];
   }

@@ -16,7 +16,7 @@ import {
 // TODO: These functions need to be implemented or removed
 // import { updateContentLayout, updateNavbarStyle, updateThemeMode, updateThemePreset } from '@DonaldNgai/chakra-ui';
 import { setValueToCookie } from '@DonaldNgai/next-utils';
-import { usePreferencesStore } from '@DonaldNgai/next-utils';
+import { PreferencesStoreProvider } from '@DonaldNgai/chakra-ui/stores/preferences-provider';
 import type {
   SidebarVariant,
   SidebarCollapsible,

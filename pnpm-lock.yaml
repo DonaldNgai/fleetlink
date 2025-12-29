@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@DonaldNgai/next-utils': ^1.0.2
-
 importers:
 
   .:
@@ -15,8 +12,8 @@ importers:
         specifier: workspace:*
         version: link:packages/ui
       '@DonaldNgai/next-utils':
-        specifier: ^1.0.2
-        version: 1.0.2(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
+        specifier: workspace:*
+        version: link:packages/next-utils
       '@auth0/auth0-react':
         specifier: ^2.11.0
         version: 2.11.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -254,8 +251,8 @@ importers:
   packages/ui:
     dependencies:
       '@DonaldNgai/next-utils':
-        specifier: ^1.0.2
-        version: 1.0.2(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
+        specifier: workspace:^
+        version: link:../next-utils
       '@auth0/nextjs-auth0':
         specifier: ^4.13.2
         version: 4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -373,13 +370,6 @@ importers:
         version: 5.9.3
 
 packages:
-
-  '@DonaldNgai/next-utils@1.0.2':
-    resolution: {integrity: sha512-5oNUcUJW/wB3Jxm7yc+A6K1tVjY7J3yVCQENAz2yTBNERL6d9wWnRbqGevH5xgAIlbGF35dzuy4SnKl+jJAvLg==, tarball: https://npm.pkg.github.com/download/@DonaldNgai/next-utils/1.0.2/6c5f52ca78f2a2e69012d330c0c523d839a5d74a}
-    peerDependencies:
-      '@auth0/nextjs-auth0': ^4.13.2
-      '@tanstack/react-table': ^8.21.3
-      react: ^19.1.0
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -3252,25 +3242,6 @@ packages:
         optional: true
 
 snapshots:
-
-  '@DonaldNgai/next-utils@1.0.2(@auth0/nextjs-auth0@4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/react-table@8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.4)(immer@11.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))':
-    dependencies:
-      '@auth0/auth0-react': 2.11.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@auth0/auth0-spa-js': 2.11.0
-      '@auth0/nextjs-auth0': 4.14.0(next@15.5.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/react-table': 8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      auth0: 4.37.0
-      bcryptjs: 3.0.3
-      clsx: 2.1.1
-      react: 19.1.0
-      server-only: 0.0.1
-      tailwind-merge: 3.4.0
-      zustand: 5.0.9(@types/react@19.1.4)(immer@11.1.0)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-      - react-dom
-      - use-sync-external-store
 
   '@alloc/quick-lru@5.2.0': {}
 

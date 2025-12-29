@@ -25,6 +25,7 @@ import {
   type UpcomingPayment,
 } from '@DonaldNgai/next-utils/payments/subscription';
 import { customerPortalAction } from '@DonaldNgai/chakra-ui/server';
+import { auth0 } from '@/lib/auth/auth0';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,10 +58,10 @@ function getCardBrandIcon(brand: string): string {
 
 export default async function PaymentsPage() {
   const [subscription, paymentHistory, paymentMethods, upcomingPayments] = await Promise.all([
-    getSubscriptionDetails(),
-    getPaymentHistory(20),
-    getPaymentMethods(),
-    getUpcomingPayments(),
+    getSubscriptionDetails(auth0),
+    getPaymentHistory(20, auth0),
+    getPaymentMethods(auth0),
+    getUpcomingPayments(auth0),
   ]);
 
   return (

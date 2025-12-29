@@ -6,7 +6,7 @@ import { Button } from '@chakra-ui/react';
 // TODO: updateThemeMode needs to be implemented or removed
 // import { updateThemeMode } from '@DonaldNgai/chakra-ui';
 import { setValueToCookie } from '@DonaldNgai/next-utils';
-import { usePreferencesStore } from '@DonaldNgai/next-utils';
+  import { usePreferencesStore } from '@DonaldNgai/next-utils';
 
 export function ThemeSwitcher() {
   const themeMode = usePreferencesStore(s => s.themeMode);

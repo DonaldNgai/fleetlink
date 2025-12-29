@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { headers } from 'next/headers';
 import { requireAuthServer } from '@DonaldNgai/next-utils/auth';
+import { auth0 } from '@/lib/auth/auth0';
 
 export default async function Layout({ children }: { children: ReactNode }) {
   // Get current URL from headers (set by middleware)
@@ -28,7 +29,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
   
   // This will redirect to login if not authenticated
   // The returnTo parameter will be the current URL
-  await requireAuthServer(currentUrl);
+  await requireAuthServer(currentUrl, auth0);
 
   // If we get here, user is authenticated
   return <>{children}</>;

@@ -28,7 +28,8 @@ import {
 } from '@chakra-ui/react';
 import { Separator } from '@chakra-ui/react';
 import { Tabs } from '@chakra-ui/react';
-import { formatCurrency, cn } from '@DonaldNgai/next-utils';
+import { formatCurrency } from '@DonaldNgai/next-utils';
+import { cn } from '@DonaldNgai/chakra-ui/utils';
 
 function ChipSVG() {
   return (

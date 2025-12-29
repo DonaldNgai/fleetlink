@@ -1,10 +1,11 @@
 import { JotForm } from '@DonaldNgai/chakra-ui';
 import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import { getCustomerForCurrentUser } from '@/db/queries/customer';
+import { auth0 } from '@/lib/auth/auth0';
 
 export default async function Page() {
   // Get the logged-in user
-  const user = await getCurrentUserFullDetails();
+  const user = await getCurrentUserFullDetails(auth0);
   const customer = await getCustomerForCurrentUser();
 
   // Build URL parameters from user data if logged in

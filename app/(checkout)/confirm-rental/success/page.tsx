@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { CheckCircle2, Package, Calendar, MapPin, Clock } from 'lucide-react';
 import Link from 'next/link';
+import { auth0 } from '@/lib/auth/auth0';
 
 interface SuccessPageProps {
   searchParams: Promise<{ bookingId?: string }>;
@@ -90,7 +91,7 @@ export default async function RentalSuccessPage({ searchParams }: SuccessPagePro
     return sum + charges;
   }, 0);
 
-  const user = await getCurrentUserFullDetails();
+  const user = await getCurrentUserFullDetails(auth0);
   const isAuthenticated = !!user;
 
   return (

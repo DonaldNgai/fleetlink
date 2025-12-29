@@ -1,5 +1,6 @@
 import { prisma } from '../prisma';
 import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
+import { auth0 } from '@/lib/auth/auth0';
 
 /**
  * Get a company (customer) by ID
@@ -23,7 +24,7 @@ export async function getCustomerByEmail(email: string) {
  * Get customer information for the currently logged-in user
  */
 export async function getCustomerForCurrentUser() {
-  const user = await getCurrentUserFullDetails();
+  const user = await getCurrentUserFullDetails(auth0);
   if (!user || !user.email) {
     return null;
   }

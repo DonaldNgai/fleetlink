@@ -24,7 +24,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 const CardTitle = Heading;
-import { cn } from '@DonaldNgai/next-utils';
+import { cn } from '@DonaldNgai/chakra-ui/utils';
 import { OutlineButton } from '@DonaldNgai/chakra-ui';
 import { createRentalBooking } from '@/app/actions/rental';
 import { z } from 'zod';

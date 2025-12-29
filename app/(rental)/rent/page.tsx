@@ -6,7 +6,7 @@ import { Calendar, Clock, Check } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button } from '@chakra-ui/react';
 import { CardRoot as Card } from '@chakra-ui/react';
-import { cn } from '@DonaldNgai/next-utils';
+import { cn } from '@DonaldNgai/chakra-ui/utils';
 
 // Equipment types with background images - matching the confirm-rental page equipmentMap
 const equipmentTypes = [
