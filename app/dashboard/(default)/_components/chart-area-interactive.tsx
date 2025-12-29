@@ -28,7 +28,7 @@ import {
   SelectPositioner,
 } from '@chakra-ui/react';
 // ToggleGroup removed - use Chakra UI ButtonGroup or similar;
-import { useIsMobile } from '@DonaldNgai/next-utils';
+import { useIsMobile } from '@DonaldNgai/chakra-ui/hooks/use-mobile';
 
 export const description = 'An interactive area chart';
 
