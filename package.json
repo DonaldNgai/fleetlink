@@ -19,7 +19,8 @@
     "db:studio": "prisma studio",
     "db:push": "prisma db push",
     "db:pull": "dotenv -e .env -e .env -- prisma db pull",
-    "db:reset": "prisma migrate reset"
+    "db:reset": "prisma migrate reset",
+    "type-check": "tsc --noEmit"
   },
   "dependencies":{
     "@DonaldNgai/chakra-ui": "workspace:*",

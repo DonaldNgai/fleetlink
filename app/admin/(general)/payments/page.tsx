@@ -29,6 +29,12 @@ import { auth0 } from '@/lib/auth/auth0';
 
 export const dynamic = 'force-dynamic';
 
+// Server action wrapper that binds auth0
+async function handleCustomerPortal() {
+  'use server';
+  await customerPortalAction(auth0);
+}
+
 function formatCurrency(amount: number, currency: string = 'usd'): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -92,7 +98,7 @@ export default async function PaymentsPage() {
                     </a>
                   </Button>
                 ) : (
-                  <form action={customerPortalAction}>
+                  <form action={handleCustomerPortal}>
                     <Button type="submit" size="sm" variant="outline">
                       Manage Payment Methods
                     </Button>
@@ -156,7 +162,7 @@ export default async function PaymentsPage() {
                     </a>
                   </Button>
                 ) : (
-                  <form action={customerPortalAction}>
+                  <form action={handleCustomerPortal}>
                     <Button type="submit" size="sm" variant="outline" alignSelf="start">
                       Add Payment Method
                     </Button>
@@ -188,7 +194,7 @@ export default async function PaymentsPage() {
                     </a>
                   </Button>
                 ) : (
-                  <form action={customerPortalAction}>
+                  <form action={handleCustomerPortal}>
                     <Button type="submit" size="sm" variant="outline">
                       Manage Subscription
                     </Button>

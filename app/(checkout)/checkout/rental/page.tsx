@@ -31,7 +31,7 @@ import {
 } from 'lucide-react';
 import { createEmbeddedRentalCheckout } from '@DonaldNgai/chakra-ui/server';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@DonaldNgai/chakra-ui';
-
+import { auth0 } from '@/lib/auth/auth0';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 type Step = 'contact' | 'payment' | 'success';
@@ -120,7 +120,8 @@ export default function RentalCheckoutPage() {
           customerName: formData.customerName,
           customerEmail: formData.customerEmail,
           customerPhone: formData.customerPhone || undefined,
-        }
+        },
+        auth0
       );
 
       if (result.clientSecret) {

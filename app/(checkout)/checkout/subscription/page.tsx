@@ -19,6 +19,7 @@ import {
 import { CheckCircle2 } from 'lucide-react';
 import { createEmbeddedSubscriptionCheckout } from '@DonaldNgai/chakra-ui/server';
 import { RequireAuth } from '@DonaldNgai/chakra-ui';
+import { auth0 } from '@/lib/auth/auth0';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -42,7 +43,7 @@ function SubscriptionCheckoutContent() {
           return;
         }
 
-        const result = await createEmbeddedSubscriptionCheckout(priceId);
+        const result = await createEmbeddedSubscriptionCheckout(priceId, auth0);
 
         if (result.clientSecret) {
           setClientSecret(result.clientSecret);
