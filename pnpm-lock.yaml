@@ -12,7 +12,7 @@ importers:
   .:
     dependencies:
       '@DonaldNgai/chakra-ui':
-        specifier: file:./packages/ui
+        specifier: workspace:*
         version: link:packages/ui
       '@DonaldNgai/next-utils':
         specifier: ^1.0.2
