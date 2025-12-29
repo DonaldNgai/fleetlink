@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "pnpm -r --filter './packages/*' run build && next build",
+    "install:vercel": "bash ./scripts/init-submodule.sh && pnpm install",
     "start": "next start",
     "postinstall": "prisma generate",
     "format": "prettier --write .",
