@@ -29,12 +29,13 @@ import { LayoutControls } from './_components/sidebar/layout-controls';
 import { ThemeSwitcher } from './_components/sidebar/theme-switcher';
 import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import { adminRedirectPath, loginRedirectPath, logoutRedirectPath } from '@/config/app-config';
+import { auth0 } from '@/lib/auth/auth0';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
   // Get user data server-side instead of using SWR
-  const user = await getCurrentUserFullDetails();
+  const user = await getCurrentUserFullDetails(auth0);
 
   const themeMode = await getPreference<ThemeMode>('theme_mode', THEME_MODE_VALUES, 'dark');
   const themePreset = await getPreference<ThemePreset>(
