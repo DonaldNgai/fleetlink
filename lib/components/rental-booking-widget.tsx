@@ -293,7 +293,6 @@ export function RentalBookingWidget({
             <Button
               variant="outline"
               onClick={() => setShowAll(true)}
-              rightIcon={<ChevronDown className="h-4 w-4" />}
               size="lg"
               borderRadius="xl"
               borderColor="gray.300"
@@ -303,6 +302,7 @@ export function RentalBookingWidget({
               }}
             >
               Show {remainingCount} More Equipment Types
+              <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </Box>
         )}
@@ -313,7 +313,6 @@ export function RentalBookingWidget({
             <Button
               variant="outline"
               onClick={() => setShowAll(false)}
-              rightIcon={<ChevronUp className="h-4 w-4" />}
               size="lg"
               borderRadius="xl"
               borderColor="gray.300"
@@ -323,6 +322,7 @@ export function RentalBookingWidget({
               }}
             >
               Show Less
+              <ChevronUp className="ml-2 h-4 w-4" />
             </Button>
           </Box>
         )}
