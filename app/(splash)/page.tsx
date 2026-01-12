@@ -31,6 +31,7 @@ import { FadeIn, FadeInStagger, FadeInStaggerItem, WordDivider } from '@DonaldNg
 import { ArrowRight, FileText, Zap, Clock, Star } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { RentalBookingWidget } from '@/lib/components/rental-booking-widget';
 
 const companyLogos = [
   { name: 'CAT', url: 'https://cdn.simpleicons.org/caterpillar' },
@@ -200,6 +201,15 @@ export default function HomePage() {
               </FadeInStaggerItem>
             </VStack>
           </FadeInStagger>
+        </Container>
+      </Box>
+
+      {/* Rental Booking Widget - Right under Hero */}
+      <Box as="section" py="16" position="relative" zIndex="10">
+        <Container maxW="7xl" px={{ base: 4, sm: 6, lg: 8 }}>
+          <FadeIn>
+            <RentalBookingWidget initialLimit={8} />
+          </FadeIn>
         </Container>
       </Box>
 
