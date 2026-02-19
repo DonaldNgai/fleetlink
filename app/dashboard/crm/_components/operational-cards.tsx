@@ -8,7 +8,7 @@ import { ChartContainer } from "@DonaldNgai/chakra-ui";
 import { Checkbox } from "@chakra-ui/react";
 import { Progress } from "@chakra-ui/react";
 import { formatCurrency } from '@DonaldNgai/next-utils';
-import { cn } from '@DonaldNgai/chakra-ui/utils';
+import { cn } from '@/lib/utils';
 import { salesPipelineChartData, salesPipelineChartConfig, regionSalesData, actionItems } from "./crm.config";
 
 export function OperationalCards() {

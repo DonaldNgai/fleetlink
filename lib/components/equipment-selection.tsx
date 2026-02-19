@@ -2,7 +2,7 @@
 
 import { Check } from 'lucide-react';
 import { CardRoot as Card } from '@chakra-ui/react';
-import { cn } from '@DonaldNgai/chakra-ui/utils';
+import { cn } from '@/lib/utils';
 import { equipmentTypes, type EquipmentType } from '@/lib/equipment-types';
 
 interface EquipmentSelectionProps {

@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 import { AppSidebar } from './_components/sidebar/app-sidebar';
 import { Separator, SidebarInset, SidebarProvider, SidebarTrigger } from '@DonaldNgai/chakra-ui';
-import { cn } from '@DonaldNgai/chakra-ui/utils';
+import { cn } from '@/lib/utils';
 import { getPreference } from '@DonaldNgai/next-utils/server/preferences';
 import { Toaster } from '@DonaldNgai/chakra-ui';
 import { PreferencesStoreProvider } from '@DonaldNgai/chakra-ui/stores/preferences-provider';

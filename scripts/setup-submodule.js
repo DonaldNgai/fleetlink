@@ -50,6 +50,9 @@ if (process.env.VERCEL || process.env.CI) {
   );
   
   // Clone ChakraUI
+  // NOTE: If ChakraUI adds/removes exports (e.g. ./utils, ./blog), check that:
+  //   1. The new export has a matching entry in packages/ui/tsup.config.ts
+  //   2. Any fleetlink imports from the removed export are updated (e.g. cn -> @/lib/utils)
   console.log('📦 Cloning ChakraUI...');
   runCommand(
     `git clone --depth 1 https://${token}@github.com/DonaldNgai/ChakraUI.git ${uiDir}`

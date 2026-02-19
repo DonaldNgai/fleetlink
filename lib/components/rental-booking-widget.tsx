@@ -6,7 +6,7 @@ import { Calendar, Clock, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button, Box, VStack, HStack, Text, Input } from '@chakra-ui/react';
 import { CardRoot as Card } from '@chakra-ui/react';
-import { cn } from '@DonaldNgai/chakra-ui/utils';
+import { cn } from '@/lib/utils';
 import { equipmentTypes } from '@/lib/equipment-types';
 
 interface RentalBookingWidgetProps {
