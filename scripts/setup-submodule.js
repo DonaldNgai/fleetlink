@@ -59,7 +59,7 @@ if (process.env.VERCEL || process.env.CI) {
   
   // Install dependencies for the cloned packages (skip scripts to avoid infinite loop)
   console.log('📥 Installing dependencies for cloned packages...');
-  runCommand('pnpm install --ignore-scripts');
+  runCommand('pnpm install --ignore-scripts --no-frozen-lockfile');
   
   // Run prisma generate manually since we skipped scripts
   console.log('🔧 Running prisma generate...');
