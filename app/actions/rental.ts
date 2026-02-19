@@ -6,31 +6,66 @@ import { getCustomerForCurrentUser } from '@/db/queries/customer';
 import { callN8nWebhook, formatRentalBookingForWebhook } from './webhooks';
 import type { Prisma } from '@prisma/client';
 import { auth0 } from '@/lib/auth/auth0';
+import { stripe } from '@DonaldNgai/next-utils/payments/stripe';
 
 // Constants
 const EQUIPMENT_PRICING: Record<
   string,
   { ourRate: number; marketRate: number; supplierRate: number; sourcerRate: number }
 > = {
-  triaxle: { ourRate: 120, marketRate: 150, supplierRate: 100, sourcerRate: 20 },
-  sweeper: { ourRate: 225, marketRate: 280, supplierRate: 190, sourcerRate: 35 },
-  water: { ourRate: 150, marketRate: 190, supplierRate: 125, sourcerRate: 25 },
-  hydrovac: { ourRate: 200, marketRate: 250, supplierRate: 170, sourcerRate: 30 },
-  excavator: { ourRate: 180, marketRate: 225, supplierRate: 150, sourcerRate: 30 },
-  loader: { ourRate: 140, marketRate: 175, supplierRate: 115, sourcerRate: 25 },
   bulldozer: { ourRate: 160, marketRate: 200, supplierRate: 135, sourcerRate: 25 },
+  'bucket-truck': { ourRate: 140, marketRate: 175, supplierRate: 115, sourcerRate: 25 },
+  backhoe: { ourRate: 130, marketRate: 165, supplierRate: 108, sourcerRate: 22 },
+  'wheeled-loader': { ourRate: 140, marketRate: 175, supplierRate: 115, sourcerRate: 25 },
+  'asphalt-paver': { ourRate: 200, marketRate: 250, supplierRate: 170, sourcerRate: 30 },
+  'water-truck': { ourRate: 150, marketRate: 190, supplierRate: 125, sourcerRate: 25 },
+  triaxle: { ourRate: 120, marketRate: 150, supplierRate: 100, sourcerRate: 20 },
+  'articulated-dump-truck': { ourRate: 150, marketRate: 190, supplierRate: 125, sourcerRate: 25 },
+  'triaxle-pup-trailer': { ourRate: 160, marketRate: 200, supplierRate: 135, sourcerRate: 25 },
+  '1-ton-dump-truck': { ourRate: 100, marketRate: 125, supplierRate: 82, sourcerRate: 18 },
+  sweeper: { ourRate: 225, marketRate: 280, supplierRate: 190, sourcerRate: 35 },
+  'skid-steer': { ourRate: 120, marketRate: 150, supplierRate: 100, sourcerRate: 20 },
+  'roll-off-bins': { ourRate: 80, marketRate: 100, supplierRate: 65, sourcerRate: 15 },
+  'rock-truck': { ourRate: 130, marketRate: 165, supplierRate: 108, sourcerRate: 22 },
+  'mini-ex': { ourRate: 120, marketRate: 150, supplierRate: 100, sourcerRate: 20 },
+  'live-bottom-trailer': { ourRate: 140, marketRate: 175, supplierRate: 115, sourcerRate: 25 },
+  grader: { ourRate: 170, marketRate: 215, supplierRate: 142, sourcerRate: 28 },
+  'flusher-hydrovac-truck': { ourRate: 200, marketRate: 250, supplierRate: 170, sourcerRate: 30 },
+  float: { ourRate: 130, marketRate: 165, supplierRate: 108, sourcerRate: 22 },
+  excavator: { ourRate: 180, marketRate: 225, supplierRate: 150, sourcerRate: 30 },
   crane: { ourRate: 250, marketRate: 310, supplierRate: 220, sourcerRate: 30 },
+  'concrete-mixer': { ourRate: 150, marketRate: 190, supplierRate: 125, sourcerRate: 25 },
+  compactor: { ourRate: 120, marketRate: 150, supplierRate: 100, sourcerRate: 20 },
+  'chipper-truck': { ourRate: 110, marketRate: 140, supplierRate: 90, sourcerRate: 20 },
+  'cctv-sewer-inspection': { ourRate: 180, marketRate: 225, supplierRate: 150, sourcerRate: 30 },
 };
 
 const EQUIPMENT_NAMES: Record<string, string> = {
-  triaxle: 'Tri Axle Dump Truck',
-  sweeper: 'Sweeper Truck',
-  water: 'Water Truck',
-  hydrovac: 'Hydrovac Truck',
-  excavator: 'Excavator',
-  loader: 'Loader',
   bulldozer: 'Bulldozer',
+  'bucket-truck': 'Bucket Truck',
+  backhoe: 'Backhoe',
+  'wheeled-loader': 'Wheeled Loader',
+  'asphalt-paver': 'Asphalt Paver',
+  'water-truck': 'Water Truck',
+  triaxle: 'Triaxle',
+  'articulated-dump-truck': 'Articulated Dump Truck',
+  'triaxle-pup-trailer': 'Triaxle with Pup Trailer',
+  '1-ton-dump-truck': '1 Ton Dump Truck',
+  sweeper: 'Sweeper',
+  'skid-steer': 'Skid Steer',
+  'roll-off-bins': 'Roll Off Bins',
+  'rock-truck': 'Rock Truck',
+  'mini-ex': 'Mini Excavator',
+  'live-bottom-trailer': 'Live Bottom Trailer',
+  grader: 'Grader',
+  'flusher-hydrovac-truck': 'Flusher Hydrovac Truck',
+  float: 'Float',
+  excavator: 'Excavator',
   crane: 'Crane',
+  'concrete-mixer': 'Concrete Mixer',
+  compactor: 'Compactor',
+  'chipper-truck': 'Chipper Truck',
+  'cctv-sewer-inspection': 'CCTV Sewer Inspection',
 };
 
 const MILLISECONDS_PER_HOUR = 1000 * 60 * 60;
@@ -67,6 +102,9 @@ type RentalBookingData = {
     lat: NonNullable<Prisma.Equipment_BookingsCreateInput['location_latitude']>;
     lng: NonNullable<Prisma.Equipment_BookingsCreateInput['location_longitude']>;
   } | null;
+  stripeCustomerId?: string;
+  stripeSetupIntentId?: string;
+  stripePaymentMethodId?: string;
 };
 
 type EquipmentInfo = {
@@ -298,6 +336,9 @@ export async function createRentalBooking(
             supplier_status: 'active',
             customer_status: 'active',
             equipment: equipmentInfo.name,
+            stripe_customer_id: data.stripeCustomerId || null,
+            stripe_setup_intent_id: data.stripeSetupIntentId || null,
+            stripe_payment_method_id: data.stripePaymentMethodId || null,
           },
         });
       })
@@ -382,5 +423,82 @@ export async function createRentalBooking(
       error: error instanceof Error ? error.message : 'Failed to create rental booking',
     };
   }
+}
+
+// Types
+export type CreateSetupIntentResult = {
+  clientSecret: string;
+  customerId: string;
+};
+
+export type SetupIntentBookingMetadata = {
+  equipment: string;      // e.g. "Bulldozer x2, Excavator x1"
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+  location: string;
+  contactPhone?: string;
+};
+
+/**
+ * Creates a Stripe SetupIntent to collect a card on file without charging.
+ * The card is used to confirm the reservation; the customer is charged later
+ * once a supplier is matched and the final price is confirmed.
+ */
+export async function createRentalSetupIntent(
+  customerEmail: string,
+  customerName?: string,
+  bookingMetadata?: SetupIntentBookingMetadata
+): Promise<CreateSetupIntentResult> {
+  // Try to find an existing Stripe customer by email to avoid duplicates
+  let stripeCustomerId: string | undefined;
+
+  try {
+    const existing = await stripe.customers.search({
+      query: `email:"${customerEmail}"`,
+      limit: 1,
+    });
+    if (existing.data.length > 0) {
+      stripeCustomerId = existing.data[0].id;
+    }
+  } catch {
+    // Continue — search failure is non-fatal
+  }
+
+  if (!stripeCustomerId) {
+    const customer = await stripe.customers.create({
+      email: customerEmail,
+      name: customerName || undefined,
+    });
+    stripeCustomerId = customer.id;
+  }
+
+  const metadata: Record<string, string> = {
+    customer_email: customerEmail,
+    ...(customerName && { customer_name: customerName }),
+    ...(bookingMetadata && {
+      equipment: bookingMetadata.equipment,
+      start_date: bookingMetadata.startDate,
+      start_time: bookingMetadata.startTime,
+      end_date: bookingMetadata.endDate,
+      end_time: bookingMetadata.endTime,
+      location: bookingMetadata.location.slice(0, 500),
+      ...(bookingMetadata.contactPhone && { contact_phone: bookingMetadata.contactPhone }),
+    }),
+  };
+
+  const setupIntent = await stripe.setupIntents.create({
+    customer: stripeCustomerId,
+    payment_method_types: ['card'],
+    // off_session: allows charging the card later without the customer present
+    usage: 'off_session',
+    metadata,
+  });
+
+  return {
+    clientSecret: setupIntent.client_secret!,
+    customerId: stripeCustomerId,
+  };
 }
 

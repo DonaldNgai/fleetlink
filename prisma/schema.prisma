@@ -44,9 +44,12 @@ model Equipment_Bookings {
   cancellation_reason     String?
   customer_status         String   @default("active")
   equipment               String?
-  total_customer_charges  Decimal? @default(dbgenerated("((COALESCE(customer_rate, (0)::real) * COALESCE(hours, (0)::real)) * (COALESCE(number_equipment, 0))::double precision)")) @db.Decimal
-  sourcer_total_earnings  Decimal? @default(dbgenerated("((COALESCE(sourcer_rate, (0)::real) * COALESCE(hours, (0)::real)) * (COALESCE(number_equipment, 0))::double precision)")) @db.Decimal
-  total_supplier_earnings Decimal? @default(dbgenerated("((COALESCE(supplier_rate, (0)::real) * COALESCE(hours, (0)::real)) * (COALESCE(number_equipment, 0))::double precision)")) @db.Decimal
+  total_customer_charges   Decimal? @default(dbgenerated("((COALESCE(customer_rate, (0)::real) * COALESCE(hours, (0)::real)) * (COALESCE(number_equipment, 0))::double precision)")) @db.Decimal
+  sourcer_total_earnings   Decimal? @default(dbgenerated("((COALESCE(sourcer_rate, (0)::real) * COALESCE(hours, (0)::real)) * (COALESCE(number_equipment, 0))::double precision)")) @db.Decimal
+  total_supplier_earnings  Decimal? @default(dbgenerated("((COALESCE(supplier_rate, (0)::real) * COALESCE(hours, (0)::real)) * (COALESCE(number_equipment, 0))::double precision)")) @db.Decimal
+  stripe_customer_id       String?
+  stripe_setup_intent_id   String?
+  stripe_payment_method_id String?
 
   @@map("Equipment Bookings")
 }

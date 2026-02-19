@@ -1,0 +1,61 @@
+export type EquipmentType = {
+  id: string;
+  name: string;
+  description: string;
+};
+
+export const equipmentMap: Record<string, EquipmentType> = {
+  bulldozer: { id: 'bulldozer', name: 'Bulldozer', description: 'Heavy-duty bulldozer for earthmoving' },
+  'bucket-truck': { id: 'bucket-truck', name: 'Bucket Truck', description: 'Aerial work platform truck' },
+  backhoe: { id: 'backhoe', name: 'Backhoe', description: 'Versatile backhoe loader for digging and loading' },
+  'wheeled-loader': { id: 'wheeled-loader', name: 'Wheeled Loader', description: 'Front-end loader for material handling' },
+  'asphalt-paver': { id: 'asphalt-paver', name: 'Asphalt Paver', description: 'Paving machine for road construction' },
+  'water-truck': { id: 'water-truck', name: 'Water Truck', description: 'Water delivery and distribution truck' },
+  triaxle: { id: 'triaxle', name: 'Triaxle', description: 'Heavy-duty triaxle dump truck for large loads' },
+  'articulated-dump-truck': { id: 'articulated-dump-truck', name: 'Articulated Dump Truck', description: 'Off-road articulated dump truck' },
+  'triaxle-pup-trailer': { id: 'triaxle-pup-trailer', name: 'Triaxle with Pup Trailer', description: 'Triaxle dump truck with pup trailer' },
+  '1-ton-dump-truck': { id: '1-ton-dump-truck', name: '1 Ton Dump Truck', description: 'Light-duty dump truck for smaller loads' },
+  sweeper: { id: 'sweeper', name: 'Sweeper', description: 'Street sweeping and cleaning equipment' },
+  'skid-steer': { id: 'skid-steer', name: 'Skid Steer', description: 'Compact skid steer loader' },
+  'roll-off-bins': { id: 'roll-off-bins', name: 'Roll Off Bins', description: 'Roll-off waste containers' },
+  'rock-truck': { id: 'rock-truck', name: 'Rock Truck', description: 'Heavy-duty rock hauling truck' },
+  'mini-ex': { id: 'mini-ex', name: 'Mini Excavator', description: 'Compact mini excavator' },
+  'live-bottom-trailer': { id: 'live-bottom-trailer', name: 'Live Bottom Trailer', description: 'Self-unloading live bottom trailer' },
+  grader: { id: 'grader', name: 'Grader', description: 'Motor grader for road grading' },
+  'flusher-hydrovac-truck': { id: 'flusher-hydrovac-truck', name: 'Flusher Hydrovac Truck', description: 'Hydro-excavation and vacuum truck' },
+  float: { id: 'float', name: 'Float', description: 'Heavy equipment transport float trailer' },
+  excavator: { id: 'excavator', name: 'Excavator', description: 'Heavy construction excavator' },
+  crane: { id: 'crane', name: 'Crane', description: 'Mobile crane for lifting operations' },
+  'concrete-mixer': { id: 'concrete-mixer', name: 'Concrete Mixer', description: 'Concrete mixing and delivery truck' },
+  compactor: { id: 'compactor', name: 'Compactor', description: 'Soil and asphalt compaction equipment' },
+  'chipper-truck': { id: 'chipper-truck', name: 'Chipper Truck', description: 'Wood chipper truck for debris removal' },
+  'cctv-sewer-inspection': { id: 'cctv-sewer-inspection', name: 'CCTV Sewer Inspection', description: 'CCTV camera truck for sewer inspection' },
+};
+
+export const equipmentPricing: Record<string, { ourRate: number; marketRate: number }> = {
+  bulldozer: { ourRate: 160, marketRate: 200 },
+  'bucket-truck': { ourRate: 140, marketRate: 175 },
+  backhoe: { ourRate: 130, marketRate: 165 },
+  'wheeled-loader': { ourRate: 140, marketRate: 175 },
+  'asphalt-paver': { ourRate: 200, marketRate: 250 },
+  'water-truck': { ourRate: 150, marketRate: 190 },
+  triaxle: { ourRate: 120, marketRate: 150 },
+  'articulated-dump-truck': { ourRate: 150, marketRate: 190 },
+  'triaxle-pup-trailer': { ourRate: 160, marketRate: 200 },
+  '1-ton-dump-truck': { ourRate: 100, marketRate: 125 },
+  sweeper: { ourRate: 225, marketRate: 280 },
+  'skid-steer': { ourRate: 120, marketRate: 150 },
+  'roll-off-bins': { ourRate: 80, marketRate: 100 },
+  'rock-truck': { ourRate: 130, marketRate: 165 },
+  'mini-ex': { ourRate: 120, marketRate: 150 },
+  'live-bottom-trailer': { ourRate: 140, marketRate: 175 },
+  grader: { ourRate: 170, marketRate: 215 },
+  'flusher-hydrovac-truck': { ourRate: 200, marketRate: 250 },
+  float: { ourRate: 130, marketRate: 165 },
+  excavator: { ourRate: 180, marketRate: 225 },
+  crane: { ourRate: 250, marketRate: 310 },
+  'concrete-mixer': { ourRate: 150, marketRate: 190 },
+  compactor: { ourRate: 120, marketRate: 150 },
+  'chipper-truck': { ourRate: 110, marketRate: 140 },
+  'cctv-sewer-inspection': { ourRate: 180, marketRate: 225 },
+};
