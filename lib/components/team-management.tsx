@@ -18,7 +18,7 @@ import {
   AlertTitle,
   AlertDescription,
 } from '@chakra-ui/react';
-import { AvatarFallback } from '../../packages/ui/src/avatar-fallback';
+import { AvatarFallback } from '@DonaldNgai/chakra-ui';
 import { teams, users, team_members } from '@prisma/client';
 import { useActionState } from 'react';
 

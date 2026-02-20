@@ -5,8 +5,8 @@ import { Moon, Sun } from 'lucide-react';
 import { Button } from '@chakra-ui/react';
 // TODO: updateThemeMode needs to be implemented or removed
 // import { updateThemeMode } from '@DonaldNgai/chakra-ui';
-import { setValueToCookie } from '@DonaldNgai/next-utils/client/preferences';
-import { usePreferencesStore } from '@DonaldNgai/chakra-ui/stores/preferences-store';
+import { setValueToCookie } from '@DonaldNgai/next-utils';
+import { usePreferencesStore } from '@DonaldNgai/chakra-ui/stores';
 
 export function ThemeSwitcher() {
   const themeMode = usePreferencesStore(s => s.themeMode);

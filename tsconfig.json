@@ -27,8 +27,10 @@
       "@/*": [
         "./*"
       ],
-      "@DonaldNgai/next-utils/*": ["./packages/next-utils/src/*"],
-      "@DonaldNgai/chakra-ui/*": ["./packages/ui/src/*"]
+      "@DonaldNgai/next-utils": ["./packages/next-utils/dist/index.d.ts"],
+      "@DonaldNgai/next-utils/*": ["./packages/next-utils/dist/*"],
+      "@DonaldNgai/chakra-ui": ["./packages/ui/dist/index.d.ts"],
+      "@DonaldNgai/chakra-ui/*": ["./packages/ui/dist/*"]
     }
   },
   "include": [
@@ -39,6 +41,8 @@
   ],
   "exclude": [
     "node_modules",
-    "db/migrations"
+    "db/migrations",
+    "packages/ui/src",
+    "packages/next-utils/src"
   ]
 }

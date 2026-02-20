@@ -15,9 +15,9 @@ import {
 } from '@chakra-ui/react';
 // TODO: These functions need to be implemented or removed
 // import { updateContentLayout, updateNavbarStyle, updateThemeMode, updateThemePreset } from '@DonaldNgai/chakra-ui';
-import { setValueToCookie } from '@DonaldNgai/next-utils/client/preferences';
-import { PreferencesStoreProvider } from '@DonaldNgai/chakra-ui/stores/preferences-provider';
-import { usePreferencesStore } from '@DonaldNgai/chakra-ui/stores/preferences-store';
+import { setValueToCookie } from '@DonaldNgai/next-utils';
+import { PreferencesStoreProvider } from '@DonaldNgai/chakra-ui/stores';
+import { usePreferencesStore } from '@DonaldNgai/chakra-ui/stores';
 import { SidebarVariant,
   SidebarCollapsible,
   ContentLayout,
