@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+export const dynamic = 'force-dynamic';
+
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
@@ -36,7 +38,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 
 type Step = 'contact' | 'payment' | 'success';
 
-export default function RentalCheckoutPage() {
+function RentalCheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -453,5 +455,13 @@ export default function RentalCheckoutPage() {
         </VStack>
       </Container>
     </Box>
+  );
+}
+
+export default function RentalCheckoutPage() {
+  return (
+    <Suspense>
+      <RentalCheckoutContent />
+    </Suspense>
   );
 }
