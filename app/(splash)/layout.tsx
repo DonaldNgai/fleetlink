@@ -18,12 +18,17 @@ function Header() {
         </Link>
         <div className="flex items-center space-x-4">
           <OutlineButton
-                onClick={() => router.push('/rent')}
-                width="full"
-                size="lg"
-                fontWeight="bold"
-                >Book Now</OutlineButton>
-          <Link href="/pricing" className="text-base font-semibold text-gray-700 hover:text-gray-900">
+            onClick={() => router.push('/rent')}
+            width="full"
+            size="lg"
+            fontWeight="bold"
+          >
+            Book Now
+          </OutlineButton>
+          <Link
+            href="/pricing"
+            className="text-base font-semibold text-gray-700 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
+          >
             Pricing
           </Link>
           <Suspense fallback={<div className="h-9 w-9" />}>

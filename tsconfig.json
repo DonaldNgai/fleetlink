@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -24,25 +20,11 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@DonaldNgai/next-utils": ["./packages/next-utils/dist/index.d.ts"],
-      "@DonaldNgai/next-utils/*": ["./packages/next-utils/dist/*"],
-      "@DonaldNgai/chakra-ui": ["./packages/ui/dist/index.d.ts"],
-      "@DonaldNgai/chakra-ui/*": ["./packages/ui/dist/*"]
+      "@/*": ["./*"],
+      "@DonaldNgai/next-utils/*": ["./packages/next-utils/src/*"],
+      "@DonaldNgai/chakra-ui/*": ["./packages/ui/src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "db/migrations",
-    "packages/ui/src",
-    "packages/next-utils/src"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "db/migrations", "packages/ui/src", "packages/next-utils/src"]
 }

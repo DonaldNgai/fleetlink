@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 import { APP_CONFIG } from '@/config/app-config';
-import { ChakraUIProvider } from '@DonaldNgai/chakra-ui';
+import { Provider } from './components/ui/provider';
 
 export const metadata: Metadata = {
   title: APP_CONFIG.meta.title,
@@ -20,12 +20,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
+      suppressHydrationWarning
     >
-      <body className="min-h-[100dvh]">
-        <ChakraUIProvider>
-            {children}
-        </ChakraUIProvider>
-      </body>
+      <Provider>
+        <body className="min-h-[100dvh]">{children}</body>
+      </Provider>
     </html>
   );
 }

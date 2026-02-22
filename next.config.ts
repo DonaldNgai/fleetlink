@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   transpilePackages: ['@DonaldNgai/next-utils', '@DonaldNgai/chakra-ui'],
   experimental: {
     clientSegmentCache: true,
+    optimizePackageImports: ['@chakra-ui/react'],
   },
   images: {
     remotePatterns: [

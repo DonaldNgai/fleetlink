@@ -21,12 +21,12 @@ export function RentalBookingWidget({
   const router = useRouter();
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
   const [showAll, setShowAll] = useState(false);
-  
+
   // Set default dates: today and 1 week from today
   const today = new Date();
   const oneWeekFromToday = new Date();
   oneWeekFromToday.setDate(today.getDate() + 7);
-  
+
   const [startDate, setStartDate] = useState<Date | null>(today);
   const [endDate, setEndDate] = useState<Date | null>(oneWeekFromToday);
   const [startTime, setStartTime] = useState('08:00'); // 8am
@@ -73,6 +73,7 @@ export function RentalBookingWidget({
   return (
     <Box
       bg="white"
+      _dark={{ bg: 'gray.800' }}
       borderRadius="2xl"
       shadow="xl"
       p={{ base: 6, md: 8 }}
@@ -82,10 +83,10 @@ export function RentalBookingWidget({
     >
       {showHeader && (
         <VStack gap="2" mb="8" textAlign="center">
-          <Text fontSize="3xl" fontWeight="bold" color="gray.900">
+          <Text fontSize="3xl" fontWeight="bold" color="gray.900" _dark={{ color: 'white' }}>
             Select Equipment
           </Text>
-          <Text fontSize="lg" color="gray.600">
+          <Text fontSize="lg" color="gray.600" _dark={{ color: 'gray.400' }}>
             Choose the equipment you need for your project
           </Text>
         </VStack>
@@ -95,6 +96,7 @@ export function RentalBookingWidget({
       <Box
         mb="8"
         bg="gray.50"
+        _dark={{ bg: 'gray.700', borderColor: 'gray.600' }}
         borderRadius="xl"
         p={6}
         borderWidth="1px"
@@ -108,8 +110,8 @@ export function RentalBookingWidget({
           {/* Date Range */}
           <VStack align="stretch" gap={2}>
             <HStack gap={2}>
-              <Calendar className="h-4 w-4 text-gray-700" />
-              <Text fontSize="sm" fontWeight="semibold" color="gray.700">
+              <Calendar className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+              <Text fontSize="sm" fontWeight="semibold" color="gray.700" _dark={{ color: 'gray.300' }}>
                 Date Range
               </Text>
             </HStack>
@@ -123,13 +125,14 @@ export function RentalBookingWidget({
                 flex="1"
                 borderRadius="xl"
                 borderColor="gray.300"
+                _dark={{ borderColor: 'gray.500', bg: 'gray.600', color: 'white' }}
                 _focus={{
                   ring: '2px',
                   ringColor: 'orange.500',
                   borderColor: 'orange.500',
                 }}
               />
-              <Text color="gray.400" fontWeight="medium">
+              <Text color="gray.400" _dark={{ color: 'gray.400' }} fontWeight="medium">
                 to
               </Text>
               <Input
@@ -142,6 +145,7 @@ export function RentalBookingWidget({
                 flex="1"
                 borderRadius="xl"
                 borderColor="gray.300"
+                _dark={{ borderColor: 'gray.500', bg: 'gray.600', color: 'white' }}
                 _focus={{
                   ring: '2px',
                   ringColor: 'orange.500',
@@ -154,8 +158,8 @@ export function RentalBookingWidget({
           {/* Time Range */}
           <VStack align="stretch" gap={2}>
             <HStack gap={2}>
-              <Clock className="h-4 w-4 text-gray-700" />
-              <Text fontSize="sm" fontWeight="semibold" color="gray.700">
+              <Clock className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+              <Text fontSize="sm" fontWeight="semibold" color="gray.700" _dark={{ color: 'gray.300' }}>
                 Time Range
               </Text>
             </HStack>
@@ -167,13 +171,14 @@ export function RentalBookingWidget({
                 flex="1"
                 borderRadius="xl"
                 borderColor="gray.300"
+                _dark={{ borderColor: 'gray.500', bg: 'gray.600', color: 'white' }}
                 _focus={{
                   ring: '2px',
                   ringColor: 'orange.500',
                   borderColor: 'orange.500',
                 }}
               />
-              <Text color="gray.400" fontWeight="medium">
+              <Text color="gray.400" _dark={{ color: 'gray.400' }} fontWeight="medium">
                 to
               </Text>
               <Input
@@ -183,6 +188,7 @@ export function RentalBookingWidget({
                 flex="1"
                 borderRadius="xl"
                 borderColor="gray.300"
+                _dark={{ borderColor: 'gray.500', bg: 'gray.600', color: 'white' }}
                 _focus={{
                   ring: '2px',
                   ringColor: 'orange.500',
@@ -296,6 +302,11 @@ export function RentalBookingWidget({
               size="lg"
               borderRadius="xl"
               borderColor="gray.300"
+              _dark={{
+                borderColor: 'gray.600',
+                color: 'gray.200',
+                _hover: { bg: 'gray.700', borderColor: 'orange.500' },
+              }}
               _hover={{
                 bg: 'gray.50',
                 borderColor: 'orange.500',
@@ -316,6 +327,11 @@ export function RentalBookingWidget({
               size="lg"
               borderRadius="xl"
               borderColor="gray.300"
+              _dark={{
+                borderColor: 'gray.600',
+                color: 'gray.200',
+                _hover: { bg: 'gray.700', borderColor: 'orange.500' },
+              }}
               _hover={{
                 bg: 'gray.50',
                 borderColor: 'orange.500',
