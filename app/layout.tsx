@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
       suppressHydrationWarning
     >
-      <Provider>
+      <Provider defaultTheme="light">
         <body className="min-h-[100dvh]">{children}</body>
       </Provider>
     </html>

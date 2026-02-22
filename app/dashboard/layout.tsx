@@ -2,10 +2,16 @@ import { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 
 import { getPreference } from '@DonaldNgai/next-utils/server/preferences';
-import { THEME_MODE_VALUES, THEME_PRESET_VALUES, type ThemeMode, type ThemePreset } from '@DonaldNgai/next-utils';
+import {
+  THEME_MODE_VALUES,
+  THEME_PRESET_VALUES,
+  type ThemeMode,
+  type ThemePreset,
+} from '@DonaldNgai/next-utils';
 import { getCurrentUserFullDetails } from '@DonaldNgai/next-utils/auth/users';
 import { auth0 } from '@/lib/auth/auth0';
 import { DashboardLayoutWrapper } from './_components/dashboard-layout-wrapper';
+import { RequireAuthLayout } from '@/packages/ui/src/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,13 +29,15 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
   const defaultOpen = cookieStore.get('sidebar_state')?.value !== 'false';
 
   return (
-    <DashboardLayoutWrapper
-      user={user}
-      themeMode={themeMode}
-      themePreset={themePreset}
-      defaultSidebarOpen={defaultOpen}
-    >
-      {children}
-    </DashboardLayoutWrapper>
+    <RequireAuthLayout auth0={auth0}>
+      <DashboardLayoutWrapper
+        user={user}
+        themeMode={themeMode}
+        themePreset={themePreset}
+        defaultSidebarOpen={defaultOpen}
+      >
+        {children}
+      </DashboardLayoutWrapper>
+    </RequireAuthLayout>
   );
 }
