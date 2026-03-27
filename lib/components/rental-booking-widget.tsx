@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Calendar, Clock, Check, ChevronDown, ChevronUp } from 'lucide-react';
-import { format } from 'date-fns';
 import { Button, Box, VStack, HStack, Text, Input } from '@chakra-ui/react';
 import { CardRoot as Card } from '@chakra-ui/react';
 import { cn } from '@/lib/utils';
@@ -27,8 +26,11 @@ export function RentalBookingWidget({
   const oneWeekFromToday = new Date();
   oneWeekFromToday.setDate(today.getDate() + 7);
 
-  const [startDate, setStartDate] = useState<Date | null>(today);
-  const [endDate, setEndDate] = useState<Date | null>(oneWeekFromToday);
+  const toDateString = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+  const [startDate, setStartDate] = useState(toDateString(today));
+  const [endDate, setEndDate] = useState(toDateString(oneWeekFromToday));
   const [startTime, setStartTime] = useState('08:00'); // 8am
   const [endTime, setEndTime] = useState('16:00'); // 4pm
 
@@ -55,8 +57,8 @@ export function RentalBookingWidget({
     // Pass data to confirmation page via URL params
     const params = new URLSearchParams({
       equipment: selectedEquipment.join(','),
-      startDate: format(startDate, 'yyyy-MM-dd'),
-      endDate: format(endDate, 'yyyy-MM-dd'),
+      startDate,
+      endDate,
       startTime,
       endTime,
     });
@@ -118,10 +120,8 @@ export function RentalBookingWidget({
             <HStack gap={3} align="center">
               <Input
                 type="date"
-                value={startDate ? format(startDate, 'yyyy-MM-dd') : ''}
-                onChange={(e) =>
-                  setStartDate(e.target.value ? new Date(e.target.value) : null)
-                }
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
                 flex="1"
                 borderRadius="xl"
                 borderColor="gray.300"
@@ -137,11 +137,9 @@ export function RentalBookingWidget({
               </Text>
               <Input
                 type="date"
-                value={endDate ? format(endDate, 'yyyy-MM-dd') : ''}
-                onChange={(e) =>
-                  setEndDate(e.target.value ? new Date(e.target.value) : null)
-                }
-                min={startDate ? format(startDate, 'yyyy-MM-dd') : undefined}
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                min={startDate || undefined}
                 flex="1"
                 borderRadius="xl"
                 borderColor="gray.300"

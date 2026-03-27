@@ -1,6 +1,6 @@
 [submodule "packages/ui"]
 	path = packages/ui
-	url = git@github.com:DonaldNgai/ChakraUI.git
+	url = git@github-work:DonaldNgai/ChakraUI.git
 [submodule "packages/next-utils"]
 	path = packages/next-utils
-	url = git@github.com:DonaldNgai/NextUtils.git
+	url = git@github-work:DonaldNgai/NextUtils.git
